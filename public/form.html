@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre consultation — Aura Intuitive</title>
+    <meta name="theme-color" content="#7b2d3f">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Background -->
+    <div class="bg-aurora">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+    </div>
+    <div class="stars-canvas" id="starsCanvas"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <a href="/" class="nav-brand">✦ Aura Intuitive</a>
+    </nav>
+
+    <!-- Form Section -->
+    <section class="section form-page" id="formSection">
+        <div class="section-header">
+            <div class="success-icon">✅</div>
+            <h2 class="section-title">Merci pour votre paiement !</h2>
+            <div class="section-sep"><div class="line"></div><span class="diamond">◆</span><div class="line"></div></div>
+            <p class="section-desc">
+                Votre paiement a bien été reçu. Remplissez le formulaire ci-dessous
+                pour m'envoyer votre question. Je vous répondrai par email sous 24h. 🌙
+            </p>
+        </div>
+
+        <div class="contact-wrapper">
+            <form class="contact-form" id="questionForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Prénom *</label>
+                        <input type="text" id="name" name="name" placeholder="Votre prénom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birthdate">Date de naissance <span>(optionnel)</span></label>
+                        <input type="date" id="birthdate" name="birthdate">
+                    </div>
+                    <div class="form-group">
+                        <label for="person_concerned">Personne concernée <span>(optionnel)</span></label>
+                        <input type="text" id="person_concerned" name="person_concerned" placeholder="Prénom de la personne">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Votre question / situation *</label>
+                    <textarea id="message" name="message" rows="8" placeholder="Décrivez votre situation en détail : contexte, prénoms des personnes impliquées, vos ressentis, vos doutes… Plus votre message est complet, plus ma guidance sera précise et éclairante." required></textarea>
+                </div>
+
+                <!-- Disclaimer -->
+                <div class="disclaimer">
+                    <p class="disclaimer-text">
+                        ⚠️ <strong>Rappel :</strong> En envoyant ce formulaire, je certifie être <strong>majeur(e)</strong> (18 ans ou plus).
+                        Je comprends que la voyance ne se substitue en aucun cas à un avis médical, psychologique ou juridique.
+                        Les questions relatives à la <strong>santé, la grossesse, la médecine ou tout diagnostic</strong> ne seront pas traitées.
+                    </p>
+                    <label class="disclaimer-check">
+                        <input type="checkbox" id="disclaimerCheck" required>
+                        <span class="checkmark"></span>
+                        <span>J'ai lu et j'accepte les conditions ci-dessus. Je confirme être majeur(e).</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-gold" id="submitBtn">
+                        Envoyer ma question ✦
+                    </button>
+                </div>
+
+                <div class="form-message" id="formMessage"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Success state (hidden by default) -->
+    <section class="section form-page" id="successSection" style="display:none;">
+        <div class="section-header">
+            <div class="success-icon" style="font-size:4rem;">🌟</div>
+            <h2 class="section-title">Votre question a bien été envoyée !</h2>
+            <div class="section-sep"><div class="line"></div><span class="diamond">◆</span><div class="line"></div></div>
+            <p class="section-desc">
+                Je l'ai bien reçue et je vous répondrai par email sous 24h.
+                Gardez un œil sur votre boîte mail (et vos spams, au cas où). 🌙
+            </p>
+            <div style="margin-top:2rem;">
+                <a href="/" class="btn btn-glass">Retour à l'accueil</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-brand">✦ Aura Intuitive ✦</div>
+        <p>© 2026 Aura Intuitive — Tous droits réservés</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('questionForm');
+            const formMessage = document.getElementById('formMessage');
+            const sessionId = new URLSearchParams(window.location.search).get('session_id');
+
+            if (!sessionId) {
+                window.location.href = '/#services';
+                return;
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('submitBtn');
+                btn.textContent = 'Envoi en cours... ✦';
+                btn.style.opacity = '0.7';
+                btn.disabled = true;
+                formMessage.className = 'form-message';
+                formMessage.style.display = 'none';
+
+                try {
+                    const res = await fetch('/api/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            session_id: sessionId,
+                            name: document.getElementById('name').value.trim(),
+                            email: document.getElementById('email').value.trim(),
+                            birthdate: document.getElementById('birthdate').value || null,
+                            person_concerned: document.getElementById('person_concerned').value.trim() || null,
+                            message: document.getElementById('message').value.trim()
+                        })
+                    });
+
+                    const data = await res.json();
+
+                    if (res.ok && data.success) {
+                        document.getElementById('formSection').style.display = 'none';
+                        document.getElementById('successSection').style.display = 'block';
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        throw new Error(data.error || 'Une erreur est survenue.');
+                    }
+                } catch (err) {
+                    formMessage.className = 'form-message error';
+                    formMessage.textContent = err.message;
+                    formMessage.style.display = 'block';
+                    btn.textContent = 'Envoyer ma question ✦';
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

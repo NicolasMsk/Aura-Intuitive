@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Aura Intuitive</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#7b2d3f">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Background -->
+    <div class="bg-aurora">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+    <div class="stars-canvas" id="starsCanvas"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <a href="/" class="nav-brand">✦ Aura Intuitive</a>
+        <button class="btn btn-glass btn-sm" id="logoutBtn" style="display:none;font-size:0.8rem;padding:0.4rem 1rem;" onclick="logout()">
+            Déconnexion
+        </button>
+    </nav>
+
+    <!-- ═══ LOGIN ═══ -->
+    <section class="section admin-page" id="loginSection">
+        <div class="admin-login">
+            <h2>🔮 Espace Admin</h2>
+            <p>Connectez-vous pour gérer les consultations.</p>
+            <div class="login-form">
+                <input type="password" id="loginPassword" placeholder="Mot de passe" autocomplete="current-password">
+                <p class="login-error" id="loginError"></p>
+                <button class="btn btn-gold" style="width:100%;" onclick="login()">Se connecter ✦</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ DASHBOARD ═══ -->
+    <section class="section admin-page" id="dashboardSection" style="display:none;">
+
+        <div class="admin-header">
+            <h2>📋 Consultations</h2>
+            <button class="btn btn-glass" style="font-size:0.8rem;padding:0.5rem 1rem;" onclick="loadConsultations()">
+                🔄 Rafraîchir
+            </button>
+        </div>
+
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-filter="submitted" onclick="filterTab(this)">
+                ✦ En attente
+            </button>
+            <button class="admin-tab" data-filter="answered" onclick="filterTab(this)">
+                ✅ Répondues
+            </button>
+            <button class="admin-tab" data-filter="all" onclick="filterTab(this)">
+                📋 Toutes
+            </button>
+        </div>
+
+        <div class="consult-list" id="consultList">
+            <div class="consult-empty">Chargement...</div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-brand">✦ Aura Intuitive ✦</div>
+        <p>© 2026 Aura Intuitive — Panel administrateur</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        let consultations = [];
+        let currentFilter = 'submitted';
+
+        /* ── Login ──────────────────────────────────── */
+
+        document.getElementById('loginPassword').addEventListener('keydown', e => {
+            if (e.key === 'Enter') login();
+        });
+
+        async function login() {
+            const pw = document.getElementById('loginPassword').value;
+            const errEl = document.getElementById('loginError');
+            errEl.style.display = 'none';
+
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pw })
+                });
+
+                if (res.ok) {
+                    showDashboard();
+                } else {
+                    errEl.textContent = 'Mot de passe incorrect.';
+                    errEl.style.display = 'block';
+                }
+            } catch {
+                errEl.textContent = 'Erreur de connexion.';
+                errEl.style.display = 'block';
+            }
+        }
+
+        async function logout() {
+            await fetch('/api/admin/logout', { method: 'POST' });
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'none';
+        }
+
+        function showDashboard() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'inline-flex';
+            loadConsultations();
+        }
+
+        /* ── Load consultations ─────────────────────── */
+
+        async function loadConsultations() {
+            try {
+                const res = await fetch('/api/admin/consultations');
+                if (res.status === 401) {
+                    // Not logged in
+                    document.getElementById('dashboardSection').style.display = 'none';
+                    document.getElementById('loginSection').style.display = 'block';
+                    document.getElementById('logoutBtn').style.display = 'none';
+                    return;
+                }
+                consultations = await res.json();
+                renderConsultations();
+            } catch {
+                document.getElementById('consultList').innerHTML =
+                    '<div class="consult-empty">Erreur lors du chargement.</div>';
+            }
+        }
+
+        /* ── Filter tabs ────────────────────────────── */
+
+        function filterTab(btn) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.filter;
+            renderConsultations();
+        }
+
+        /* ── Render ─────────────────────────────────── */
+
+        function renderConsultations() {
+            const list = document.getElementById('consultList');
+            let filtered = consultations;
+
+            if (currentFilter !== 'all') {
+                filtered = consultations.filter(c => c.status === currentFilter);
+            }
+
+            if (!filtered.length) {
+                list.innerHTML = '<div class="consult-empty">Aucune consultation dans cette catégorie. 🌙</div>';
+                return;
+            }
+
+            list.innerHTML = filtered.map(c => {
+                const dateStr = c.submitted_at
+                    ? new Date(c.submitted_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                    : '—';
+
+                const badgeClass = c.status === 'answered' ? 'badge-answered' : 'badge-submitted';
+                const badgeText = c.status === 'answered' ? '✅ Répondue' : '✦ En attente';
+
+                let responseSection = '';
+
+                if (c.status === 'answered' && c.response) {
+                    responseSection = `
+                        <div class="consult-response-box">
+                            <label>📝 Votre réponse envoyée :</label>
+                            <div class="consult-prev-response">${escapeHtml(c.response)}</div>
+                        </div>`;
+                } else {
+                    responseSection = `
+                        <div class="consult-response-box">
+                            <label>✍️ Rédiger votre réponse :</label>
+                            <textarea id="resp-${c.id}" placeholder="Écrivez votre guidance ici..."></textarea>
+                            <div class="consult-actions">
+                                <button class="btn btn-gold" onclick="sendResponse('${c.id}', this)">
+                                    Envoyer la réponse ✦
+                                </button>
+                            </div>
+                        </div>`;
+                }
+
+                return `
+                <div class="consult-card">
+                    <div class="consult-top">
+                        <span class="consult-service">${escapeHtml(c.service)} — ${c.amount}€</span>
+                        <span class="consult-badge ${badgeClass}">${badgeText}</span>
+                    </div>
+                    <div class="consult-meta">
+                        <strong>${escapeHtml(c.name || '—')}</strong> · ${escapeHtml(c.email || '—')}<br>
+                        📅 ${dateStr}
+                        ${c.birthdate ? ' · 🎂 ' + c.birthdate : ''}
+                        ${c.person_concerned ? ' · 👤 ' + escapeHtml(c.person_concerned) : ''}
+                    </div>
+                    <div class="consult-message">${escapeHtml(c.message || '—')}</div>
+                    ${responseSection}
+                </div>`;
+            }).join('');
+        }
+
+        /* ── Send response ──────────────────────────── */
+
+        async function sendResponse(id, btn) {
+            const textarea = document.getElementById('resp-' + id);
+            const response = textarea.value.trim();
+
+            if (!response) {
+                alert('Veuillez écrire une réponse.');
+                return;
+            }
+
+            btn.textContent = 'Envoi en cours...';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+
+            try {
+                const res = await fetch('/api/admin/respond', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, response })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    // Show email status
+                    if (!data.emailSent) {
+                        alert('✅ Réponse sauvegardée !\n\n⚠️ L\'email n\'a pas pu être envoyé.\nCopiez votre réponse et envoyez-la manuellement à l\'adresse email du client.');
+                    }
+                    // Update local data
+                    const c = consultations.find(x => x.id === id);
+                    if (c) {
+                        c.status = 'answered';
+                        c.response = response;
+                        c.answered_at = new Date().toISOString();
+                    }
+                    renderConsultations();
+                } else {
+                    alert(data.error || 'Erreur lors de l\'envoi.');
+                    btn.textContent = 'Envoyer la réponse ✦';
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                }
+            } catch {
+                alert('Erreur de connexion.');
+                btn.textContent = 'Envoyer la réponse ✦';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+            }
+        }
+
+        /* ── Helpers ────────────────────────────────── */
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        /* ── Auto-check session on load ─────────────── */
+
+        (async () => {
+            try {
+                const res = await fetch('/api/admin/consultations');
+                if (res.ok) {
+                    consultations = await res.json();
+                    showDashboard();
+                    renderConsultations();
+                }
+            } catch {}
+        })();
+    </script>
+</body>
+</html>
