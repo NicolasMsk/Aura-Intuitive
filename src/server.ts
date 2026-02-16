@@ -160,22 +160,6 @@ async function webhookHandler(req: Request, res: Response): Promise<void> {
       console.error('❌  Supabase insert error:', error);
     } else {
       console.log(`✅  New consultation: ${service} (${amountTotal / 100}€) — session ${session.id}`);
-
-      // Send confirmation email (best effort)
-      const customerEmail = session.customer_details?.email;
-      if (customerEmail) {
-        try {
-          await resend.emails.send({
-            from: EMAIL_FROM,
-            to: customerEmail,
-            subject: `✨ Paiement confirmé — ${service} — Aura Intuitive`,
-            html: buildConfirmationEmail(service, amountTotal / 100),
-          });
-          console.log(`📧  Confirmation email sent to ${customerEmail}`);
-        } catch (err: any) {
-          console.error('⚠️  Confirmation email failed:', err.message);
-        }
-      }
     }
   }
 
@@ -271,6 +255,24 @@ app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
         return;
       }
 
+      // Send service-specific confirmation email
+      try {
+        const emailHtml = service === 'Consultation Ressenti'
+          ? buildConfirmationEmailRessenti(name)
+          : buildConfirmationEmailOuiNon(name);
+        await resend.emails.send({
+          from: EMAIL_FROM,
+          to: email,
+          subject: service === 'Consultation Ressenti'
+            ? '✨ Votre Consultation Ressenti a bien été reçue — Aura Intuitive'
+            : '✨ Votre Réponse Oui / Non a bien été reçue — Aura Intuitive',
+          html: emailHtml,
+        });
+        console.log(`📧  Confirmation email (${service}) sent to ${email}`);
+      } catch (err: any) {
+        console.error('⚠️  Confirmation email failed:', err.message);
+      }
+
       res.json({ success: true });
       return;
     } catch {
@@ -302,6 +304,25 @@ app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
     console.error('❌  Update error:', updateError);
     res.status(500).json({ error: 'Erreur lors de l\'enregistrement.' });
     return;
+  }
+
+  // Send service-specific confirmation email
+  const serviceName = consultation.service || 'Consultation Ressenti';
+  try {
+    const emailHtml = serviceName === 'Consultation Ressenti'
+      ? buildConfirmationEmailRessenti(name)
+      : buildConfirmationEmailOuiNon(name);
+    await resend.emails.send({
+      from: EMAIL_FROM,
+      to: email,
+      subject: serviceName === 'Consultation Ressenti'
+        ? '✨ Votre Consultation Ressenti a bien été reçue — Aura Intuitive'
+        : '✨ Votre Réponse Oui / Non a bien été reçue — Aura Intuitive',
+      html: emailHtml,
+    });
+    console.log(`📧  Confirmation email (${serviceName}) sent to ${email}`);
+  } catch (err: any) {
+    console.error('⚠️  Confirmation email failed:', err.message);
   }
 
   console.log(`📩  Question submitted for session ${session_id}`);
@@ -472,10 +493,9 @@ app.get('/admin', (_req: Request, res: Response): void => {
    EMAIL TEMPLATES
    ═══════════════════════════════════════════════════════ */
 
-/* ── Confirmation email (after payment) ─────────────── */
+/* ── Confirmation email — Réponse Oui / Non ─────────── */
 
-function buildConfirmationEmail(service: string, amount: number): string {
-
+function buildConfirmationEmailOuiNon(name: string): string {
   return `
 <!DOCTYPE html>
 <html lang="fr">
@@ -486,32 +506,73 @@ function buildConfirmationEmail(service: string, amount: number): string {
     <!-- Header -->
     <div style="background:linear-gradient(135deg,#7b2d3f,#5c1a2e);padding:32px 24px;text-align:center;">
       <h1 style="color:#d4a76a;margin:0;font-size:24px;letter-spacing:2px;">✦ Aura Intuitive ✦</h1>
-      <p style="color:rgba(255,255,255,0.7);margin:8px 0 0;font-size:14px;">Confirmation de paiement</p>
+      <p style="color:rgba(255,255,255,0.7);margin:8px 0 0;font-size:14px;">Réponse Oui / Non</p>
     </div>
 
     <!-- Body -->
     <div style="padding:32px 24px;">
-      <p style="color:#e8d5c4;font-size:16px;margin:0 0 8px;">Bonjour,</p>
+      <p style="color:#e8d5c4;font-size:16px;margin:0 0 8px;">Bonjour <strong>${name}</strong>,</p>
       <p style="color:rgba(232,213,196,0.8);font-size:14px;margin:0 0 24px;">
-        Merci pour votre confiance ✨ Votre paiement a bien été reçu.
+        Merci pour votre confiance ✨ Votre question a bien été reçue !
       </p>
 
-      <!-- Recap box -->
+      <!-- Info box -->
       <div style="background:rgba(123,45,63,0.15);border:1px solid rgba(212,167,106,0.3);border-radius:12px;padding:20px;margin:0 0 24px;">
-        <p style="color:#d4a76a;font-size:13px;text-transform:uppercase;letter-spacing:1px;margin:0 0 12px;">📋 Récapitulatif</p>
-        <p style="color:#e8d5c4;font-size:14px;margin:0 0 6px;">
-          <strong>Service :</strong> ${service}
-        </p>
-        <p style="color:#e8d5c4;font-size:14px;margin:0;">
-          <strong>Montant :</strong> ${amount}€
+        <p style="color:#d4a76a;font-size:13px;text-transform:uppercase;letter-spacing:1px;margin:0 0 12px;">🔮 Réponse Oui / Non — 1€</p>
+        <p style="color:#e8d5c4;font-size:14px;margin:0;line-height:1.7;">
+          Je vais me connecter à mon ressenti pour vous apporter une réponse courte et intuitive.
+          Vous recevrez votre réponse par email <strong>sous 48h maximum</strong>.
         </p>
       </div>
 
-      <!-- Next step -->
-      <p style="color:rgba(232,213,196,0.7);font-size:14px;margin:0 0 24px;text-align:center;">
-        Vous allez être redirigé(e) pour m'écrire votre question en détail.
-        Prenez le temps de bien formuler votre demande. 🌙
+      <p style="color:rgba(232,213,196,0.5);font-size:13px;margin:0;text-align:center;">
+        Avec lumière et bienveillance,<br>
+        <strong style="color:#d4a76a;">Sarah — Aura Intuitive</strong>
       </p>
+    </div>
+
+    <!-- Footer -->
+    <div style="border-top:1px solid rgba(123,45,63,0.3);padding:16px 24px;text-align:center;">
+      <p style="color:rgba(232,213,196,0.3);font-size:11px;margin:0;">
+        © 2025 Aura Intuitive — Cet email a été envoyé automatiquement, merci de ne pas y répondre.
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+/* ── Confirmation email — Consultation Ressenti ─────── */
+
+function buildConfirmationEmailRessenti(name: string): string {
+  return `
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#1a0a10;font-family:'Segoe UI',Arial,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;background:linear-gradient(135deg,#2a1520,#1a0a10);border:1px solid rgba(123,45,63,0.4);border-radius:16px;overflow:hidden;">
+
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#7b2d3f,#5c1a2e);padding:32px 24px;text-align:center;">
+      <h1 style="color:#d4a76a;margin:0;font-size:24px;letter-spacing:2px;">✦ Aura Intuitive ✦</h1>
+      <p style="color:rgba(255,255,255,0.7);margin:8px 0 0;font-size:14px;">Consultation Ressenti</p>
+    </div>
+
+    <!-- Body -->
+    <div style="padding:32px 24px;">
+      <p style="color:#e8d5c4;font-size:16px;margin:0 0 8px;">Bonjour <strong>${name}</strong>,</p>
+      <p style="color:rgba(232,213,196,0.8);font-size:14px;margin:0 0 24px;">
+        Merci pour votre confiance ✨ Votre demande de consultation a bien été reçue !
+      </p>
+
+      <!-- Info box -->
+      <div style="background:rgba(123,45,63,0.15);border:1px solid rgba(212,167,106,0.3);border-radius:12px;padding:20px;margin:0 0 24px;">
+        <p style="color:#d4a76a;font-size:13px;text-transform:uppercase;letter-spacing:1px;margin:0 0 12px;">🌙 Consultation Ressenti — 10€</p>
+        <p style="color:#e8d5c4;font-size:14px;margin:0;line-height:1.7;">
+          Je vais prendre le temps de me connecter à votre énergie et de vous offrir une guidance détaillée et personnalisée.
+          Vous recevrez votre consultation complète par email <strong>sous 72h maximum</strong>.
+        </p>
+      </div>
 
       <!-- Disclaimer -->
       <div style="background:rgba(212,167,106,0.08);border:1px solid rgba(212,167,106,0.15);border-radius:8px;padding:14px;margin:0 0 16px;">
@@ -531,7 +592,7 @@ function buildConfirmationEmail(service: string, amount: number): string {
     <!-- Footer -->
     <div style="border-top:1px solid rgba(123,45,63,0.3);padding:16px 24px;text-align:center;">
       <p style="color:rgba(232,213,196,0.3);font-size:11px;margin:0;">
-        © 2026 Aura Intuitive — Cet email a été envoyé automatiquement, merci de ne pas y répondre.
+        © 2025 Aura Intuitive — Cet email a été envoyé automatiquement, merci de ne pas y répondre.
       </p>
     </div>
   </div>
