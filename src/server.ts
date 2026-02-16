@@ -211,7 +211,7 @@ app.get('/form', async (req: Request, res: Response): Promise<void> => {
 app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
   const { session_id, name, email, birthdate, person_concerned, message } = req.body as SubmitBody;
 
-  if (!session_id || !name || !email || !message) {
+  if (!session_id || !name || !email || !birthdate || !message) {
     res.status(400).json({ error: 'Champs obligatoires manquants.' });
     return;
   }

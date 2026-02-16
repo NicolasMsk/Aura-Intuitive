@@ -322,8 +322,8 @@
                     </div>
                     <div class="consult-meta">
                         <strong>${escapeHtml(c.name || '—')}</strong> ${ageDisplay} · ${escapeHtml(c.email || '—')}<br>
+                        ${c.birthdate ? '<div class="consult-birthdate-line">🎂 Né(e) le <strong>' + new Date(c.birthdate).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }) + '</strong></div>' : ''}
                         📅 ${dateStr}
-                        ${c.birthdate ? ' · 🎂 ' + c.birthdate : ''}
                         ${c.person_concerned ? ' · 👤 ' + escapeHtml(c.person_concerned) : ''}
                         <div class="consult-meta-actions">
                             ${c.email ? `<button class="btn-tiny" onclick="copyEmail('${escapeHtml(c.email)}', this)" title="Copier l'email">📧 Copier email</button>` : ''}

@@ -1272,6 +1272,16 @@ a {
     margin-left: 4px;
 }
 
+.consult-birthdate-line {
+    margin: 4px 0;
+    color: var(--gold);
+    font-size: 0.82rem;
+}
+
+.consult-birthdate-line strong {
+    color: var(--text);
+}
+
 .consult-message {
     background: rgba(14, 6, 10, 0.5);
     border: 1px solid rgba(123, 45, 63, 0.15);
