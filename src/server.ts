@@ -314,6 +314,27 @@ function requireAdmin(req: Request, res: Response, next: NextFunction): void {
   }
 }
 
+/* ── Stats ──────────────────────────────────────────── */
+
+app.get('/api/admin/stats', requireAdmin, async (_req: Request, res: Response): Promise<void> => {
+  const { data, error } = await supabase
+    .from('consultations')
+    .select('status, amount')
+    .in('status', ['submitted', 'answered']);
+
+  if (error) {
+    res.status(500).json({ error: 'Erreur base de données.' });
+    return;
+  }
+
+  const all = data ?? [];
+  const pending = all.filter(c => c.status === 'submitted').length;
+  const answered = all.filter(c => c.status === 'answered').length;
+  const revenue = all.reduce((sum, c) => sum + (c.amount || 0), 0);
+
+  res.json({ total: all.length, pending, answered, revenue });
+});
+
 /* ── List consultations ─────────────────────────────── */
 
 app.get('/api/admin/consultations', requireAdmin, async (_req: Request, res: Response): Promise<void> => {
@@ -391,6 +412,26 @@ app.post('/api/admin/respond', requireAdmin, async (req: Request, res: Response)
       ? 'Réponse enregistrée et email envoyé !'
       : 'Réponse enregistrée ✅ mais l\'email n\'a pas pu être envoyé. Vous pouvez copier la réponse et l\'envoyer manuellement.',
   });
+});
+
+/* ── Delete consultation ─────────────────────────────── */
+
+app.delete('/api/admin/consultations/:id', requireAdmin, async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+
+  const { error } = await supabase
+    .from('consultations')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('❌  Delete error:', error);
+    res.status(500).json({ error: 'Erreur lors de la suppression.' });
+    return;
+  }
+
+  console.log(`🗑️  Consultation ${id} deleted`);
+  res.json({ success: true });
 });
 
 /* ── Serve admin page ───────────────────────────────── */
