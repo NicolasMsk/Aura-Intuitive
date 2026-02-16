@@ -925,6 +925,154 @@ a {
     .contact-form {
         padding: 1.5rem;
     }
+
+    /* Navbar mobile */
+    .nav-brand {
+        font-size: 0.95rem;
+    }
+
+    /* Hero mobile */
+    .hero {
+        padding: 6rem 1.2rem 3rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    /* Disclaimer mobile */
+    .disclaimer-prominent {
+        padding: 1.5rem 1.2rem;
+    }
+
+    .disclaimer-prominent h3 {
+        font-size: 1rem;
+    }
+
+    .disclaimer-prominent p {
+        font-size: 0.82rem;
+    }
+
+    /* Donations mobile */
+    .donations-wrapper {
+        padding: 1.5rem 1.2rem;
+    }
+
+    .donation-btns {
+        gap: 0.6rem;
+    }
+
+    .donation-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+
+    /* Admin mobile */
+    .admin-page {
+        padding-top: 5rem;
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
+    }
+
+    .admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-value {
+        font-size: 1.3rem;
+    }
+
+    .stat-label {
+        font-size: 0.65rem;
+    }
+
+    .admin-tabs {
+        flex-wrap: wrap;
+    }
+
+    .admin-tab {
+        font-size: 0.78rem;
+        padding: 0.5rem 0.8rem;
+    }
+
+    .consult-card {
+        padding: 1.2rem;
+    }
+
+    .consult-service {
+        font-size: 0.92rem;
+    }
+
+    .consult-response-box textarea {
+        min-height: 100px;
+    }
+
+    /* Modal mobile */
+    .modal-box {
+        padding: 2rem 1.5rem;
+        width: 92%;
+    }
+
+    /* Footer mobile */
+    .footer {
+        padding: 2rem 1.2rem;
+    }
+}
+
+/* ── Extra small screens (< 400px) ──────────────────── */
+@media (max-width: 400px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .section {
+        padding: 2.5rem 0.8rem;
+    }
+
+    .pricing-card {
+        padding: 1.8rem 1.2rem;
+    }
+
+    .card-price .amount {
+        font-size: 2.2rem;
+    }
+
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .stat-card {
+        padding: 0.7rem;
+    }
+
+    .consult-card {
+        padding: 1rem;
+    }
+
+    .consult-meta {
+        font-size: 0.75rem;
+    }
+
+    .btn-tiny {
+        font-size: 0.65rem;
+        padding: 0.15rem 0.45rem;
+    }
 }
 
 /* ═══════════════════════════════════════════════════════
