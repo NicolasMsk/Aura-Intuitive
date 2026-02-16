@@ -169,7 +169,7 @@ async function webhookHandler(req: Request, res: Response): Promise<void> {
             from: EMAIL_FROM,
             to: customerEmail,
             subject: `✨ Paiement confirmé — ${service} — Aura Intuitive`,
-            html: buildConfirmationEmail(service, amountTotal / 100, session.id),
+            html: buildConfirmationEmail(service, amountTotal / 100),
           });
           console.log(`📧  Confirmation email sent to ${customerEmail}`);
         } catch (err: any) {
@@ -474,8 +474,7 @@ app.get('/admin', (_req: Request, res: Response): void => {
 
 /* ── Confirmation email (after payment) ─────────────── */
 
-function buildConfirmationEmail(service: string, amount: number, sessionId: string): string {
-  const formUrl = `${APP_URL}/form?session_id=${sessionId}`;
+function buildConfirmationEmail(service: string, amount: number): string {
 
   return `
 <!DOCTYPE html>
@@ -508,15 +507,11 @@ function buildConfirmationEmail(service: string, amount: number, sessionId: stri
         </p>
       </div>
 
-      <!-- CTA -->
-      <div style="text-align:center;margin:0 0 24px;">
-        <p style="color:rgba(232,213,196,0.7);font-size:14px;margin:0 0 16px;">
-          Vous pouvez maintenant m'écrire votre question en cliquant sur le bouton ci-dessous :
-        </p>
-        <a href="${formUrl}" style="display:inline-block;background:linear-gradient(135deg,#d4a76a,#c4944f);color:#1a0a10;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:0.5px;">
-          ✦ Poser ma question
-        </a>
-      </div>
+      <!-- Next step -->
+      <p style="color:rgba(232,213,196,0.7);font-size:14px;margin:0 0 24px;text-align:center;">
+        Vous allez être redirigé(e) pour m'écrire votre question en détail.
+        Prenez le temps de bien formuler votre demande. 🌙
+      </p>
 
       <!-- Disclaimer -->
       <div style="background:rgba(212,167,106,0.08);border:1px solid rgba(212,167,106,0.15);border-radius:8px;padding:14px;margin:0 0 16px;">
