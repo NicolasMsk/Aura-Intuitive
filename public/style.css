@@ -1015,7 +1015,8 @@ a {
     }
 
     .consult-response-box textarea {
-        min-height: 100px;
+        min-height: 180px;
+        font-size: 16px;
     }
 
     /* Modal mobile */
@@ -1291,12 +1292,15 @@ a {
     border-radius: var(--radius-sm);
     color: var(--text);
     font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    min-height: 140px;
+    font-size: 1rem;
+    min-height: 200px;
+    max-height: none;
     resize: vertical;
     outline: none;
     transition: var(--transition);
     margin-bottom: 0.8rem;
+    line-height: 1.6;
+    -webkit-overflow-scrolling: touch;
 }
 
 .consult-response-box textarea:focus {
