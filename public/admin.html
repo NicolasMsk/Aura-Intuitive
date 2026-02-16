@@ -47,9 +47,6 @@
         <div class="admin-header">
             <h2>📋 Consultations</h2>
             <div style="display:flex;align-items:center;gap:0.8rem;">
-                <div class="auto-refresh-indicator">
-                    <span class="pulse-dot"></span> Auto-refresh
-                </div>
                 <button class="btn btn-glass" style="font-size:0.8rem;padding:0.5rem 1rem;" onclick="loadAll()">
                     🔄 Rafraîchir
                 </button>
@@ -122,7 +119,7 @@
         let consultations = [];
         let currentFilter = 'submitted';
         let previousPendingCount = 0;
-        let autoRefreshTimer = null;
+
 
         /* ── Notification sound ─────────────────────── */
 
@@ -175,7 +172,6 @@
         }
 
         async function logout() {
-            clearInterval(autoRefreshTimer);
             await fetch('/api/admin/logout', { method: 'POST' });
             document.getElementById('dashboardSection').style.display = 'none';
             document.getElementById('loginSection').style.display = 'block';
@@ -187,8 +183,6 @@
             document.getElementById('dashboardSection').style.display = 'block';
             document.getElementById('logoutBtn').style.display = 'inline-flex';
             loadAll();
-            // Auto-refresh every 30 seconds
-            autoRefreshTimer = setInterval(loadAll, 30000);
         }
 
         /* ── Load all data ──────────────────────────── */
@@ -217,7 +211,6 @@
             try {
                 const res = await fetch('/api/admin/consultations');
                 if (res.status === 401) {
-                    clearInterval(autoRefreshTimer);
                     document.getElementById('dashboardSection').style.display = 'none';
                     document.getElementById('loginSection').style.display = 'block';
                     document.getElementById('logoutBtn').style.display = 'none';
