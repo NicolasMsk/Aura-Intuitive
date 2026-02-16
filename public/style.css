@@ -519,6 +519,7 @@ a {
     text-align: left;
     width: 100%;
     margin-bottom: 1.5rem;
+    flex-grow: 1;
 }
 
 .card-features li {
