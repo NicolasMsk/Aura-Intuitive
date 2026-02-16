@@ -521,7 +521,7 @@ function buildConfirmationEmailOuiNon(name: string): string {
         <p style="color:#d4a76a;font-size:13px;text-transform:uppercase;letter-spacing:1px;margin:0 0 12px;">🔮 Réponse Oui / Non — 1€</p>
         <p style="color:#e8d5c4;font-size:14px;margin:0;line-height:1.7;">
           Je vais me connecter à mon ressenti pour vous apporter une réponse courte et intuitive.
-          Vous recevrez votre réponse par email <strong>sous 48h maximum</strong>.
+          Vous recevrez votre réponse par email <strong>sous 24h maximum</strong>.
         </p>
       </div>
 
@@ -570,7 +570,7 @@ function buildConfirmationEmailRessenti(name: string): string {
         <p style="color:#d4a76a;font-size:13px;text-transform:uppercase;letter-spacing:1px;margin:0 0 12px;">🌙 Consultation Ressenti — 10€</p>
         <p style="color:#e8d5c4;font-size:14px;margin:0;line-height:1.7;">
           Je vais prendre le temps de me connecter à votre énergie et de vous offrir une guidance détaillée et personnalisée.
-          Vous recevrez votre consultation complète par email <strong>sous 72h maximum</strong>.
+          Vous recevrez votre consultation complète par email <strong>sous 24h maximum</strong>.
         </p>
       </div>
 
