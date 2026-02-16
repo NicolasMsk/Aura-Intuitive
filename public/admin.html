@@ -282,6 +282,17 @@
                 const badgeClass = c.status === 'answered' ? 'badge-answered' : 'badge-submitted';
                 const badgeText = c.status === 'answered' ? '✅ Répondue' : '✦ En attente';
 
+                // Calculate age from birthdate
+                let ageDisplay = '';
+                if (c.birthdate) {
+                    const birth = new Date(c.birthdate);
+                    const today = new Date();
+                    let age = today.getFullYear() - birth.getFullYear();
+                    const m = today.getMonth() - birth.getMonth();
+                    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+                    ageDisplay = `<span class="consult-age">${age} ans</span>`;
+                }
+
                 let responseSection = '';
 
                 if (c.status === 'answered' && c.response) {
@@ -310,7 +321,7 @@
                         <span class="consult-badge ${badgeClass}">${badgeText}</span>
                     </div>
                     <div class="consult-meta">
-                        <strong>${escapeHtml(c.name || '—')}</strong> · ${escapeHtml(c.email || '—')}<br>
+                        <strong>${escapeHtml(c.name || '—')}</strong> ${ageDisplay} · ${escapeHtml(c.email || '—')}<br>
                         📅 ${dateStr}
                         ${c.birthdate ? ' · 🎂 ' + c.birthdate : ''}
                         ${c.person_concerned ? ' · 👤 ' + escapeHtml(c.person_concerned) : ''}
