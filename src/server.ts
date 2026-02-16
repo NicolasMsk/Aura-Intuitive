@@ -7,6 +7,8 @@ import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import cookieSession from 'cookie-session';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import Stripe from 'stripe';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
@@ -49,6 +51,37 @@ const EMAIL_FROM = process.env.EMAIL_FROM || 'Aura Intuitive <noreply@auraintuit
 
 const app = express();
 
+const isProduction = process.env.NODE_ENV === 'production' || !!process.env.RAILWAY_ENVIRONMENT;
+
+// Trust Railway proxy (needed for rate limiting & secure cookies)
+if (isProduction) {
+  app.set('trust proxy', 1);
+}
+
+// Security headers
+app.use(helmet({
+  contentSecurityPolicy: false, // Allow inline scripts in admin
+  crossOriginEmbedderPolicy: false,
+}));
+
+// Rate limiting — general (100 req / 15 min per IP)
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Trop de requêtes, veuillez réessayer plus tard.' },
+});
+
+// Rate limiting — strict for login (5 attempts / 15 min)
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Trop de tentatives de connexion. Réessayez dans 15 minutes.' },
+});
+
 // Stripe webhook needs raw body — must be BEFORE express.json()
 app.post(
   '/api/webhook',
@@ -59,6 +92,9 @@ app.post(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Apply general rate limiter to API routes
+app.use('/api/', generalLimiter);
+
 app.use(
   cookieSession({
     name: 'aura_admin',
@@ -66,6 +102,7 @@ app.use(
     maxAge: 24 * 60 * 60 * 1000, // 24h
     httpOnly: true,
     sameSite: 'lax',
+    secure: isProduction, // HTTPS only in production
   }),
 );
 
@@ -256,37 +293,12 @@ app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
 });
 
 /* ═══════════════════════════════════════════════════════
-   TEST (à supprimer en production)
-   ═══════════════════════════════════════════════════════ */
-
-app.get('/test', async (_req: Request, res: Response): Promise<void> => {
-  const fakeSessionId = 'test_' + Date.now();
-
-  const { error } = await supabase.from('consultations').insert({
-    stripe_session_id: fakeSessionId,
-    service: 'Consultation Ressenti',
-    amount: 10,
-    status: 'paid',
-    customer_email: 'test@test.com',
-  });
-
-  if (error) {
-    console.error('❌  Test insert error:', error);
-    res.status(500).json({ error: error.message });
-    return;
-  }
-
-  console.log(`🧪  Test consultation created: ${fakeSessionId}`);
-  res.redirect(`/form?session_id=${fakeSessionId}`);
-});
-
-/* ═══════════════════════════════════════════════════════
    ADMIN
    ═══════════════════════════════════════════════════════ */
 
 /* ── Admin login ────────────────────────────────────── */
 
-app.post('/api/admin/login', (req: Request, res: Response): void => {
+app.post('/api/admin/login', loginLimiter, (req: Request, res: Response): void => {
   const { password } = req.body as LoginBody;
 
   if (password === process.env.ADMIN_PASSWORD) {
