@@ -99,6 +99,19 @@
         </div>
     </section>
 
+    <!-- ═══ MODAL CONFIRMATION ═══ -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-box">
+            <div class="modal-icon">🗑️</div>
+            <h3 class="modal-title">Supprimer cette consultation ?</h3>
+            <p class="modal-text" id="modalText">Cette action est irréversible.</p>
+            <div class="modal-actions">
+                <button class="btn btn-glass modal-cancel" onclick="closeModal()">Annuler</button>
+                <button class="btn modal-confirm" id="modalConfirmBtn">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
     <footer class="footer">
         <div class="footer-brand">✦ Aura Intuitive ✦</div>
         <p>© 2026 Aura Intuitive — Panel administrateur</p>
@@ -326,23 +339,53 @@
             }
         }
 
+        /* ── Modal ───────────────────────────────────── */
+
+        function openModal(name) {
+            document.getElementById('modalText').textContent =
+                `La consultation de ${name} sera définitivement supprimée.`;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+        }
+
+        // Close modal on overlay click
+        document.getElementById('deleteModal').addEventListener('click', e => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeModal();
+        });
+
         /* ── Delete consultation ────────────────────── */
 
-        async function deleteConsultation(id, name) {
-            if (!confirm(`Supprimer la consultation de ${name} ?\n\nCette action est irréversible.`)) return;
-
-            try {
-                const res = await fetch(`/api/admin/consultations/${id}`, { method: 'DELETE' });
-                if (res.ok) {
-                    consultations = consultations.filter(c => c.id !== id);
-                    renderConsultations();
-                    loadStats();
-                } else {
-                    alert('Erreur lors de la suppression.');
+        function deleteConsultation(id, name) {
+            openModal(name);
+            const btn = document.getElementById('modalConfirmBtn');
+            // Replace onclick to bind current id
+            btn.onclick = async () => {
+                btn.textContent = 'Suppression...';
+                btn.disabled = true;
+                try {
+                    const res = await fetch(`/api/admin/consultations/${id}`, { method: 'DELETE' });
+                    if (res.ok) {
+                        consultations = consultations.filter(c => c.id !== id);
+                        renderConsultations();
+                        loadStats();
+                    } else {
+                        alert('Erreur lors de la suppression.');
+                    }
+                } catch {
+                    alert('Erreur de connexion.');
                 }
-            } catch {
-                alert('Erreur de connexion.');
-            }
+                btn.textContent = 'Supprimer';
+                btn.disabled = false;
+                closeModal();
+            };
         }
 
         /* ── Send response ──────────────────────────── */
