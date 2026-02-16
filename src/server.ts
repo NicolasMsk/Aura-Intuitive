@@ -160,6 +160,22 @@ async function webhookHandler(req: Request, res: Response): Promise<void> {
       console.error('❌  Supabase insert error:', error);
     } else {
       console.log(`✅  New consultation: ${service} (${amountTotal / 100}€) — session ${session.id}`);
+
+      // Send confirmation email (best effort)
+      const customerEmail = session.customer_details?.email;
+      if (customerEmail) {
+        try {
+          await resend.emails.send({
+            from: EMAIL_FROM,
+            to: customerEmail,
+            subject: `✨ Paiement confirmé — ${service} — Aura Intuitive`,
+            html: buildConfirmationEmail(service, amountTotal / 100, session.id),
+          });
+          console.log(`📧  Confirmation email sent to ${customerEmail}`);
+        } catch (err: any) {
+          console.error('⚠️  Confirmation email failed:', err.message);
+        }
+      }
     }
   }
 
@@ -453,8 +469,82 @@ app.get('/admin', (_req: Request, res: Response): void => {
 });
 
 /* ═══════════════════════════════════════════════════════
-   EMAIL TEMPLATE
+   EMAIL TEMPLATES
    ═══════════════════════════════════════════════════════ */
+
+/* ── Confirmation email (after payment) ─────────────── */
+
+function buildConfirmationEmail(service: string, amount: number, sessionId: string): string {
+  const formUrl = `${APP_URL}/form?session_id=${sessionId}`;
+
+  return `
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#1a0a10;font-family:'Segoe UI',Arial,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;background:linear-gradient(135deg,#2a1520,#1a0a10);border:1px solid rgba(123,45,63,0.4);border-radius:16px;overflow:hidden;">
+
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#7b2d3f,#5c1a2e);padding:32px 24px;text-align:center;">
+      <h1 style="color:#d4a76a;margin:0;font-size:24px;letter-spacing:2px;">✦ Aura Intuitive ✦</h1>
+      <p style="color:rgba(255,255,255,0.7);margin:8px 0 0;font-size:14px;">Confirmation de paiement</p>
+    </div>
+
+    <!-- Body -->
+    <div style="padding:32px 24px;">
+      <p style="color:#e8d5c4;font-size:16px;margin:0 0 8px;">Bonjour,</p>
+      <p style="color:rgba(232,213,196,0.8);font-size:14px;margin:0 0 24px;">
+        Merci pour votre confiance ✨ Votre paiement a bien été reçu.
+      </p>
+
+      <!-- Recap box -->
+      <div style="background:rgba(123,45,63,0.15);border:1px solid rgba(212,167,106,0.3);border-radius:12px;padding:20px;margin:0 0 24px;">
+        <p style="color:#d4a76a;font-size:13px;text-transform:uppercase;letter-spacing:1px;margin:0 0 12px;">📋 Récapitulatif</p>
+        <p style="color:#e8d5c4;font-size:14px;margin:0 0 6px;">
+          <strong>Service :</strong> ${service}
+        </p>
+        <p style="color:#e8d5c4;font-size:14px;margin:0;">
+          <strong>Montant :</strong> ${amount}€
+        </p>
+      </div>
+
+      <!-- CTA -->
+      <div style="text-align:center;margin:0 0 24px;">
+        <p style="color:rgba(232,213,196,0.7);font-size:14px;margin:0 0 16px;">
+          Vous pouvez maintenant m'écrire votre question en cliquant sur le bouton ci-dessous :
+        </p>
+        <a href="${formUrl}" style="display:inline-block;background:linear-gradient(135deg,#d4a76a,#c4944f);color:#1a0a10;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:700;font-size:14px;letter-spacing:0.5px;">
+          ✦ Poser ma question
+        </a>
+      </div>
+
+      <!-- Disclaimer -->
+      <div style="background:rgba(212,167,106,0.08);border:1px solid rgba(212,167,106,0.15);border-radius:8px;padding:14px;margin:0 0 16px;">
+        <p style="color:rgba(232,213,196,0.5);font-size:12px;margin:0;line-height:1.6;">
+          ⚠️ <strong>Important</strong> — En réservant une consultation, vous certifiez être majeur(e) (18 ans ou plus).
+          La voyance ne se substitue en aucun cas à un avis médical, psychologique ou juridique.
+          Les questions relatives à la santé, la grossesse, la médecine ou tout diagnostic ne seront pas traitées.
+        </p>
+      </div>
+
+      <p style="color:rgba(232,213,196,0.5);font-size:13px;margin:0;text-align:center;">
+        Avec lumière et bienveillance,<br>
+        <strong style="color:#d4a76a;">Sarah — Aura Intuitive</strong>
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div style="border-top:1px solid rgba(123,45,63,0.3);padding:16px 24px;text-align:center;">
+      <p style="color:rgba(232,213,196,0.3);font-size:11px;margin:0;">
+        © 2026 Aura Intuitive — Cet email a été envoyé automatiquement, merci de ne pas y répondre.
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+/* ── Response email (admin reply) ───────────────────── */
 
 function buildResponseEmail(consultation: Consultation, response: string): string {
   const responseHtml = response.replace(/\n/g, '<br>');
