@@ -145,7 +145,7 @@
 
     <!-- Navigation -->
     <nav class="navbar" id="navbar" aria-label="Navigation principale">
-        <a href="#hero" class="nav-brand">✦ Aura Intuitive</a>
+        <a href="#hero" class="nav-brand"><img src="/favicon_io/favicon-32x32.png" alt="Aura Intuitive" class="nav-logo" width="28" height="28"> Aura Intuitive</a>
         <button class="menu-toggle" id="menuToggle" aria-label="Menu">
             <span></span><span></span><span></span>
         </button>
@@ -160,6 +160,7 @@
     <main>
     <section class="hero" id="hero">
         <div class="hero-badge">🔮 Guidance Spirituelle</div>
+        <img src="/favicon_io/android-chrome-192x192.png" alt="Logo Aura Intuitive — Voyance en ligne" class="hero-logo" width="100" height="100">
         <h1><span class="gradient-text">Aura Intuitive</span><br><span class="h1-sub">Voyance en ligne & Guidance Spirituelle</span></h1>
         <p class="hero-subtitle">
             Laissez la lumière de l'intuition éclairer votre chemin.
@@ -357,5 +358,10 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      }
+    </script>
 </body>
 </html>
