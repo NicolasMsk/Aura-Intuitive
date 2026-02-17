@@ -249,6 +249,19 @@ a {
     -webkit-text-fill-color: transparent;
 }
 
+.h1-sub {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(0.95rem, 2vw, 1.3rem);
+    font-weight: 400;
+    color: var(--text-muted);
+    -webkit-text-fill-color: var(--text-muted);
+    background: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 0.6rem;
+}
+
 .hero-subtitle {
     max-width: 560px;
     font-size: 1.05rem;
@@ -857,6 +870,173 @@ a {
 }
 
 /* ═══════════════════════════════════════════════════════
+   TIKTOK SECTION
+   ═══════════════════════════════════════════════════════ */
+
+.tiktok-section {
+    padding-bottom: 2rem;
+}
+
+.tiktok-wrapper {
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.tiktok-card {
+    background: linear-gradient(135deg, rgba(42, 21, 32, 0.7), rgba(14, 6, 10, 0.8));
+    border: 1px solid rgba(212, 167, 106, 0.25);
+    border-radius: var(--radius);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.tiktok-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.tiktok-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(212, 167, 106, 0.4);
+    margin-bottom: 1.2rem;
+    box-shadow: 0 4px 20px rgba(123, 45, 63, 0.3);
+}
+
+.tiktok-card h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+
+.tiktok-card p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.tiktok-card .btn {
+    display: inline-flex;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SEO CONTENT SECTION
+   ═══════════════════════════════════════════════════════ */
+
+.seo-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.seo-content p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+    text-align: center;
+}
+
+.seo-content p:last-child {
+    margin-bottom: 0;
+}
+
+.seo-content strong {
+    color: var(--text);
+}
+
+/* ═══════════════════════════════════════════════════════
+   FAQ SECTION
+   ═══════════════════════════════════════════════════════ */
+
+.faq-section {
+    padding-bottom: 3rem;
+}
+
+.faq-list {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.faq-item {
+    background: linear-gradient(135deg, rgba(42, 21, 32, 0.5), rgba(14, 6, 10, 0.6));
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.faq-item[open] {
+    border-color: rgba(212, 167, 106, 0.3);
+}
+
+.faq-item summary {
+    padding: 1.1rem 1.4rem;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: var(--transition);
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::after {
+    content: '+';
+    font-size: 1.3rem;
+    color: var(--gold);
+    font-weight: 300;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.faq-item[open] summary::after {
+    content: '−';
+}
+
+.faq-item summary:hover {
+    color: var(--gold);
+}
+
+.faq-item p {
+    padding: 0 1.4rem 1.2rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ── card-note (pas de datation) ──── */
+
+.card-note {
+    display: inline;
+    color: var(--text-muted);
+    font-size: 0.85em;
+    font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════
    REVEAL ANIMATIONS
    ═══════════════════════════════════════════════════════ */
 
@@ -975,6 +1155,37 @@ a {
 
     .donation-btn {
         padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+
+    /* TikTok mobile */
+    .tiktok-card {
+        padding: 2rem 1.2rem;
+    }
+
+    .tiktok-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .tiktok-img {
+        width: 110px;
+        height: 110px;
+    }
+
+    /* SEO content mobile */
+    .seo-content p {
+        font-size: 0.88rem;
+        text-align: left;
+    }
+
+    /* FAQ mobile */
+    .faq-item summary {
+        padding: 1rem 1.1rem;
+        font-size: 0.88rem;
+    }
+
+    .faq-item p {
+        padding: 0 1.1rem 1rem;
         font-size: 0.85rem;
     }
 

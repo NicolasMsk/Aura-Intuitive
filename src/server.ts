@@ -527,7 +527,7 @@ function buildConfirmationEmailOuiNon(name: string): string {
 
       <p style="color:rgba(232,213,196,0.5);font-size:13px;margin:0;text-align:center;">
         Avec lumière et bienveillance,<br>
-        <strong style="color:#d4a76a;">Sarah — Aura Intuitive</strong>
+        <strong style="color:#d4a76a;">Laura — Aura Intuitive</strong>
       </p>
     </div>
 
@@ -585,7 +585,7 @@ function buildConfirmationEmailRessenti(name: string): string {
 
       <p style="color:rgba(232,213,196,0.5);font-size:13px;margin:0;text-align:center;">
         Avec lumière et bienveillance,<br>
-        <strong style="color:#d4a76a;">Sarah — Aura Intuitive</strong>
+        <strong style="color:#d4a76a;">Laura — Aura Intuitive</strong>
       </p>
     </div>
 
@@ -634,7 +634,7 @@ function buildResponseEmail(consultation: Consultation, response: string): strin
       <p style="color:rgba(232,213,196,0.5);font-size:13px;margin:0;text-align:center;">
         Merci de votre confiance. ✨<br>
         Avec lumière et bienveillance,<br>
-        <strong style="color:#d4a76a;">Sarah — Aura Intuitive</strong>
+        <strong style="color:#d4a76a;">Laura — Aura Intuitive</strong>
       </p>
     </div>
 
