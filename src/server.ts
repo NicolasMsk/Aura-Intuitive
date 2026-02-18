@@ -273,6 +273,19 @@ app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
         console.error('⚠️  Confirmation email failed:', err.message);
       }
 
+      // Alerte admin — nouvelle question
+      try {
+        await resend.emails.send({
+          from: EMAIL_FROM,
+          to: 'lizarragasanchezsarah@outlook.fr',
+          subject: `🔔 Nouvelle question (${service} — ${amountTotal / 100}€) — ${name}`,
+          html: buildAdminAlertEmail(name, email, service, amountTotal / 100, message),
+        });
+        console.log(`🔔  Admin alert sent for ${service}`);
+      } catch (err: any) {
+        console.error('⚠️  Admin alert email failed:', err.message);
+      }
+
       res.json({ success: true });
       return;
     } catch {
@@ -323,6 +336,19 @@ app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
     console.log(`📧  Confirmation email (${serviceName}) sent to ${email}`);
   } catch (err: any) {
     console.error('⚠️  Confirmation email failed:', err.message);
+  }
+
+  // Alerte admin — nouvelle question
+  try {
+    await resend.emails.send({
+      from: EMAIL_FROM,
+      to: 'lizarragasanchezsarah@outlook.fr',
+      subject: `🔔 Nouvelle question (${serviceName} — ${consultation.amount}€) — ${name}`,
+      html: buildAdminAlertEmail(name, email, serviceName, consultation.amount, message),
+    });
+    console.log(`🔔  Admin alert sent for ${serviceName}`);
+  } catch (err: any) {
+    console.error('⚠️  Admin alert email failed:', err.message);
   }
 
   console.log(`📩  Question submitted for session ${session_id}`);
@@ -492,6 +518,67 @@ app.get('/admin', (_req: Request, res: Response): void => {
 /* ═══════════════════════════════════════════════════════
    EMAIL TEMPLATES
    ═══════════════════════════════════════════════════════ */
+
+/* ── Admin alert email — Nouvelle question ──────────── */
+
+function buildAdminAlertEmail(name: string, email: string, service: string, amount: number, message: string): string {
+  const isRessenti = service === 'Consultation Ressenti';
+  const emoji = isRessenti ? '🌟' : '✨';
+  const color = isRessenti ? '#d4a76a' : '#c0c0c0';
+  return `
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#1a0a10;font-family:'Segoe UI',Arial,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;background:linear-gradient(135deg,#2a1520,#1a0a10);border:1px solid rgba(123,45,63,0.4);border-radius:16px;overflow:hidden;">
+
+    <div style="background:linear-gradient(135deg,#7b2d3f,#5a1d2e);padding:30px;text-align:center;">
+      <h1 style="color:#fff;margin:0;font-size:22px;">🔔 Nouvelle Question Reçue</h1>
+    </div>
+
+    <div style="padding:30px;">
+      <div style="background:rgba(123,45,63,0.2);border:1px solid rgba(212,167,106,0.3);border-radius:12px;padding:20px;margin-bottom:20px;">
+        <p style="color:${color};font-size:18px;font-weight:bold;margin:0 0 5px;">
+          ${emoji} ${service} — ${amount}€
+        </p>
+      </div>
+
+      <table style="width:100%;border-collapse:collapse;">
+        <tr>
+          <td style="color:#999;padding:8px 0;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.05);width:120px;">Prénom</td>
+          <td style="color:#e0d6cc;padding:8px 0;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.05);font-weight:bold;">${name}</td>
+        </tr>
+        <tr>
+          <td style="color:#999;padding:8px 0;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.05);">Email</td>
+          <td style="color:#e0d6cc;padding:8px 0;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.05);">
+            <a href="mailto:${email}" style="color:#d4a76a;text-decoration:none;">${email}</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="color:#999;padding:8px 0;font-size:14px;">Montant</td>
+          <td style="color:#e0d6cc;padding:8px 0;font-size:14px;font-weight:bold;">${amount}€</td>
+        </tr>
+      </table>
+
+      <div style="margin-top:20px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px;">
+        <p style="color:#999;font-size:12px;margin:0 0 8px;text-transform:uppercase;letter-spacing:1px;">Message du client</p>
+        <p style="color:#e0d6cc;font-size:14px;line-height:1.6;margin:0;white-space:pre-wrap;">${message}</p>
+      </div>
+
+      <div style="text-align:center;margin-top:25px;">
+        <a href="https://www.auraintuitive.fr/admin" style="display:inline-block;background:linear-gradient(135deg,#d4a76a,#b8894f);color:#1a0a10;padding:12px 30px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:14px;">
+          Répondre dans l'admin ✦
+        </a>
+      </div>
+    </div>
+
+    <div style="padding:20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);">
+      <p style="color:#666;font-size:11px;margin:0;">Aura Intuitive — Notification automatique</p>
+    </div>
+  </div>
+</body>
+</html>`;
+}
 
 /* ── Confirmation email — Réponse Oui / Non ─────────── */
 
