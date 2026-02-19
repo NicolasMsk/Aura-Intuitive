@@ -289,10 +289,32 @@
                 let responseSection = '';
 
                 if (c.status === 'answered' && c.response) {
+                    // Email status badge
+                    let emailStatusBadge = '';
+                    if (c.email_status) {
+                        const statusColors = {
+                            'sent': '#d4a76a', 'delivered': '#7ddf90', 'opened': '#7ddf90',
+                            'clicked': '#7ddf90', 'bounced': '#ff6b6b', 'complained': '#ff6b6b',
+                            'failed': '#ff6b6b', 'delivery_delayed': '#d4a76a'
+                        };
+                        const statusLabels = {
+                            'sent': '📤 Envoyé', 'delivered': '✅ Délivré', 'opened': '👁️ Ouvert',
+                            'clicked': '🖱️ Cliqué', 'bounced': '❌ Rejeté', 'complained': '🚫 Spam',
+                            'failed': '❌ Échec', 'delivery_delayed': '⏳ En attente'
+                        };
+                        const color = statusColors[c.email_status] || '#999';
+                        const label = statusLabels[c.email_status] || c.email_status;
+                        emailStatusBadge = `<span class="email-status-badge" style="color:${color};border-color:${color}">${label}</span>`;
+                    }
+
                     responseSection = `
                         <div class="consult-response-box">
                             <label>📝 Votre réponse envoyée :</label>
                             <div class="consult-prev-response">${escapeHtml(c.response)}</div>
+                            <div class="email-tracking">
+                                ${emailStatusBadge}
+                                <button class="btn-tiny" onclick="checkEmailStatus('${c.id}', this)" title="Vérifier le statut de l'email">🔍 Vérifier email</button>
+                            </div>
                         </div>`;
                 } else {
                     responseSection = `
@@ -393,6 +415,54 @@
         }
 
         /* ── Send response ──────────────────────────── */
+
+        async function checkEmailStatus(id, btn) {
+            const originalText = btn.textContent;
+            btn.textContent = '⏳ Vérification...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`/api/admin/email-status/${id}`);
+                const data = await res.json();
+
+                if (!res.ok) {
+                    alert('Erreur : ' + (data.error || 'Impossible de vérifier.'));
+                    return;
+                }
+
+                // Update the badge in the card
+                const trackingDiv = btn.parentElement;
+                let badge = trackingDiv.querySelector('.email-status-badge');
+                const statusColors = {
+                    'sent': '#d4a76a', 'delivered': '#7ddf90', 'opened': '#7ddf90',
+                    'clicked': '#7ddf90', 'bounced': '#ff6b6b', 'complained': '#ff6b6b',
+                    'failed': '#ff6b6b', 'delivery_delayed': '#d4a76a', 'error': '#ff6b6b', 'unknown': '#999'
+                };
+                const color = statusColors[data.status] || '#999';
+
+                if (!badge) {
+                    badge = document.createElement('span');
+                    badge.className = 'email-status-badge';
+                    trackingDiv.insertBefore(badge, btn);
+                }
+                badge.textContent = data.label;
+                badge.style.color = color;
+                badge.style.borderColor = color;
+
+                // Update local data
+                const c = consultations.find(x => x.id === id);
+                if (c) c.email_status = data.status;
+
+                // Show detail
+                alert(data.label + '\n\n' + data.detail + (data.sentAt ? '\n\nEnvoyé le : ' + new Date(data.sentAt).toLocaleString('fr-FR') : ''));
+
+            } catch {
+                alert('Erreur de connexion au serveur.');
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
 
         async function sendResponse(id, btn) {
             const textarea = document.getElementById('resp-' + id);

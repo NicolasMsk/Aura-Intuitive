@@ -467,26 +467,118 @@ app.post('/api/admin/respond', requireAdmin, async (req: Request, res: Response)
 
   // Try to send email (best effort — don't block if it fails)
   let emailSent = false;
+  let resendEmailId: string | null = null;
   try {
-    await resend.emails.send({
+    const emailResult = await resend.emails.send({
       from: EMAIL_FROM,
       to: consultation.email,
       subject: `🔮 Votre guidance Aura Intuitive — ${consultation.service}`,
       html: buildResponseEmail(consultation as Consultation, response),
     });
     emailSent = true;
-    console.log(`✨  Response sent + email delivered for consultation ${id}`);
+    resendEmailId = emailResult.data?.id || null;
+    console.log(`✨  Response sent + email delivered for consultation ${id} (Resend ID: ${resendEmailId})`);
+
+    // Save Resend email ID for tracking
+    if (resendEmailId) {
+      await supabase
+        .from('consultations')
+        .update({ resend_email_id: resendEmailId, email_status: 'sent' })
+        .eq('id', id);
+    }
   } catch (err: any) {
     console.error('⚠️  Email send failed (response saved anyway):', err.message);
+    await supabase
+      .from('consultations')
+      .update({ email_status: 'failed' })
+      .eq('id', id);
   }
 
   res.json({
     success: true,
     emailSent,
+    resendEmailId,
     message: emailSent
       ? 'Réponse enregistrée et email envoyé !'
       : 'Réponse enregistrée ✅ mais l\'email n\'a pas pu être envoyé. Vous pouvez copier la réponse et l\'envoyer manuellement.',
   });
+});
+
+/* ── Check email delivery status ────────────────────── */
+
+app.get('/api/admin/email-status/:id', requireAdmin, async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+
+  // Get the consultation to find the Resend email ID
+  const { data: consultation, error } = await supabase
+    .from('consultations')
+    .select('resend_email_id, email_status, email')
+    .eq('id', id)
+    .single();
+
+  if (error || !consultation) {
+    res.status(404).json({ error: 'Consultation introuvable.' });
+    return;
+  }
+
+  if (!consultation.resend_email_id) {
+    res.json({
+      status: consultation.email_status || 'unknown',
+      label: consultation.email_status === 'failed' ? '❌ Échec d\'envoi' : '⚠️ Pas de suivi disponible',
+      detail: 'Aucun ID de suivi Resend enregistré pour cet email.',
+    });
+    return;
+  }
+
+  // Query Resend API for the actual delivery status
+  try {
+    const emailData = await resend.emails.get(consultation.resend_email_id);
+
+    if (!emailData.data) {
+      res.json({
+        status: 'unknown',
+        label: '⚠️ Impossible de vérifier',
+        detail: 'L\'API Resend n\'a pas retourné de données.',
+      });
+      return;
+    }
+
+    const lastEvent = emailData.data.last_event || 'sent';
+
+    // Map Resend events to French labels
+    const statusMap: Record<string, { label: string; detail: string }> = {
+      'sent':        { label: '📤 Envoyé', detail: 'L\'email a été envoyé par nos serveurs.' },
+      'delivered':   { label: '✅ Délivré', detail: `L\'email a bien été reçu par la boîte mail ${consultation.email}.` },
+      'opened':      { label: '👁️ Ouvert', detail: `Le client a ouvert l\'email ! (${consultation.email})` },
+      'clicked':     { label: '🖱️ Cliqué', detail: 'Le client a cliqué sur un lien dans l\'email.' },
+      'bounced':     { label: '❌ Rejeté (Bounce)', detail: `L\'adresse ${consultation.email} n\'existe pas ou a rejeté l\'email. Vérifiez l\'adresse et renvoyez manuellement.` },
+      'complained':  { label: '🚫 Signalé spam', detail: 'Le client a marqué l\'email comme spam.' },
+      'delivery_delayed': { label: '⏳ En attente', detail: 'La délivrance est retardée. Réessayez plus tard.' },
+    };
+
+    const statusInfo = statusMap[lastEvent] || { label: `📧 ${lastEvent}`, detail: `Statut Resend: ${lastEvent}` };
+
+    // Update status in DB
+    await supabase
+      .from('consultations')
+      .update({ email_status: lastEvent })
+      .eq('id', id);
+
+    res.json({
+      status: lastEvent,
+      label: statusInfo.label,
+      detail: statusInfo.detail,
+      resendId: consultation.resend_email_id,
+      sentAt: emailData.data.created_at || null,
+    });
+  } catch (err: any) {
+    console.error('⚠️  Resend status check failed:', err.message);
+    res.json({
+      status: 'error',
+      label: '⚠️ Erreur de vérification',
+      detail: 'Impossible de contacter l\'API Resend. Réessayez dans quelques instants.',
+    });
+  }
 });
 
 /* ── Delete consultation ─────────────────────────────── */

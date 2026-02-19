@@ -1582,6 +1582,26 @@ a {
     white-space: pre-wrap;
 }
 
+.email-tracking {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.email-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.7rem;
+    border: 1px solid;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    background: rgba(0, 0, 0, 0.2);
+}
+
 .consult-actions {
     display: flex;
     gap: 0.8rem;
