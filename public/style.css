@@ -1824,3 +1824,49 @@ a {
     background: rgba(238, 85, 85, 0.35);
     color: #fff;
 }
+
+/* ── Email status modal ─────────────────────────── */
+
+.email-modal-status {
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.4rem 1.2rem;
+    border: 2px solid;
+    border-radius: 30px;
+    margin-bottom: 1rem;
+    background: rgba(0, 0, 0, 0.25);
+    letter-spacing: 0.03em;
+}
+
+.email-modal-meta {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1rem;
+    margin-bottom: 1.2rem;
+    text-align: left;
+}
+
+.email-modal-meta:empty {
+    display: none;
+}
+
+.email-modal-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.email-modal-meta-row:last-child {
+    border-bottom: none;
+}
+
+.email-modal-meta-label {
+    color: #999;
+    font-size: 0.75rem;
+}

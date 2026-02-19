@@ -109,6 +109,20 @@
         </div>
     </div>
 
+    <!-- ═══ MODAL EMAIL STATUS ═══ -->
+    <div class="modal-overlay" id="emailModal">
+        <div class="modal-box">
+            <div class="modal-icon" id="emailModalIcon">📧</div>
+            <h3 class="modal-title" id="emailModalTitle">Statut de l'email</h3>
+            <div id="emailModalStatus" class="email-modal-status"></div>
+            <p class="modal-text" id="emailModalDetail"></p>
+            <div id="emailModalMeta" class="email-modal-meta"></div>
+            <div class="modal-actions">
+                <button class="btn btn-gold" style="width:100%;" onclick="closeEmailModal()">Compris ✦</button>
+            </div>
+        </div>
+    </div>
+
     <footer class="footer">
         <div class="footer-brand">✦ Aura Intuitive ✦</div>
         <p>© 2026 Aura Intuitive — Panel administrateur</p>
@@ -384,7 +398,10 @@
 
         // Close on Escape
         document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Escape') {
+                closeModal();
+                closeEmailModal();
+            }
         });
 
         /* ── Delete consultation ────────────────────── */
@@ -416,6 +433,27 @@
 
         /* ── Send response ──────────────────────────── */
 
+        function openEmailModal(icon, title, statusLabel, statusColor, detail, meta) {
+            document.getElementById('emailModalIcon').textContent = icon;
+            document.getElementById('emailModalTitle').textContent = title;
+            const statusEl = document.getElementById('emailModalStatus');
+            statusEl.textContent = statusLabel;
+            statusEl.style.color = statusColor;
+            statusEl.style.borderColor = statusColor;
+            document.getElementById('emailModalDetail').textContent = detail;
+            const metaEl = document.getElementById('emailModalMeta');
+            metaEl.innerHTML = meta || '';
+            document.getElementById('emailModal').classList.add('active');
+        }
+
+        function closeEmailModal() {
+            document.getElementById('emailModal').classList.remove('active');
+        }
+
+        document.getElementById('emailModal').addEventListener('click', e => {
+            if (e.target === e.currentTarget) closeEmailModal();
+        });
+
         async function checkEmailStatus(id, btn) {
             const originalText = btn.textContent;
             btn.textContent = '⏳ Vérification...';
@@ -426,19 +464,26 @@
                 const data = await res.json();
 
                 if (!res.ok) {
-                    alert('Erreur : ' + (data.error || 'Impossible de vérifier.'));
+                    openEmailModal('⚠️', 'Erreur', 'Impossible de vérifier', '#ff6b6b', data.error || 'Erreur inconnue.', '');
                     return;
                 }
 
                 // Update the badge in the card
                 const trackingDiv = btn.parentElement;
                 let badge = trackingDiv.querySelector('.email-status-badge');
-                const statusColors = {
-                    'sent': '#d4a76a', 'delivered': '#7ddf90', 'opened': '#7ddf90',
-                    'clicked': '#7ddf90', 'bounced': '#ff6b6b', 'complained': '#ff6b6b',
-                    'failed': '#ff6b6b', 'delivery_delayed': '#d4a76a', 'error': '#ff6b6b', 'unknown': '#999'
+                const statusConfig = {
+                    'sent':             { color: '#d4a76a', icon: '📤', modalIcon: '📤' },
+                    'delivered':        { color: '#7ddf90', icon: '✅',   modalIcon: '✉️' },
+                    'opened':           { color: '#7ddf90', icon: '👁️', modalIcon: '👀' },
+                    'clicked':          { color: '#7ddf90', icon: '🖱️', modalIcon: '🖱️' },
+                    'bounced':          { color: '#ff6b6b', icon: '❌',   modalIcon: '❌' },
+                    'complained':       { color: '#ff6b6b', icon: '🚫',  modalIcon: '🚫' },
+                    'failed':           { color: '#ff6b6b', icon: '❌',   modalIcon: '❌' },
+                    'delivery_delayed': { color: '#d4a76a', icon: '⏳',   modalIcon: '⏳' },
+                    'error':            { color: '#ff6b6b', icon: '⚠️', modalIcon: '⚠️' },
+                    'unknown':          { color: '#999',    icon: '❓',  modalIcon: '❓' },
                 };
-                const color = statusColors[data.status] || '#999';
+                const cfg = statusConfig[data.status] || statusConfig['unknown'];
 
                 if (!badge) {
                     badge = document.createElement('span');
@@ -446,18 +491,26 @@
                     trackingDiv.insertBefore(badge, btn);
                 }
                 badge.textContent = data.label;
-                badge.style.color = color;
-                badge.style.borderColor = color;
+                badge.style.color = cfg.color;
+                badge.style.borderColor = cfg.color;
 
                 // Update local data
                 const c = consultations.find(x => x.id === id);
                 if (c) c.email_status = data.status;
 
-                // Show detail
-                alert(data.label + '\n\n' + data.detail + (data.sentAt ? '\n\nEnvoyé le : ' + new Date(data.sentAt).toLocaleString('fr-FR') : ''));
+                // Build meta info
+                let metaHtml = '';
+                if (data.sentAt) {
+                    metaHtml += `<div class="email-modal-meta-row"><span class="email-modal-meta-label">📅 Envoyé le</span><span>${new Date(data.sentAt).toLocaleString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span></div>`;
+                }
+                if (data.resendId) {
+                    metaHtml += `<div class="email-modal-meta-row"><span class="email-modal-meta-label">🆔 ID Resend</span><span style="font-size:0.72rem;opacity:0.6;word-break:break-all;">${data.resendId}</span></div>`;
+                }
+
+                openEmailModal(cfg.modalIcon, 'Suivi de l\'email', data.label, cfg.color, data.detail, metaHtml);
 
             } catch {
-                alert('Erreur de connexion au serveur.');
+                openEmailModal('⚠️', 'Erreur de connexion', '❌ Échec', '#ff6b6b', 'Impossible de contacter le serveur. Vérifiez votre connexion internet.', '');
             } finally {
                 btn.textContent = originalText;
                 btn.disabled = false;
