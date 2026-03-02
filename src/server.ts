@@ -410,6 +410,28 @@ app.get('/api/admin/stats', requireAdmin, async (_req: Request, res: Response): 
   res.json({ total: all.length, pending, answered, revenue });
 });
 
+/* ── Dashboard Analytics ────────────────────────────── */
+
+app.get('/api/admin/dashboard', requireAdmin, async (_req: Request, res: Response): Promise<void> => {
+  const { data, error } = await supabase
+    .from('consultations')
+    .select('*')
+    .order('created_at', { ascending: true });
+
+  if (error) {
+    res.status(500).json({ error: 'Erreur base de données.' });
+    return;
+  }
+
+  res.json(data ?? []);
+});
+
+/* ── Serve dashboard page ───────────────────────────── */
+
+app.get('/dashboard', (_req: Request, res: Response): void => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'dashboard.html'));
+});
+
 /* ── List consultations ─────────────────────────────── */
 
 app.get('/api/admin/consultations', requireAdmin, async (_req: Request, res: Response): Promise<void> => {
@@ -532,18 +554,23 @@ app.get('/api/admin/email-status/:id', requireAdmin, async (req: Request, res: R
 
   // Query Resend API for the actual delivery status
   try {
-    const emailData = await resend.emails.get(consultation.resend_email_id);
+    // Use direct HTTP call to Resend API for reliability
+    const resendResponse = await fetch(`https://api.resend.com/emails/${consultation.resend_email_id}`, {
+      headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY!}` },
+    });
+    const emailInfo = await resendResponse.json() as Record<string, any>;
+    console.log('📧  Resend status response:', JSON.stringify(emailInfo));
 
-    if (!emailData.data) {
+    if (!resendResponse.ok || !emailInfo || !emailInfo.id) {
       res.json({
         status: 'unknown',
         label: '⚠️ Impossible de vérifier',
-        detail: 'L\'API Resend n\'a pas retourné de données.',
+        detail: `L'API Resend a retourné une erreur: ${emailInfo?.message || emailInfo?.error || 'inconnue'}`,
       });
       return;
     }
 
-    const lastEvent = emailData.data.last_event || 'sent';
+    const lastEvent = emailInfo.last_event || 'sent';
 
     // Map Resend events to French labels
     const statusMap: Record<string, { label: string; detail: string }> = {
@@ -569,7 +596,7 @@ app.get('/api/admin/email-status/:id', requireAdmin, async (req: Request, res: R
       label: statusInfo.label,
       detail: statusInfo.detail,
       resendId: consultation.resend_email_id,
-      sentAt: emailData.data.created_at || null,
+      sentAt: emailInfo.created_at || null,
     });
   } catch (err: any) {
     console.error('⚠️  Resend status check failed:', err.message);
