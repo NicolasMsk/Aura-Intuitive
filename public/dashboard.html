@@ -641,9 +641,12 @@
             <p class="dash-hero-summary" id="heroSummary">Chargement…</p>
             <div class="dash-toolbar">
                 <div class="dash-period-selector">
-                    <button class="dash-period-btn" data-period="7" onclick="setPeriod(7, this)">7 jours</button>
-                    <button class="dash-period-btn active" data-period="30" onclick="setPeriod(30, this)">30 jours</button>
+                    <button class="dash-period-btn" data-period="7" onclick="setPeriod(7, this)">7j</button>
+                    <button class="dash-period-btn active" data-period="30" onclick="setPeriod(30, this)">30j</button>
                     <button class="dash-period-btn" data-period="90" onclick="setPeriod(90, this)">3 mois</button>
+                    <button class="dash-period-btn" data-period="month" onclick="setPeriod('month', this)">Ce mois</button>
+                    <button class="dash-period-btn" data-period="lastmonth" onclick="setPeriod('lastmonth', this)">Mois préc.</button>
+                    <button class="dash-period-btn" data-period="year" onclick="setPeriod('year', this)">Cette année</button>
                     <button class="dash-period-btn" data-period="all" onclick="setPeriod('all', this)">Tout</button>
                 </div>
                 <button class="dash-refresh-btn" onclick="refreshData()" title="Actualiser les données">🔄 Actualiser</button>
@@ -852,6 +855,20 @@
 
         function getFilteredData() {
             if (currentPeriod === 'all') return allData;
+            const now = new Date();
+            if (currentPeriod === 'month') {
+                const mStart = new Date(now.getFullYear(), now.getMonth(), 1);
+                return allData.filter(c => new Date(c.created_at) >= mStart);
+            }
+            if (currentPeriod === 'lastmonth') {
+                const lmStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                const lmEnd = new Date(now.getFullYear(), now.getMonth(), 1);
+                return allData.filter(c => { const d = new Date(c.created_at); return d >= lmStart && d < lmEnd; });
+            }
+            if (currentPeriod === 'year') {
+                const yStart = new Date(now.getFullYear(), 0, 1);
+                return allData.filter(c => new Date(c.created_at) >= yStart);
+            }
             const cutoff = new Date();
             cutoff.setDate(cutoff.getDate() - currentPeriod);
             return allData.filter(c => new Date(c.created_at) >= cutoff);
@@ -860,6 +877,21 @@
         function getPrevData() {
             if (currentPeriod === 'all') return [];
             const now = new Date();
+            if (currentPeriod === 'month') {
+                const lmStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                const lmEnd = new Date(now.getFullYear(), now.getMonth(), 1);
+                return allData.filter(c => { const d = new Date(c.created_at); return d >= lmStart && d < lmEnd; });
+            }
+            if (currentPeriod === 'lastmonth') {
+                const lm2Start = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+                const lm2End = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                return allData.filter(c => { const d = new Date(c.created_at); return d >= lm2Start && d < lm2End; });
+            }
+            if (currentPeriod === 'year') {
+                const lyStart = new Date(now.getFullYear() - 1, 0, 1);
+                const lyEnd = new Date(now.getFullYear(), 0, 1);
+                return allData.filter(c => { const d = new Date(c.created_at); return d >= lyStart && d < lyEnd; });
+            }
             const cur = new Date(); cur.setDate(now.getDate() - currentPeriod);
             const prev = new Date(); prev.setDate(now.getDate() - currentPeriod * 2);
             return allData.filter(c => { const d = new Date(c.created_at); return d >= prev && d < cur; });
@@ -921,9 +953,16 @@
         function renderHeroSummary(data, active) {
             const rev = active.reduce((s, c) => s + parseFloat(c.amount || 0), 0);
             const pending = data.filter(c => c.status === 'submitted').length;
+            const now = new Date();
+            const monthName = now.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+            const prevMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
             const label = currentPeriod === 'all' ? 'au total' :
                           currentPeriod === 7 ? 'ces 7 derniers jours' :
-                          currentPeriod === 90 ? 'ces 3 derniers mois' : 'ces 30 derniers jours';
+                          currentPeriod === 90 ? 'ces 3 derniers mois' :
+                          currentPeriod === 'month' ? `en ${monthName}` :
+                          currentPeriod === 'lastmonth' ? `en ${prevMonth}` :
+                          currentPeriod === 'year' ? `en ${now.getFullYear()}` :
+                          'ces 30 derniers jours';
 
             let summary = `Vous avez réalisé <strong>${fmt(rev)}</strong> de chiffre d'affaires ${label} avec <strong>${active.length} consultation${active.length > 1 ? 's' : ''}</strong>.`;
             if (pending > 0) summary += ` 📬 <strong>${pending}</strong> question${pending > 1 ? 's' : ''} en attente de réponse.`;

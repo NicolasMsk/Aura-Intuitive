@@ -394,7 +394,7 @@ function requireAdmin(req: Request, res: Response, next: NextFunction): void {
 app.get('/api/admin/stats', requireAdmin, async (_req: Request, res: Response): Promise<void> => {
   const { data, error } = await supabase
     .from('consultations')
-    .select('status, amount')
+    .select('status, amount, created_at')
     .in('status', ['submitted', 'answered']);
 
   if (error) {
@@ -405,7 +405,13 @@ app.get('/api/admin/stats', requireAdmin, async (_req: Request, res: Response): 
   const all = data ?? [];
   const pending = all.filter(c => c.status === 'submitted').length;
   const answered = all.filter(c => c.status === 'answered').length;
-  const revenue = all.reduce((sum, c) => sum + (c.amount || 0), 0);
+
+  // Revenus du mois en cours uniquement (reset automatique le 1er de chaque mois)
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const revenue = all
+    .filter(c => new Date(c.created_at) >= monthStart)
+    .reduce((sum, c) => sum + (c.amount || 0), 0);
 
   res.json({ total: all.length, pending, answered, revenue });
 });
@@ -424,6 +430,20 @@ app.get('/api/admin/dashboard', requireAdmin, async (_req: Request, res: Respons
   }
 
   res.json(data ?? []);
+});
+
+/* ── Blog pages ──────────────────────────────────────── */
+
+app.get('/blog', (_req: Request, res: Response): void => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'blog', 'index.html'));
+});
+
+app.get('/blog/:slug', (req: Request, res: Response): void => {
+  const slug = (req.params.slug as string).replace(/[^a-z0-9-]/g, '');
+  const filePath = path.join(__dirname, '..', 'public', 'blog', `${slug}.html`);
+  res.sendFile(filePath, (err) => {
+    if (err && !res.headersSent) res.status(404).send('Article introuvable.');
+  });
 });
 
 /* ── Serve dashboard page ───────────────────────────── */
