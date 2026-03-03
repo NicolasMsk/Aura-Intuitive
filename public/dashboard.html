@@ -57,46 +57,45 @@
             max-width: 100%;
         }
 
-        .dash-period-selector {
+        .dash-date-picker {
             display: flex;
-            gap: 0.25rem;
+            align-items: center;
+            gap: 0.5rem;
             background: var(--glass);
             border-radius: 12px;
-            padding: 0.3rem;
+            padding: 0.4rem 0.8rem;
             border: 1px solid var(--border);
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            max-width: 100%;
-            scrollbar-width: none;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        .dash-period-selector::-webkit-scrollbar { display: none; }
-
-        .dash-period-btn {
-            padding: 0.5rem 1rem;
-            font-size: 0.82rem;
-            background: transparent;
-            border: none;
+        .dash-date-picker label {
+            font-size: 0.78rem;
             color: var(--text-muted);
-            cursor: pointer;
-            border-radius: 9px;
-            transition: all 0.25s ease;
-            font-family: 'Inter', sans-serif;
             font-weight: 500;
-            -webkit-tap-highlight-color: transparent;
             white-space: nowrap;
-            flex-shrink: 0;
         }
 
-        .dash-period-btn.active {
-            background: rgba(212, 167, 106, 0.2);
-            color: var(--gold);
-            font-weight: 600;
-        }
-
-        .dash-period-btn:hover:not(.active) {
+        .dash-date-input {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.45rem 0.7rem;
+            font-size: 0.82rem;
             color: var(--text);
-            background: rgba(255, 255, 255, 0.04);
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.25s ease;
+            color-scheme: dark;
+        }
+
+        .dash-date-input:focus {
+            border-color: var(--gold);
+        }
+
+        .dash-date-separator {
+            color: var(--text-muted);
+            font-size: 0.82rem;
         }
 
         .dash-refresh-btn {
@@ -502,6 +501,8 @@
             .dash-hero-summary { font-size: 0.82rem; }
 
             .dash-toolbar { gap: 0.4rem; }
+            .dash-date-picker { gap: 0.3rem; padding: 0.3rem 0.5rem; }
+            .dash-date-input { padding: 0.35rem 0.5rem; font-size: 0.78rem; }
 
             .kpi-row,
             .kpi-row-4 { grid-template-columns: repeat(2, 1fr); }
@@ -537,8 +538,9 @@
             .dash-hero-summary { font-size: 0.78rem; padding: 0 0.2rem; }
 
             .dash-toolbar { flex-direction: column; gap: 0.5rem; }
-            .dash-period-selector { width: 100%; justify-content: center; }
-            .dash-period-btn { padding: 0.4rem 0.6rem; font-size: 0.72rem; }
+            .dash-date-picker { width: 100%; justify-content: center; gap: 0.25rem; }
+            .dash-date-input { padding: 0.3rem 0.4rem; font-size: 0.72rem; flex: 1; min-width: 0; }
+            .dash-date-picker label { font-size: 0.7rem; }
             .dash-refresh-btn { padding: 0.4rem 0.8rem; font-size: 0.72rem; width: 100%; }
 
             .kpi-row,
@@ -594,7 +596,7 @@
             .dash-hero h1 { font-size: 1rem; }
             .dash-hero-summary { font-size: 0.74rem; }
 
-            .dash-period-btn { padding: 0.35rem 0.5rem; font-size: 0.68rem; }
+            .dash-date-input { font-size: 0.68rem; padding: 0.25rem 0.3rem; }
 
             .chart-wrapper { height: 160px; }
             .chart-wrapper-sm { height: 140px; }
@@ -640,14 +642,12 @@
             <h1>✦ Votre tableau de bord</h1>
             <p class="dash-hero-summary" id="heroSummary">Chargement…</p>
             <div class="dash-toolbar">
-                <div class="dash-period-selector">
-                    <button class="dash-period-btn" data-period="7" onclick="setPeriod(7, this)">7j</button>
-                    <button class="dash-period-btn active" data-period="30" onclick="setPeriod(30, this)">30j</button>
-                    <button class="dash-period-btn" data-period="90" onclick="setPeriod(90, this)">3 mois</button>
-                    <button class="dash-period-btn" data-period="month" onclick="setPeriod('month', this)">Ce mois</button>
-                    <button class="dash-period-btn" data-period="lastmonth" onclick="setPeriod('lastmonth', this)">Mois préc.</button>
-                    <button class="dash-period-btn" data-period="year" onclick="setPeriod('year', this)">Cette année</button>
-                    <button class="dash-period-btn" data-period="all" onclick="setPeriod('all', this)">Tout</button>
+                <div class="dash-date-picker">
+                    <label>Du</label>
+                    <input type="date" class="dash-date-input" id="dateFrom" onchange="onDateChange()">
+                    <span class="dash-date-separator">→</span>
+                    <label>Au</label>
+                    <input type="date" class="dash-date-input" id="dateTo" onchange="onDateChange()">
                 </div>
                 <button class="dash-refresh-btn" onclick="refreshData()" title="Actualiser les données">🔄 Actualiser</button>
             </div>
@@ -804,7 +804,8 @@
            ═══════════════════════════════════════════════ */
 
         let allData = [];
-        let currentPeriod = 30;
+        let dateFrom = null;
+        let dateTo = null;
         let charts = {};
 
         /* ── Auth ─────────────────────────────────── */
@@ -824,6 +825,7 @@
                 document.getElementById('dashLoading').style.display = 'none';
                 document.getElementById('dashContent').style.display = 'block';
                 document.getElementById('dashFooter').style.display = 'block';
+                initDatePickers();
                 renderDashboard();
             } catch {
                 document.getElementById('dashLoading').innerHTML =
@@ -838,10 +840,24 @@
             } catch {}
         }
 
-        function setPeriod(p, btn) {
-            currentPeriod = p;
-            document.querySelectorAll('.dash-period-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        function initDatePickers() {
+            const now = new Date();
+            const from = new Date();
+            from.setDate(now.getDate() - 30);
+            document.getElementById('dateFrom').value = from.toISOString().split('T')[0];
+            document.getElementById('dateTo').value = now.toISOString().split('T')[0];
+            dateFrom = from;
+            dateTo = now;
+        }
+
+        function onDateChange() {
+            const f = document.getElementById('dateFrom').value;
+            const t = document.getElementById('dateTo').value;
+            if (f) dateFrom = new Date(f);
+            if (t) {
+                dateTo = new Date(t);
+                dateTo.setHours(23, 59, 59, 999);
+            }
             renderDashboard();
         }
 
@@ -854,47 +870,24 @@
         /* ── Period filter ─────────────────────────── */
 
         function getFilteredData() {
-            if (currentPeriod === 'all') return allData;
-            const now = new Date();
-            if (currentPeriod === 'month') {
-                const mStart = new Date(now.getFullYear(), now.getMonth(), 1);
-                return allData.filter(c => new Date(c.created_at) >= mStart);
-            }
-            if (currentPeriod === 'lastmonth') {
-                const lmStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                const lmEnd = new Date(now.getFullYear(), now.getMonth(), 1);
-                return allData.filter(c => { const d = new Date(c.created_at); return d >= lmStart && d < lmEnd; });
-            }
-            if (currentPeriod === 'year') {
-                const yStart = new Date(now.getFullYear(), 0, 1);
-                return allData.filter(c => new Date(c.created_at) >= yStart);
-            }
-            const cutoff = new Date();
-            cutoff.setDate(cutoff.getDate() - currentPeriod);
-            return allData.filter(c => new Date(c.created_at) >= cutoff);
+            if (!dateFrom || !dateTo) return allData;
+            return allData.filter(c => {
+                const d = new Date(c.created_at);
+                return d >= dateFrom && d <= dateTo;
+            });
         }
 
         function getPrevData() {
-            if (currentPeriod === 'all') return [];
-            const now = new Date();
-            if (currentPeriod === 'month') {
-                const lmStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                const lmEnd = new Date(now.getFullYear(), now.getMonth(), 1);
-                return allData.filter(c => { const d = new Date(c.created_at); return d >= lmStart && d < lmEnd; });
-            }
-            if (currentPeriod === 'lastmonth') {
-                const lm2Start = new Date(now.getFullYear(), now.getMonth() - 2, 1);
-                const lm2End = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                return allData.filter(c => { const d = new Date(c.created_at); return d >= lm2Start && d < lm2End; });
-            }
-            if (currentPeriod === 'year') {
-                const lyStart = new Date(now.getFullYear() - 1, 0, 1);
-                const lyEnd = new Date(now.getFullYear(), 0, 1);
-                return allData.filter(c => { const d = new Date(c.created_at); return d >= lyStart && d < lyEnd; });
-            }
-            const cur = new Date(); cur.setDate(now.getDate() - currentPeriod);
-            const prev = new Date(); prev.setDate(now.getDate() - currentPeriod * 2);
-            return allData.filter(c => { const d = new Date(c.created_at); return d >= prev && d < cur; });
+            if (!dateFrom || !dateTo) return [];
+            const rangeDays = Math.round((dateTo - dateFrom) / 86400000);
+            const prevEnd = new Date(dateFrom);
+            prevEnd.setMilliseconds(-1);
+            const prevStart = new Date(dateFrom);
+            prevStart.setDate(prevStart.getDate() - rangeDays);
+            return allData.filter(c => {
+                const d = new Date(c.created_at);
+                return d >= prevStart && d <= prevEnd;
+            });
         }
 
         /* ── Helpers ──────────────────────────────── */
@@ -953,16 +946,10 @@
         function renderHeroSummary(data, active) {
             const rev = active.reduce((s, c) => s + parseFloat(c.amount || 0), 0);
             const pending = data.filter(c => c.status === 'submitted').length;
-            const now = new Date();
-            const monthName = now.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-            const prevMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-            const label = currentPeriod === 'all' ? 'au total' :
-                          currentPeriod === 7 ? 'ces 7 derniers jours' :
-                          currentPeriod === 90 ? 'ces 3 derniers mois' :
-                          currentPeriod === 'month' ? `en ${monthName}` :
-                          currentPeriod === 'lastmonth' ? `en ${prevMonth}` :
-                          currentPeriod === 'year' ? `en ${now.getFullYear()}` :
-                          'ces 30 derniers jours';
+            const opts = { day: '2-digit', month: 'short', year: 'numeric' };
+            const fromStr = dateFrom ? dateFrom.toLocaleDateString('fr-FR', opts) : '';
+            const toStr = dateTo ? dateTo.toLocaleDateString('fr-FR', opts) : '';
+            const label = (dateFrom && dateTo) ? `du ${fromStr} au ${toStr}` : 'au total';
 
             let summary = `Vous avez réalisé <strong>${fmt(rev)}</strong> de chiffre d'affaires ${label} avec <strong>${active.length} consultation${active.length > 1 ? 's' : ''}</strong>.`;
             if (pending > 0) summary += ` 📬 <strong>${pending}</strong> question${pending > 1 ? 's' : ''} en attente de réponse.`;
