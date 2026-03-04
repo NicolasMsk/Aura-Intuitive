@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JBCXB0EWH4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-JBCXB0EWH4');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — Aura Intuitive | Voyance, Guidance & Spiritualité</title>
+    <meta name="description" content="Explorez le blog d'Aura Intuitive : conseils en voyance, guidance spirituelle, développement de l'intuition et bien plus. Articles pour éclairer votre chemin.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#7b2d3f">
+    <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="canonical" href="https://www.auraintuitive.fr/blog">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.auraintuitive.fr/blog">
+    <meta property="og:title" content="Blog — Aura Intuitive | Voyance & Guidance Spirituelle">
+    <meta property="og:description" content="Conseils en voyance, guidance spirituelle et développement de l'intuition. Articles pour éclairer votre chemin.">
+    <meta property="og:image" content="https://www.auraintuitive.fr/images/tik_tok.avif">
+    <meta property="og:locale" content="fr_FR">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .blog-page {
+            padding: 7rem 1.5rem 4rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .blog-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .blog-header-label {
+            font-size: 0.85rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.8rem;
+        }
+
+        .blog-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--gold-light);
+            margin-bottom: 0.8rem;
+        }
+
+        .blog-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .blog-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .blog-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.35s ease;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .blog-card:hover {
+            border-color: rgba(212, 167, 106, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .blog-card-img {
+            width: 260px;
+            min-height: 200px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(123, 45, 63, 0.3), rgba(74, 25, 66, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            overflow: hidden;
+        }
+
+        .blog-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .blog-card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .blog-card-tag {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .blog-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .blog-card-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .blog-card-title a:hover {
+            color: var(--gold);
+        }
+
+        .blog-card-excerpt {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .blog-card-meta {
+            font-size: 0.72rem;
+            color: rgba(232, 213, 196, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .blog-empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 3rem 1rem;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .blog-page { padding: 5.5rem 1rem 3rem; }
+            .blog-header h1 { font-size: 1.6rem; }
+
+            .blog-card { flex-direction: column; }
+            .blog-card-img {
+                width: 100%;
+                min-height: 160px;
+                max-height: 200px;
+            }
+            .blog-card-body { padding: 1.2rem; }
+            .blog-card-title { font-size: 1.05rem; }
+        }
+
+        @media (max-width: 480px) {
+            .blog-page { padding: 5rem 0.7rem 2rem; }
+            .blog-header h1 { font-size: 1.3rem; }
+            .blog-header p { font-size: 0.85rem; }
+            .blog-card-body { padding: 1rem; }
+            .blog-card-title { font-size: 0.95rem; }
+            .blog-card-excerpt { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-aurora">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <div class="stars-canvas" id="starsCanvas"></div>
+
+    <nav class="navbar scrolled" id="navbar" aria-label="Navigation principale">
+        <a href="/" class="nav-brand"><img src="/favicon_io/favicon-32x32.png" alt="Aura Intuitive" class="nav-logo" width="28" height="28"> Aura Intuitive</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="/#services">Consultations</a></li>
+            <li><a href="/blog" style="color:var(--gold);">Blog</a></li>
+            <li><a href="/#tiktok">TikTok</a></li>
+        </ul>
+    </nav>
+
+    <main class="blog-page">
+        <div class="blog-header">
+            <div class="blog-header-label">✦ Le Blog</div>
+            <h1>Voyance, Guidance & Spiritualité</h1>
+            <p>Des articles pour vous accompagner, éclairer vos questions et nourrir votre intuition.</p>
+        </div>
+
+        <div class="blog-grid">
+
+            <!-- Article 1 -->
+            <article class="blog-card">
+                <div class="blog-card-img"><img src="/images/blog/formuler-question.png" alt="Comment formuler sa question à une voyante" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Guide pratique</div>
+                    <h2 class="blog-card-title">
+                        <a href="/blog/comment-formuler-question-voyante">Comment bien formuler sa question à une voyante pour avoir une réponse précise</a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        Une bonne question, c'est déjà la moitié de la réponse. Découvrez comment formuler votre question pour obtenir une guidance claire, précise et utile lors de votre consultation de voyance.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 2 mars 2026</span>
+                        <span>·</span>
+                        <span>⏱ 5 min de lecture</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 2 -->
+            <article class="blog-card">
+                <div class="blog-card-img"><img src="/images/blog/premiere-consultation.png" alt="Première consultation de voyance en ligne" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Voyance en ligne</div>
+                    <h2 class="blog-card-title">
+                        <a href="/blog/premiere-consultation-voyance-en-ligne">Première consultation de voyance en ligne : à quoi s'attendre</a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        Vous hésitez à franchir le pas ? Voici ce qui se passe concrètement lors d'une première consultation de voyance en ligne, du choix de la formule à la réception de votre guidance.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 2 mars 2026</span>
+                        <span>·</span>
+                        <span>⏱ 6 min de lecture</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 3 -->
+            <article class="blog-card">
+                <div class="blog-card-img"><img src="/images/blog/retour-ex.png" alt="Mon ex va-t-il revenir voyance" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Amour & Relations</div>
+                    <h2 class="blog-card-title">
+                        <a href="/blog/mon-ex-va-t-il-revenir-voyance">Mon ex va-t-il revenir ? Ce que la voyance peut (et ne peut pas) vous dire</a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        C'est la question la plus fréquente en voyance amoureuse. Découvrez ce que l'intuition peut réellement percevoir après une rupture, ses possibilités et ses limites.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 2 mars 2026</span>
+                        <span>·</span>
+                        <span>⏱ 6 min de lecture</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 4 -->
+            <article class="blog-card">
+                <div class="blog-card-img"><img src="/images/blog/voyance-amoureuse.png" alt="Voyance amoureuse comprendre les sentiments" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Amour & Relations</div>
+                    <h2 class="blog-card-title">
+                        <a href="/blog/voyance-amoureuse-comprendre-sentiments">Voyance amoureuse : comprendre les sentiments de l'autre grâce à l'intuition</a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        Silence, doute, distance… Quand les mots manquent, l'intuition peut éclairer ce que l'autre ressent vraiment. Découvrez comment la voyance amoureuse aborde les sentiments.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 2 mars 2026</span>
+                        <span>·</span>
+                        <span>⏱ 6 min de lecture</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 5 -->
+            <article class="blog-card">
+                <div class="blog-card-img"><img src="/images/blog/oui-non-voyance.png" alt="Réponse oui ou non en voyance" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Guidance Pratique</div>
+                    <h2 class="blog-card-title">
+                        <a href="/blog/reponse-oui-non-voyance-fonctionnement">Réponse Oui ou Non en voyance : comment ça fonctionne et quand l'utiliser</a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        Parfois, un seul mot suffit. Découvrez comment fonctionne le format Oui/Non en voyance, dans quels cas l'utiliser et comment formuler votre question pour une réponse claire.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 2 mars 2026</span>
+                        <span>·</span>
+                        <span>⏱ 5 min de lecture</span>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-brand">✦ Aura Intuitive ✦</div>
+        <p>© 2026 Aura Intuitive — Tous droits réservés</p>
+        <p style="margin-top:0.4rem;">Fait avec 🤍 et intuition</p>
+    </footer>
+
+    <script src="/script.js"></script>
+</body>
+</html>
