@@ -760,7 +760,7 @@ function buildConfirmationEmailOuiNon(name: string): string {
     <!-- Footer -->
     <div style="border-top:1px solid rgba(123,45,63,0.3);padding:16px 24px;text-align:center;">
       <p style="color:rgba(232,213,196,0.3);font-size:11px;margin:0;">
-        © 2025 Aura Intuitive — Cet email a été envoyé automatiquement, merci de ne pas y répondre.
+        © 2026 Aura Intuitive — Cet email a été envoyé automatiquement, merci de ne pas y répondre.
       </p>
     </div>
   </div>
@@ -818,7 +818,7 @@ function buildConfirmationEmailRessenti(name: string): string {
     <!-- Footer -->
     <div style="border-top:1px solid rgba(123,45,63,0.3);padding:16px 24px;text-align:center;">
       <p style="color:rgba(232,213,196,0.3);font-size:11px;margin:0;">
-        © 2025 Aura Intuitive — Cet email a été envoyé automatiquement, merci de ne pas y répondre.
+        © 2026 Aura Intuitive — Cet email a été envoyé automatiquement, merci de ne pas y répondre.
       </p>
     </div>
   </div>
