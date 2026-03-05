@@ -18,6 +18,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
     <link rel="canonical" href="https://www.auraintuitive.fr/blog">
+    <link rel="alternate" hreflang="fr" href="https://www.auraintuitive.fr/blog">
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.auraintuitive.fr/blog">
@@ -160,6 +161,55 @@
             gap: 0.8rem;
         }
 
+        /* ── Pagination ──────────────────────────── */
+        .blog-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 167, 106, 0.1);
+        }
+
+        .blog-pagination button {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .blog-pagination button:hover {
+            border-color: rgba(212, 167, 106, 0.4);
+            color: var(--gold);
+        }
+
+        .blog-pagination button.active {
+            background: rgba(212, 167, 106, 0.15);
+            border-color: rgba(212, 167, 106, 0.5);
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .blog-pagination button:disabled {
+            opacity: 0.3;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .blog-pagination .pagination-arrow {
+            font-size: 1rem;
+        }
+
         .blog-empty {
             text-align: center;
             color: var(--text-muted);
@@ -188,6 +238,8 @@
             .blog-card-body { padding: 1rem; }
             .blog-card-title { font-size: 0.95rem; }
             .blog-card-excerpt { font-size: 0.8rem; }
+
+            .blog-pagination button { width: 36px; height: 36px; font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -219,10 +271,67 @@
             <p>Des articles pour vous accompagner, éclairer vos questions et nourrir votre intuition.</p>
         </div>
 
-        <div class="blog-grid">
+        <div class="blog-grid" id="blogGrid">
+
+            <!-- Article 6 - NOUVEAU -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/signes-pense-a-vous.png" alt="Signes qu'il pense à vous" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Amour & Relations</div>
+                    <h2 class="blog-card-title">
+                        <a href="/blog/signes-il-pense-a-vous">7 signes qu'il pense à vous (même sans vous le dire)</a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        Pensées soudaines, rêves intenses, synchronicités… Découvrez les 7 signes subtils qui révèlent que quelqu'un vous porte dans ses pensées, même en silence.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 5 mars 2026</span>
+                        <span>·</span>
+                        <span>⏱ 7 min de lecture</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 7 - NOUVEAU -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/flamme-jumelle-ame-soeur.png" alt="Flamme jumelle ou âme sœur" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Spiritualité</div>
+                    <h2 class="blog-card-title">
+                        <a href="/blog/flamme-jumelle-ame-soeur-difference">Flamme jumelle ou âme sœur : comment faire la différence ?</a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        Deux concepts souvent confondus, pourtant fondamentalement différents. Découvrez les signes qui distinguent une flamme jumelle d'une âme sœur et ce que la voyance perçoit de votre lien.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 5 mars 2026</span>
+                        <span>·</span>
+                        <span>⏱ 8 min de lecture</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 8 - NOUVEAU -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/voyance-travail.png" alt="Voyance travail carrière reconversion" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Guidance Pratique</div>
+                    <h2 class="blog-card-title">
+                        <a href="/blog/voyance-travail-carriere-reconversion">Voyance travail : reconversion, ambiance et évolution de carrière</a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        La voyance ne se limite pas à l'amour. Reconversion, ambiance au travail, projets entrepreneuriaux : découvrez ce que l'intuition peut percevoir de votre vie professionnelle.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 5 mars 2026</span>
+                        <span>·</span>
+                        <span>⏱ 7 min de lecture</span>
+                    </div>
+                </div>
+            </article>
 
             <!-- Article 1 -->
-            <article class="blog-card">
+            <article class="blog-card" data-article>
                 <div class="blog-card-img"><img src="/images/blog/formuler-question.png" alt="Comment formuler sa question à une voyante" loading="lazy"></div>
                 <div class="blog-card-body">
                     <div class="blog-card-tag">Guide pratique</div>
@@ -241,7 +350,7 @@
             </article>
 
             <!-- Article 2 -->
-            <article class="blog-card">
+            <article class="blog-card" data-article>
                 <div class="blog-card-img"><img src="/images/blog/premiere-consultation.png" alt="Première consultation de voyance en ligne" loading="lazy"></div>
                 <div class="blog-card-body">
                     <div class="blog-card-tag">Voyance en ligne</div>
@@ -260,7 +369,7 @@
             </article>
 
             <!-- Article 3 -->
-            <article class="blog-card">
+            <article class="blog-card" data-article>
                 <div class="blog-card-img"><img src="/images/blog/retour-ex.png" alt="Mon ex va-t-il revenir voyance" loading="lazy"></div>
                 <div class="blog-card-body">
                     <div class="blog-card-tag">Amour & Relations</div>
@@ -279,7 +388,7 @@
             </article>
 
             <!-- Article 4 -->
-            <article class="blog-card">
+            <article class="blog-card" data-article>
                 <div class="blog-card-img"><img src="/images/blog/voyance-amoureuse.png" alt="Voyance amoureuse comprendre les sentiments" loading="lazy"></div>
                 <div class="blog-card-body">
                     <div class="blog-card-tag">Amour & Relations</div>
@@ -298,7 +407,7 @@
             </article>
 
             <!-- Article 5 -->
-            <article class="blog-card">
+            <article class="blog-card" data-article>
                 <div class="blog-card-img"><img src="/images/blog/oui-non-voyance.png" alt="Réponse oui ou non en voyance" loading="lazy"></div>
                 <div class="blog-card-body">
                     <div class="blog-card-tag">Guidance Pratique</div>
@@ -317,14 +426,88 @@
             </article>
 
         </div>
+
+        <!-- Pagination -->
+        <nav class="blog-pagination" id="blogPagination" aria-label="Pagination du blog"></nav>
+
     </main>
 
     <footer class="footer">
         <div class="footer-brand">✦ Aura Intuitive ✦</div>
+        <nav class="footer-nav" aria-label="Liens utiles" style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin:0.8rem 0;">
+            <a href="/" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;">Accueil</a>
+            <a href="/#services" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;">Consultations</a>
+            <a href="/blog" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;">Blog</a>
+            <a href="/#faq" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;">FAQ</a>
+            <a href="/#tiktok" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;">TikTok</a>
+        </nav>
         <p>© 2026 Aura Intuitive — Tous droits réservés</p>
         <p style="margin-top:0.4rem;">Fait avec 🤍 et intuition</p>
     </footer>
 
     <script src="/script.js"></script>
+    <script>
+    (function() {
+        var ARTICLES_PER_PAGE = 6;
+        var MAX_PAGES = 5;
+        var articles = document.querySelectorAll('#blogGrid [data-article]');
+        var pagination = document.getElementById('blogPagination');
+        var totalArticles = articles.length;
+        var totalPages = Math.min(Math.ceil(totalArticles / ARTICLES_PER_PAGE), MAX_PAGES);
+        var currentPage = 1;
+
+        // Read page from URL hash
+        var hash = window.location.hash.match(/^#page-(\d+)$/);
+        if (hash) {
+            var p = parseInt(hash[1], 10);
+            if (p >= 1 && p <= totalPages) currentPage = p;
+        }
+
+        function showPage(page) {
+            currentPage = page;
+            var start = (page - 1) * ARTICLES_PER_PAGE;
+            var end = start + ARTICLES_PER_PAGE;
+
+            for (var i = 0; i < articles.length; i++) {
+                articles[i].style.display = (i >= start && i < end) ? '' : 'none';
+            }
+
+            renderPagination();
+            window.history.replaceState(null, '', page === 1 ? '/blog' : '#page-' + page);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderPagination() {
+            if (totalPages <= 1) { pagination.style.display = 'none'; return; }
+            pagination.style.display = '';
+
+            var html = '';
+
+            // Previous arrow
+            html += '<button class="pagination-arrow"' + (currentPage === 1 ? ' disabled' : '') + ' data-page="' + (currentPage - 1) + '" aria-label="Page précédente">‹</button>';
+
+            // Page numbers
+            for (var i = 1; i <= totalPages; i++) {
+                html += '<button' + (i === currentPage ? ' class="active"' : '') + ' data-page="' + i + '" aria-label="Page ' + i + '"' + (i === currentPage ? ' aria-current="page"' : '') + '>' + i + '</button>';
+            }
+
+            // Next arrow
+            html += '<button class="pagination-arrow"' + (currentPage === totalPages ? ' disabled' : '') + ' data-page="' + (currentPage + 1) + '" aria-label="Page suivante">›</button>';
+
+            pagination.innerHTML = html;
+
+            // Attach events
+            var buttons = pagination.querySelectorAll('button[data-page]');
+            for (var b = 0; b < buttons.length; b++) {
+                buttons[b].addEventListener('click', function() {
+                    var p = parseInt(this.getAttribute('data-page'), 10);
+                    if (p >= 1 && p <= totalPages) showPage(p);
+                });
+            }
+        }
+
+        showPage(currentPage);
+    })();
+    </script>
 </body>
 </html>
