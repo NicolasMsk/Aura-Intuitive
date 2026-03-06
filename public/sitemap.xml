@@ -8,7 +8,7 @@
     </url>
     <url>
         <loc>https://www.auraintuitive.fr/blog</loc>
-        <lastmod>2026-03-05</lastmod>
+        <lastmod>2026-03-06</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -57,6 +57,24 @@
     <url>
         <loc>https://www.auraintuitive.fr/blog/voyance-travail-carriere-reconversion</loc>
         <lastmod>2026-03-05</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.auraintuitive.fr/blog/consultation-voyance-pas-chere</loc>
+        <lastmod>2026-03-06</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.auraintuitive.fr/blog/mon-ex-a-refait-sa-vie-voyance</loc>
+        <lastmod>2026-03-06</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.auraintuitive.fr/blog/voyance-gratuite-vs-payante-difference</loc>
+        <lastmod>2026-03-06</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
