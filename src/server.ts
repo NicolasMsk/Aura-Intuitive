@@ -5,6 +5,7 @@
 
 import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
+import compression from 'compression';
 import path from 'path';
 import cookieSession from 'cookie-session';
 import helmet from 'helmet';
@@ -58,6 +59,9 @@ if (isProduction) {
   app.set('trust proxy', 1);
 }
 
+// Gzip compression
+app.use(compression());
+
 // Security headers
 app.use(helmet({
   contentSecurityPolicy: false, // Allow inline scripts in admin
@@ -106,6 +110,16 @@ app.use(
   }),
 );
 
+// Static assets with cache (images, CSS, JS: 30 days)
+app.use('/images', express.static(path.join(__dirname, '..', 'public', 'images'), {
+  redirect: false,
+  maxAge: '30d',
+}));
+app.use('/style.css', express.static(path.join(__dirname, '..', 'public', 'style.css'), {
+  maxAge: '7d',
+}));
+
+// Other static files (HTML: no cache)
 app.use(express.static(path.join(__dirname, '..', 'public'), { redirect: false }));
 
 /* ═══════════════════════════════════════════════════════
@@ -430,6 +444,12 @@ app.get('/api/admin/dashboard', requireAdmin, async (_req: Request, res: Respons
   }
 
   res.json(data ?? []);
+});
+
+/* ── About page ─────────────────────────────────────── */
+
+app.get('/a-propos', (_req: Request, res: Response): void => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'a-propos.html'));
 });
 
 /* ── Blog pages ──────────────────────────────────────── */

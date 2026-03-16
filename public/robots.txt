@@ -5,3 +5,6 @@ Disallow: /api/
 Disallow: /form
 
 Sitemap: https://www.auraintuitive.fr/sitemap.xml
+
+# AI agents
+LLMs-Txt: https://www.auraintuitive.fr/llms.txt

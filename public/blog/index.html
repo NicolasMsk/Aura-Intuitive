@@ -562,8 +562,7 @@
 
         </div>
 
-        <!-- Pagination -->
-        <nav class="blog-pagination" id="blogPagination" aria-label="Pagination du blog"></nav>
+        <!-- Tous les articles affichés (pas de pagination) -->
 
     </main>
 
@@ -581,68 +580,6 @@
     </footer>
 
     <script src="/script.js"></script>
-    <script>
-    (function() {
-        var ARTICLES_PER_PAGE = 6;
-        var MAX_PAGES = 5;
-        var articles = document.querySelectorAll('#blogGrid [data-article]');
-        var pagination = document.getElementById('blogPagination');
-        var totalArticles = articles.length;
-        var totalPages = Math.min(Math.ceil(totalArticles / ARTICLES_PER_PAGE), MAX_PAGES);
-        var currentPage = 1;
-
-        // Read page from URL hash
-        var hash = window.location.hash.match(/^#page-(\d+)$/);
-        if (hash) {
-            var p = parseInt(hash[1], 10);
-            if (p >= 1 && p <= totalPages) currentPage = p;
-        }
-
-        function showPage(page) {
-            currentPage = page;
-            var start = (page - 1) * ARTICLES_PER_PAGE;
-            var end = start + ARTICLES_PER_PAGE;
-
-            for (var i = 0; i < articles.length; i++) {
-                articles[i].style.display = (i >= start && i < end) ? '' : 'none';
-            }
-
-            renderPagination();
-            window.history.replaceState(null, '', page === 1 ? '/blog' : '#page-' + page);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function renderPagination() {
-            if (totalPages <= 1) { pagination.style.display = 'none'; return; }
-            pagination.style.display = '';
-
-            var html = '';
-
-            // Previous arrow
-            html += '<button class="pagination-arrow"' + (currentPage === 1 ? ' disabled' : '') + ' data-page="' + (currentPage - 1) + '" aria-label="Page précédente">‹</button>';
-
-            // Page numbers
-            for (var i = 1; i <= totalPages; i++) {
-                html += '<button' + (i === currentPage ? ' class="active"' : '') + ' data-page="' + i + '" aria-label="Page ' + i + '"' + (i === currentPage ? ' aria-current="page"' : '') + '>' + i + '</button>';
-            }
-
-            // Next arrow
-            html += '<button class="pagination-arrow"' + (currentPage === totalPages ? ' disabled' : '') + ' data-page="' + (currentPage + 1) + '" aria-label="Page suivante">›</button>';
-
-            pagination.innerHTML = html;
-
-            // Attach events
-            var buttons = pagination.querySelectorAll('button[data-page]');
-            for (var b = 0; b < buttons.length; b++) {
-                buttons[b].addEventListener('click', function() {
-                    var p = parseInt(this.getAttribute('data-page'), 10);
-                    if (p >= 1 && p <= totalPages) showPage(p);
-                });
-            }
-        }
-
-        showPage(currentPage);
-    })();
-    </script>
+    <!-- Pagination désactivée : tous les articles visibles pour le SEO (14 articles) -->
 </body>
 </html>
