@@ -452,6 +452,12 @@ app.get('/a-propos', (_req: Request, res: Response): void => {
   res.sendFile(path.join(__dirname, '..', 'public', 'a-propos.html'));
 });
 
+/* ── Legal page ──────────────────────────────────────── */
+
+app.get('/mentions-legales', (_req: Request, res: Response): void => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'mentions-legales.html'));
+});
+
 /* ── Blog pages ──────────────────────────────────────── */
 
 app.get('/blog', (_req: Request, res: Response): void => {

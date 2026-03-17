@@ -1,37 +1,45 @@
 # Aura Intuitive
 
-> Consultations de voyance en ligne par email, accessibles dès 1€. Réponses intuitives personnalisées sous 24h.
+> Aura Intuitive est un service de voyance en ligne par email créé par Laura, voyante et médium intuitive. Consultations personnalisées dès 1€, réponse sous 24h. Basé en Île-de-France, France.
 
-## À propos
+## Consultations disponibles
 
-Aura Intuitive est un service de voyance en ligne créé par Laura, voyante et intuitive. Le site propose deux types de consultations par email :
+- [Réponse Oui / Non (1€)](https://www.auraintuitive.fr/blog/reponse-oui-non-voyance-fonctionnement): Question précise → réponse intuitive directe par email sous 24h.
+- [Consultation Ressenti (10€)](https://www.auraintuitive.fr/blog/consultation-voyance-pas-chere): Situation complexe → guidance détaillée et personnalisée par email sous 24h.
 
-- **Réponse Oui / Non (1€)** : une question précise, une réponse intuitive claire et directe.
-- **Consultation Ressenti (10€)** : une guidance détaillée et personnalisée sur une situation complexe (amour, travail, décision de vie).
+## Pages principales
 
-Toutes les réponses sont rédigées personnellement par Laura et envoyées par email sous 24h. Pas d'abonnement, pas de CB enregistrée, pas de numéro surtaxé.
+- [Accueil](https://www.auraintuitive.fr/): Page principale avec présentation des services, FAQ et formulaire de consultation.
+- [À propos](https://www.auraintuitive.fr/a-propos): Découvrez Laura, son parcours de médium, sa méthode et sa vision d'une voyance accessible.
+- [Blog](https://www.auraintuitive.fr/blog): 14 articles sur la voyance, la guidance spirituelle et les relations.
+- [Mentions légales](https://www.auraintuitive.fr/mentions-legales): Informations légales et politique de confidentialité.
 
-## Site web
+## Articles du blog
 
-- URL : https://www.auraintuitive.fr
-- Blog : https://www.auraintuitive.fr/blog (14 articles sur la voyance, la guidance spirituelle, les relations amoureuses et le développement personnel)
+- [Comment bien formuler sa question à une voyante](https://www.auraintuitive.fr/blog/comment-formuler-question-voyante)
+- [Première consultation de voyance en ligne : à quoi s'attendre](https://www.auraintuitive.fr/blog/premiere-consultation-voyance-en-ligne)
+- [Mon ex va-t-il revenir ? Ce que la voyance peut révéler](https://www.auraintuitive.fr/blog/mon-ex-va-t-il-revenir-voyance)
+- [Voyance amoureuse : comprendre les sentiments de l'autre](https://www.auraintuitive.fr/blog/voyance-amoureuse-comprendre-sentiments)
+- [Réponse Oui/Non en voyance : comment ça fonctionne](https://www.auraintuitive.fr/blog/reponse-oui-non-voyance-fonctionnement)
+- [Signes qu'il pense à vous : intuition ou réalité ?](https://www.auraintuitive.fr/blog/signes-il-pense-a-vous)
+- [Flamme jumelle vs âme sœur : quelle différence ?](https://www.auraintuitive.fr/blog/flamme-jumelle-ame-soeur-difference)
+- [Voyance travail : carrière et reconversion professionnelle](https://www.auraintuitive.fr/blog/voyance-travail-carriere-reconversion)
+- [Consultation de voyance pas chère : est-ce fiable ?](https://www.auraintuitive.fr/blog/consultation-voyance-pas-chere)
+- [Mon ex a refait sa vie : que dit la voyance ?](https://www.auraintuitive.fr/blog/mon-ex-a-refait-sa-vie-voyance)
+- [Voyance gratuite vs payante : quelle différence ?](https://www.auraintuitive.fr/blog/voyance-gratuite-vs-payante-difference)
+- [Voyance à 1€ : une consultation sérieuse à petit prix](https://www.auraintuitive.fr/blog/voyance-1-euro-serieuse)
+- [Voyance sans CB et sans abonnement](https://www.auraintuitive.fr/blog/voyance-sans-cb-sans-abonnement)
+- [Voyance gratuite en ligne : ce qu'il faut savoir](https://www.auraintuitive.fr/blog/voyance-gratuite-en-ligne-ce-quil-faut-savoir)
 
 ## Thématiques couvertes
 
 - Voyance amoureuse (sentiments, retour d'ex, flamme jumelle, âme sœur)
-- Voyance travail (reconversion, carrière, ambiance professionnelle)
+- Voyance travail et carrière (reconversion, ambiance professionnelle)
 - Guidance spirituelle et développement de l'intuition
-- Voyance accessible et pas chère (consultations dès 1€)
-- Différences entre voyance gratuite et payante
-
-## Consultations disponibles
-
-| Formule | Prix | Délai | Description |
-|---------|------|-------|-------------|
-| Réponse Oui / Non | 1€ | Sous 24h | Question précise → réponse intuitive directe |
-| Consultation Ressenti | 10€ | Sous 24h | Situation complexe → guidance détaillée par email |
+- Voyance accessible et pas chère (consultations dès 1€, sans abonnement)
 
 ## Contact
 
 - Site : https://www.auraintuitive.fr
-- TikTok : @auraintuitive
+- TikTok : https://www.tiktok.com/@aura_intuitive
+- Email : noreply@auraintuitive.com

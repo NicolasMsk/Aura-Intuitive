@@ -214,7 +214,19 @@ a {
     height: 2px;
     background: var(--gold);
     border-radius: 2px;
-    transition: var(--transition);
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+/* Hamburger → X animation */
+.menu-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+.menu-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1171,6 +1183,8 @@ a {
 @media (max-width: 768px) {
     .menu-toggle {
         display: flex;
+        position: relative;
+        z-index: 1001;
     }
 
     .nav-links {
@@ -1179,6 +1193,7 @@ a {
         right: -100%;
         width: 260px;
         height: 100vh;
+        z-index: 1000;
         background: rgba(14, 6, 10, 0.96);
         backdrop-filter: blur(20px);
         flex-direction: column;
@@ -1955,3 +1970,13 @@ a {
     color: #999;
     font-size: 0.75rem;
 }
+
+/* ── Cookie consent banner ──────────────────────────── */
+.cookie-banner{position:fixed;bottom:1.2rem;right:1.2rem;left:auto;max-width:320px;background:rgba(20,12,26,.92);border:1px solid rgba(212,167,106,.12);padding:1rem 1.2rem;border-radius:10px;z-index:9999;backdrop-filter:blur(12px);font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.cookie-banner a{color:var(--gold);text-decoration:none;opacity:.7;transition:opacity .3s}
+.cookie-banner a:hover{opacity:1}
+.cookie-banner .cookie-actions{display:flex;justify-content:flex-end;margin-top:.6rem}
+.cookie-banner .cookie-btn{background:transparent;color:var(--gold);border:1px solid rgba(212,167,106,.25);padding:.3rem 1rem;border-radius:20px;cursor:pointer;font-size:.72rem;font-weight:400;letter-spacing:.5px;transition:all .3s}
+.cookie-banner .cookie-btn:hover{background:rgba(212,167,106,.1);border-color:rgba(212,167,106,.4)}
+.cookie-banner.hidden{display:none}
+@media(max-width:480px){.cookie-banner{right:.6rem;left:.6rem;max-width:none;bottom:.6rem}}

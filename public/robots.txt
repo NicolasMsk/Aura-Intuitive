@@ -6,5 +6,32 @@ Disallow: /form
 
 Sitemap: https://www.auraintuitive.fr/sitemap.xml
 
-# AI agents
+# AI agents — allow crawling for GEO visibility
 LLMs-Txt: https://www.auraintuitive.fr/llms.txt
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Allow: /

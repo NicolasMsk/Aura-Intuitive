@@ -41,11 +41,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (toggle && navLinks) {
         toggle.addEventListener('click', () => {
             navLinks.classList.toggle('open');
+            toggle.classList.toggle('active');
         });
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('open');
+                toggle.classList.remove('active');
             });
+        });
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navLinks.classList.contains('open') && !navLinks.contains(e.target) && !toggle.contains(e.target)) {
+                navLinks.classList.remove('open');
+                toggle.classList.remove('active');
+            }
         });
     }
 
@@ -79,3 +88,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+/* ── Cookie consent ────────────────────────────────── */
+(function() {
+  if (localStorage.getItem('cookie-consent')) return;
+  var banner = document.createElement('div');
+  banner.className = 'cookie-banner';
+  banner.innerHTML = '<div>En poursuivant votre navigation, vous acceptez l\'utilisation de cookies. <a href="/mentions-legales">Plus d\'infos</a></div><div class="cookie-actions"><button class="cookie-btn" id="cookieAccept">OK</button></div>';
+  document.body.appendChild(banner);
+  document.getElementById('cookieAccept').addEventListener('click', function() {
+    localStorage.setItem('cookie-consent', 'true');
+    banner.classList.add('hidden');
+  });
+})();
