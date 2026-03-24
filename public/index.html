@@ -45,6 +45,7 @@
     {
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
+        "@id": "https://www.auraintuitive.fr/#organization",
         "name": "Aura Intuitive",
         "description": "Consultations de voyance, ressentis et guidance spirituelle. Réponses intuitives personnalisées par email.",
         "url": "https://www.auraintuitive.fr",
@@ -109,6 +110,10 @@
                 "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
             }
         ],
+        "speakable": {
+            "@type": "SpeakableSpecification",
+            "cssSelector": [".faq-list", ".seo-content", ".hero"]
+        },
         "offers": [
             {
                 "@type": "Offer",
@@ -204,6 +209,19 @@
                 "item": "https://www.auraintuitive.fr/"
             }
         ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.auraintuitive.fr/#website",
+        "name": "Aura Intuitive",
+        "url": "https://www.auraintuitive.fr",
+        "publisher": {
+            "@id": "https://www.auraintuitive.fr/#organization"
+        }
     }
     </script>
 

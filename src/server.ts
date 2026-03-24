@@ -417,17 +417,18 @@ app.get('/api/admin/stats', requireAdmin, async (_req: Request, res: Response): 
   }
 
   const all = data ?? [];
-  const pending = all.filter(c => c.status === 'submitted').length;
-  const answered = all.filter(c => c.status === 'answered').length;
 
-  // Revenus du mois en cours uniquement (reset automatique le 1er de chaque mois)
+  // Tout filtrer sur le mois en cours
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-  const revenue = all
-    .filter(c => new Date(c.created_at) >= monthStart)
-    .reduce((sum, c) => sum + (c.amount || 0), 0);
+  const thisMonth = all.filter(c => new Date(c.created_at) >= monthStart);
 
-  res.json({ total: all.length, pending, answered, revenue });
+  const total = thisMonth.length;
+  const pending = thisMonth.filter(c => c.status === 'submitted').length;
+  const answered = thisMonth.filter(c => c.status === 'answered').length;
+  const revenue = thisMonth.reduce((sum, c) => sum + (c.amount || 0), 0);
+
+  res.json({ total, pending, answered, revenue });
 });
 
 /* ── Dashboard Analytics ────────────────────────────── */
