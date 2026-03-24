@@ -1971,6 +1971,72 @@ a {
     font-size: 0.75rem;
 }
 
+/* ── Testimonials ──────────────────────────────────── */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.testimonial-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.8rem 1.5rem;
+    backdrop-filter: blur(12px);
+    transition: var(--transition);
+}
+
+.testimonial-card:hover {
+    border-color: rgba(212, 167, 106, 0.25);
+    transform: translateY(-3px);
+}
+
+.testimonial-stars {
+    color: var(--gold);
+    font-size: 1rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.8rem;
+}
+
+.testimonial-text {
+    color: var(--text);
+    font-style: italic;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin-bottom: 1.2rem;
+    opacity: 0.9;
+}
+
+.testimonial-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.testimonial-name {
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.testimonial-type {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.3px;
+}
+
+@media (max-width: 640px) {
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+        padding: 0 1rem;
+    }
+}
+
 /* ── Cookie consent banner ──────────────────────────── */
 .cookie-banner{position:fixed;bottom:1.2rem;right:1.2rem;left:auto;max-width:320px;background:rgba(20,12,26,.92);border:1px solid rgba(212,167,106,.12);padding:1rem 1.2rem;border-radius:10px;z-index:9999;backdrop-filter:blur(12px);font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .cookie-banner a{color:var(--gold);text-decoration:none;opacity:.7;transition:opacity .3s}
