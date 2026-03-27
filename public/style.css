@@ -240,7 +240,7 @@ a {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 2rem;
+    padding: 2rem 2rem 3rem;
     position: relative;
 }
 
@@ -306,6 +306,154 @@ a {
     margin-bottom: 2rem;
 }
 
+/* ── Hero Price Cards ───────────────────────────────── */
+.hero-cards {
+    display: flex;
+    gap: 1.1rem;
+    margin: 2rem 0 1rem;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.hero-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.6rem 1.8rem 1.5rem;
+    min-width: 200px;
+    max-width: 220px;
+    background: rgba(15, 5, 12, 0.72);
+    border: 1px solid rgba(212, 167, 106, 0.18);
+    border-radius: 20px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    text-decoration: none;
+    color: var(--text);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    overflow: hidden;
+}
+
+.hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 60%;
+    background: radial-gradient(ellipse at 50% -10%, rgba(212, 167, 106, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(212, 167, 106, 0.45);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 0 24px rgba(212,167,106,0.1);
+}
+
+.hero-card--featured {
+    border-color: rgba(212, 167, 106, 0.32);
+    background: rgba(123, 45, 63, 0.22);
+}
+
+.hero-card--featured::before {
+    background: radial-gradient(ellipse at 50% -10%, rgba(212, 167, 106, 0.14) 0%, transparent 70%);
+}
+
+.hero-card--featured:hover {
+    box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 0 32px rgba(212,167,106,0.18);
+}
+
+.hero-card-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    background: rgba(212, 167, 106, 0.12);
+    border: 1px solid rgba(212, 167, 106, 0.25);
+    border-radius: 50px;
+    padding: 0.2rem 0.7rem;
+    margin-bottom: 0.2rem;
+    white-space: nowrap;
+}
+
+.hero-card-badge--muted {
+    color: var(--text-muted);
+    background: rgba(232, 213, 196, 0.06);
+    border-color: rgba(232, 213, 196, 0.12);
+}
+
+.hero-card-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(150deg, var(--gold-light) 0%, var(--gold) 70%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+}
+
+.hero-card-currency {
+    font-size: 1.7rem;
+    vertical-align: super;
+    line-height: 0;
+    letter-spacing: 0;
+}
+
+.hero-card-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.3;
+}
+
+.hero-card-hook {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.5;
+    flex: 1;
+}
+
+.hero-card-btn {
+    display: inline-block;
+    margin-top: auto;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    border: 1px solid rgba(232, 213, 196, 0.18);
+    border-radius: 50px;
+    transition: color 0.22s, border-color 0.22s, background 0.22s;
+    white-space: nowrap;
+    width: 100%;
+    text-align: center;
+}
+
+.hero-card-btn--gold {
+    color: var(--gold);
+    border-color: rgba(212, 167, 106, 0.35);
+    background: rgba(212, 167, 106, 0.06);
+}
+
+.hero-card:hover .hero-card-btn {
+    color: var(--gold-light);
+    border-color: rgba(212, 167, 106, 0.55);
+    background: rgba(212, 167, 106, 0.1);
+}
+
+/* ── Hero Microcopy ──────────────────────────────────── */
+.hero-microcopy {
+    margin-top: 0.8rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.2px;
+}
+
+/* ── Hero buttons ────────────────────────────────────── */
 .hero-buttons {
     display: flex;
     gap: 1rem;
@@ -1239,6 +1387,26 @@ a {
     /* Hero mobile */
     .hero {
         padding: 6rem 1.2rem 3rem;
+    }
+
+    .hero-cards {
+        gap: 0.75rem;
+        margin: 1.5rem 0 0.8rem;
+    }
+
+    .hero-card {
+        min-width: 155px;
+        max-width: 165px;
+        padding: 1.2rem 1.1rem 1.1rem;
+    }
+
+    .hero-card-price {
+        font-size: 2.6rem;
+    }
+
+    .hero-card-btn {
+        font-size: 0.72rem;
+        padding: 0.45rem 0.8rem;
     }
 
     .hero-logo {
