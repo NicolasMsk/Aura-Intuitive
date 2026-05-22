@@ -41,3 +41,8 @@ ALTER TABLE consultations ENABLE ROW LEVEL SECURITY;
 
 -- No public access policies — only the service key can read/write.
 -- If you ever need a public policy, add it here.
+
+-- 2026-05-22 — Add language column for EN/FR site support
+ALTER TABLE consultations
+  ADD COLUMN IF NOT EXISTS lang TEXT NOT NULL DEFAULT 'fr'
+  CHECK (lang IN ('fr', 'en'));
