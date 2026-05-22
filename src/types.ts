@@ -18,6 +18,8 @@ export interface Consultation {
   submitted_at: string | null;
   answered_at: string | null;
   created_at: string;
+  /** Language of the consultation. Defaults to 'fr' in database. */
+  lang?: 'fr' | 'en';
 }
 
 export interface SubmitBody {
@@ -27,6 +29,7 @@ export interface SubmitBody {
   birthdate?: string | null;
   person_concerned?: string | null;
   message: string;
+  lang?: 'fr' | 'en';
 }
 
 export interface RespondBody {
