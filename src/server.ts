@@ -220,10 +220,46 @@ app.get('/form', async (req: Request, res: Response): Promise<void> => {
   res.sendFile(path.join(__dirname, '..', 'public', 'form.html'));
 });
 
+/* ── 2b. Form page EN (GET /en/form) ────────────────── */
+
+app.get('/en/form', async (req: Request, res: Response): Promise<void> => {
+  const sessionId = req.query.session_id as string | undefined;
+
+  if (!sessionId) {
+    res.redirect('/en/#services');
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from('consultations')
+    .select('status')
+    .eq('stripe_session_id', sessionId)
+    .single();
+
+  if (error || !data) {
+    try {
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      if (session.payment_status !== 'paid') {
+        res.redirect('/en/#services');
+        return;
+      }
+    } catch {
+      res.redirect('/en/#services');
+      return;
+    }
+  } else if (data.status !== 'paid') {
+    res.sendFile(path.join(__dirname, '..', 'public', 'en', 'already-submitted.html'));
+    return;
+  }
+
+  res.sendFile(path.join(__dirname, '..', 'public', 'en', 'form.html'));
+});
+
 /* ── 3. Submit question (POST /api/submit) ──────────── */
 
 app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
-  const { session_id, name, email, birthdate, person_concerned, message } = req.body as SubmitBody;
+  const { session_id, name, email, birthdate, person_concerned, message, lang } = req.body as SubmitBody;
+  const normalizedLang: 'fr' | 'en' = lang === 'en' ? 'en' : 'fr';
 
   if (!session_id || !name || !email || !birthdate || !message) {
     res.status(400).json({ error: 'Champs obligatoires manquants.' });
@@ -261,6 +297,7 @@ app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
         person_concerned: person_concerned || null,
         message,
         submitted_at: new Date().toISOString(),
+        lang: normalizedLang,
       });
 
       if (insertError) {
@@ -271,17 +308,18 @@ app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
 
       // Send service-specific confirmation email
       try {
-        const emailHtml = service === 'Consultation Ressenti'
-          ? buildConfirmationEmailRessenti(name)
-          : buildConfirmationEmailOuiNon(name);
-        await resend.emails.send({
-          from: EMAIL_FROM,
-          to: email,
-          subject: service === 'Consultation Ressenti'
-            ? '✨ Votre Consultation Ressenti a bien été reçue — Aura Intuitive'
-            : '✨ Votre Réponse Oui / Non a bien été reçue — Aura Intuitive',
-          html: emailHtml,
-        });
+        const isRessenti = service === 'Consultation Ressenti';
+        const emailHtml = normalizedLang === 'en'
+          ? (isRessenti ? buildConfirmationEmailRessentiEN(name) : buildConfirmationEmailOuiNonEN(name))
+          : (isRessenti ? buildConfirmationEmailRessenti(name) : buildConfirmationEmailOuiNon(name));
+        const subject = normalizedLang === 'en'
+          ? (isRessenti
+              ? '✨ Your Intuitive Reading has been received — Aura Intuitive'
+              : '✨ Your Yes / No Answer has been received — Aura Intuitive')
+          : (isRessenti
+              ? '✨ Votre Consultation Ressenti a bien été reçue — Aura Intuitive'
+              : '✨ Votre Réponse Oui / Non a bien été reçue — Aura Intuitive');
+        await resend.emails.send({ from: EMAIL_FROM, to: email, subject, html: emailHtml });
         console.log(`📧  Confirmation email (${service}) sent to ${email}`);
       } catch (err: any) {
         console.error('⚠️  Confirmation email failed:', err.message);
@@ -324,6 +362,7 @@ app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
       person_concerned: person_concerned || null,
       message,
       submitted_at: new Date().toISOString(),
+      lang: normalizedLang,
     })
     .eq('stripe_session_id', session_id);
 
@@ -336,17 +375,18 @@ app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
   // Send service-specific confirmation email
   const serviceName = consultation.service || 'Consultation Ressenti';
   try {
-    const emailHtml = serviceName === 'Consultation Ressenti'
-      ? buildConfirmationEmailRessenti(name)
-      : buildConfirmationEmailOuiNon(name);
-    await resend.emails.send({
-      from: EMAIL_FROM,
-      to: email,
-      subject: serviceName === 'Consultation Ressenti'
-        ? '✨ Votre Consultation Ressenti a bien été reçue — Aura Intuitive'
-        : '✨ Votre Réponse Oui / Non a bien été reçue — Aura Intuitive',
-      html: emailHtml,
-    });
+    const isRessenti = serviceName === 'Consultation Ressenti';
+    const emailHtml = normalizedLang === 'en'
+      ? (isRessenti ? buildConfirmationEmailRessentiEN(name) : buildConfirmationEmailOuiNonEN(name))
+      : (isRessenti ? buildConfirmationEmailRessenti(name) : buildConfirmationEmailOuiNon(name));
+    const subject = normalizedLang === 'en'
+      ? (isRessenti
+          ? '✨ Your Intuitive Reading has been received — Aura Intuitive'
+          : '✨ Your Yes / No Answer has been received — Aura Intuitive')
+      : (isRessenti
+          ? '✨ Votre Consultation Ressenti a bien été reçue — Aura Intuitive'
+          : '✨ Votre Réponse Oui / Non a bien été reçue — Aura Intuitive');
+    await resend.emails.send({ from: EMAIL_FROM, to: email, subject, html: emailHtml });
     console.log(`📧  Confirmation email (${serviceName}) sent to ${email}`);
   } catch (err: any) {
     console.error('⚠️  Confirmation email failed:', err.message);
@@ -537,12 +577,19 @@ app.post('/api/admin/respond', requireAdmin, async (req: Request, res: Response)
   // Try to send email (best effort — don't block if it fails)
   let emailSent = false;
   let resendEmailId: string | null = null;
+  const c = consultation as Consultation;
+  const isEN = c.lang === 'en';
+  const serviceEN = c.service === 'Consultation Ressenti' ? 'Intuitive Reading' : 'Yes / No Answer';
   try {
     const emailResult = await resend.emails.send({
       from: EMAIL_FROM,
-      to: consultation.email,
-      subject: `🔮 Votre guidance Aura Intuitive — ${consultation.service}`,
-      html: buildResponseEmail(consultation as Consultation, response),
+      to: c.email!,
+      subject: isEN
+        ? `🔮 Your Aura Intuitive guidance — ${serviceEN}`
+        : `🔮 Votre guidance Aura Intuitive — ${c.service}`,
+      html: isEN
+        ? buildResponseEmailEN(c, response)
+        : buildResponseEmail(c, response),
     });
     emailSent = true;
     resendEmailId = emailResult.data?.id || null;
