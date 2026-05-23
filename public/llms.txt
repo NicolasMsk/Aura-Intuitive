@@ -46,3 +46,16 @@
 - Site : https://www.auraintuitive.fr
 - TikTok : https://www.tiktok.com/@aura_intuitive
 - Email : noreply@auraintuitive.com
+
+## English version
+
+Aura Intuitive is also available in English at:
+
+- Landing: https://www.auraintuitive.fr/en/
+- About: https://www.auraintuitive.fr/en/about.html
+- Legal notice: https://www.auraintuitive.fr/en/legal.html
+- Blog: https://www.auraintuitive.fr/en/blog/
+
+Services offered (same pricing as FR, payment in EUR via Stripe):
+- Intuitive Reading — €10 — detailed personalized spiritual guidance, answered within 24h
+- Yes / No Answer — €1 — short intuitive answer to a single yes/no question, answered within 24h
