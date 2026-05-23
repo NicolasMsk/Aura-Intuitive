@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JBCXB0EWH4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-JBCXB0EWH4');
+      gtag('config', 'AW-11456788386');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — Aura Intuitive | Psychic Readings, Guidance & Spirituality</title>
+    <meta name="description" content="Explore the Aura Intuitive blog: psychic reading tips, spiritual guidance, intuition development and more. Articles to help illuminate your path forward.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#7b2d3f">
+    <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="canonical" href="https://www.auraintuitive.fr/en/blog/">
+    <link rel="alternate" hreflang="fr" href="https://www.auraintuitive.fr/blog/">
+    <link rel="alternate" hreflang="en" href="https://www.auraintuitive.fr/en/blog/">
+    <link rel="alternate" hreflang="x-default" href="https://www.auraintuitive.fr/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.auraintuitive.fr/en/blog/">
+    <meta property="og:title" content="Blog — Aura Intuitive | Psychic Readings & Spiritual Guidance">
+    <meta property="og:description" content="Psychic reading tips, spiritual guidance and intuition development. Articles to help illuminate your path forward.">
+    <meta property="og:image" content="https://www.auraintuitive.fr/images/tik_tok.avif">
+    <meta property="og:locale" content="en_US">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.auraintuitive.fr/en/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://www.auraintuitive.fr/en/blog/"
+            }
+        ]
+    }
+    </script>
+
+    <link rel="stylesheet" href="/style.css?v=3">
+    <style>
+        .blog-page {
+            padding: 7rem 1.5rem 4rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .blog-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .blog-header-label {
+            font-size: 0.85rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.8rem;
+        }
+
+        .blog-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--gold-light);
+            margin-bottom: 0.8rem;
+        }
+
+        .blog-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .blog-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .blog-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.35s ease;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .blog-card:hover {
+            border-color: rgba(212, 167, 106, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .blog-card-img {
+            width: 260px;
+            min-height: 200px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(123, 45, 63, 0.3), rgba(74, 25, 66, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            overflow: hidden;
+        }
+
+        .blog-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .blog-card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .blog-card-tag {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .blog-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .blog-card-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .blog-card-title a:hover {
+            color: var(--gold);
+        }
+
+        .blog-card-excerpt {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .blog-card-meta {
+            font-size: 0.72rem;
+            color: rgba(232, 213, 196, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        /* ── Pagination ──────────────────────────── */
+        .blog-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 167, 106, 0.1);
+        }
+
+        .blog-pagination button {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .blog-pagination button:hover {
+            border-color: rgba(212, 167, 106, 0.4);
+            color: var(--gold);
+        }
+
+        .blog-pagination button.active {
+            background: rgba(212, 167, 106, 0.15);
+            border-color: rgba(212, 167, 106, 0.5);
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .blog-pagination button:disabled {
+            opacity: 0.3;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .blog-pagination .pagination-arrow {
+            font-size: 1rem;
+        }
+
+        .blog-empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 3rem 1rem;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .blog-page { padding: 5.5rem 1rem 3rem; }
+            .blog-header h1 { font-size: 1.6rem; }
+
+            .blog-card { flex-direction: column; }
+            .blog-card-img {
+                width: 100%;
+                min-height: 160px;
+                max-height: 200px;
+            }
+            .blog-card-body { padding: 1.2rem; }
+            .blog-card-title { font-size: 1.05rem; }
+        }
+
+        @media (max-width: 480px) {
+            .blog-page { padding: 5rem 0.7rem 2rem; }
+            .blog-header h1 { font-size: 1.3rem; }
+            .blog-header p { font-size: 0.85rem; }
+            .blog-card-body { padding: 1rem; }
+            .blog-card-title { font-size: 0.95rem; }
+            .blog-card-excerpt { font-size: 0.8rem; }
+
+            .blog-pagination button { width: 36px; height: 36px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="lang-switcher" style="position:absolute;top:16px;right:16px;z-index:100;font-size:13px;">
+  <a href="/blog/" style="color:rgba(255,255,255,0.6);text-decoration:none;margin-right:8px;">🇫🇷 FR</a>
+  <span style="color:rgba(255,255,255,0.3);">|</span>
+  <a href="/en/blog/" style="color:#d4a76a;text-decoration:none;font-weight:bold;margin-left:8px;">🇬🇧 EN</a>
+</div>
+
+    <div class="bg-aurora">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <div class="stars-canvas" id="starsCanvas"></div>
+
+    <nav class="navbar scrolled" id="navbar" aria-label="Main navigation">
+        <a href="/en/" class="nav-brand"><img src="/favicon_io/favicon-32x32.png" alt="Aura Intuitive" class="nav-logo" width="28" height="28"> Aura Intuitive</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="/en/#services">Readings</a></li>
+            <li><a href="/en/blog/" style="color:var(--gold);">Blog</a></li>
+            <li><a href="/en/#tiktok">TikTok</a></li>
+        </ul>
+    </nav>
+
+    <main class="blog-page">
+        <div class="blog-header">
+            <div class="blog-header-label">✦ The Blog</div>
+            <h1>Psychic Readings, Guidance & Spirituality</h1>
+            <p>Articles to guide you, shed light on your questions, and nurture your intuition.</p>
+        </div>
+
+        <div class="blog-grid" id="blogGrid">
+
+            <!-- Article 19 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/retrouver-amour.png" alt="Finding love as a single person — psychic reading" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Love & Relationships</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/finding-love-as-a-single-psychic.html">Will I Find Love Again? What a Psychic Reading Reveals When You're Single</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Single and searching for love? Discover what an intuitive reading can perceive about your romantic life, the invisible blocks keeping you from meeting someone, and signs that change is near.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 April 14, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 9 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 18 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/voyance-argent.png" alt="Money and finance psychic reading guidance" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Practical Guidance</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/money-and-finance-psychic.html">Money & Finances: What a Psychic Reading Can Perceive About Your Situation</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Financial stress, a big money decision, an investment — discover what intuitive reading can genuinely reveal about your financial situation and how to ask the right questions.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 April 14, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 8 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 17 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/rever-de-son-ex.png" alt="Dreaming of your ex — spiritual meaning" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Love & Relationships</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/dreaming-of-your-ex-meaning.html">Dreaming of Your Ex: Spiritual Meaning & Hidden Messages</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Why do you keep dreaming about your ex? Explore the spiritual significance of these recurring dreams and what they reveal about your emotions and energetic connection.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 24, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 8 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 16 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/developper-intuition.png" alt="Develop your intuition — daily exercises" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Spirituality</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/develop-your-intuition-exercises.html">How to Develop Your Intuition: 7 Simple Daily Exercises</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Intuition isn't a gift reserved for a chosen few. Discover 7 accessible exercises to strengthen your sixth sense in your everyday life.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 24, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 9 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 15 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/voyance-par-email.png" alt="Psychic reading by email benefits" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Online Readings</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/psychic-reading-by-email-benefits.html">Psychic Reading by Email: Why This Format Changes Everything</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Why email is ideal for a serious, personalised psychic reading. Benefits, limitations, and how it works with Laura.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 24, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 7 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 14 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/voyance-gratuite-en-ligne.png" alt="Free online psychic reading guide" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Practical Guidance</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/free-online-psychic-reading-guide.html">Free Online Psychic Readings: What You Need to Know Before You Start</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        What really hides behind free psychic reading offers — and how to find genuine, accessible guidance without the traps.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 7, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 7 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 13 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/voyance-sans-abonnement.png" alt="Psychic reading without subscription or credit card" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Practical Guidance</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/psychic-reading-without-credit-card.html">Psychic Reading With No Credit Card & No Subscription — It's Possible</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Psychic readings with no subscription, no commitment, and no stored card details. One-time secure payment, nothing more.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 7, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 5 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 12 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/voyance-1-euro.png" alt="Real 1-euro psychic reading" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Practical Guidance</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/cheap-psychic-reading-1-euro.html">Real 1-Euro Psychic Readings: Genuine or a Scam?</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        A psychic reading for €1 — yes, it's real and it's serious. Discover the Yes / No Answer format from Aura Intuitive.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 7, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 6 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 9 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/voyance-pas-chere.png" alt="Affordable psychic consultation from 1 euro" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Practical Guidance</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/affordable-psychic-consultation.html">Affordable Psychic Consultation: Genuine Guidance From €1</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Looking for a serious yet affordable psychic reading? Explore our consultations starting at €1 — Yes / No Answer and Intuitive Reading — with no subscription and no hidden fees.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 6, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 7 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 10 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/ex-refait-sa-vie.png" alt="My ex moved on — is it really over?" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Love & Relationships</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/my-ex-moved-on-psychic-reading.html">My Ex Has Moved On — Is It Really Over?</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Your ex is with someone new and you're wondering if it's truly final. What a psychic reading can perceive — between hope, letting go, and free will.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 6, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 8 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 11 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/voyance-gratuite-payante.png" alt="Free vs paid psychic reading" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Practical Guidance</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/free-vs-paid-psychic-reading.html">Free vs Paid Psychic Reading: What's the Real Difference?</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Free or paid psychic reading — which should you choose? The real differences, pitfalls to avoid, and how to find genuine guidance without breaking the bank.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 6, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 8 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 6 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/signes-pense-a-vous.png" alt="Signs he is thinking of you" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Love & Relationships</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/signs-he-is-thinking-of-you.html">7 Signs He's Thinking of You (Even Without Saying It)</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Sudden thoughts, vivid dreams, meaningful coincidences… Discover the 7 subtle signs that reveal someone is carrying you in their thoughts, even in silence.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 5, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 7 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 7 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/flamme-jumelle-ame-soeur.png" alt="Twin flame vs soulmate difference" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Spirituality</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/twin-flame-vs-soulmate.html">Twin Flame vs Soulmate: How to Tell the Difference</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Two concepts that are often confused yet fundamentally different. Discover the signs that distinguish a twin flame from a soulmate — and what a psychic reading can perceive about your connection.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 5, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 8 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 8 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/voyance-travail.png" alt="Career and work psychic reading" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Practical Guidance</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/career-and-work-psychic-reading.html">Career & Work Psychic Reading: Change, Workplace Energy & Growth</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Psychic guidance isn't just for love. Career changes, workplace tensions, entrepreneurial projects — discover what intuition can reveal about your professional life.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 5, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 7 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 1 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/formuler-question.png" alt="How to ask a psychic the right question" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Practical Guide</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/how-to-ask-a-psychic-question.html">How to Ask the Right Psychic Question for a Clear, Precise Answer</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        A well-formed question is already half the answer. Learn how to phrase your question to receive clear, precise, and genuinely useful guidance in your psychic reading.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 2, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 5 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 2 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/premiere-consultation.png" alt="First online psychic reading — what to expect" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Online Readings</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/first-online-psychic-reading.html">Your First Online Psychic Reading: What to Expect</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Still on the fence? Here is exactly what happens during a first online psychic reading — from choosing your session to receiving your guidance.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 2, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 6 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 3 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/retour-ex.png" alt="Will my ex come back — psychic reading" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Love & Relationships</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/will-my-ex-come-back-psychic.html">Will My Ex Come Back? What a Psychic Reading Can (and Can't) Tell You</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        The most common question in love readings. Discover what intuition can genuinely perceive after a break-up — its possibilities and its limits.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 2, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 6 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 4 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/voyance-amoureuse.png" alt="Love psychic reading — understanding feelings" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Love & Relationships</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/love-psychic-understanding-feelings.html">Love Psychic Reading: Understanding Someone Else's Feelings Through Intuition</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Silence, doubt, distance… When words are missing, intuition can illuminate what the other person truly feels. Discover how a love reading approaches feelings.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 2, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 6 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 5 -->
+            <article class="blog-card" data-article>
+                <div class="blog-card-img"><img src="/images/blog/oui-non-voyance.png" alt="Yes or No psychic answer — how it works" loading="lazy"></div>
+                <div class="blog-card-body">
+                    <div class="blog-card-tag">Practical Guidance</div>
+                    <h3 class="blog-card-title">
+                        <a href="/en/blog/yes-no-psychic-reading-how-it-works.html">Yes / No Psychic Answer: How It Works and When to Use It</a>
+                    </h3>
+                    <p class="blog-card-excerpt">
+                        Sometimes one word is enough. Discover how the Yes / No format works in psychic readings, when to use it, and how to phrase your question for a clear answer.
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>📅 March 2, 2026</span>
+                        <span>·</span>
+                        <span>⏱ 5 min read</span>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- All articles displayed (no pagination) -->
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-brand">✦ Aura Intuitive ✦</div>
+        <nav class="footer-nav" aria-label="Useful links" style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin:0.8rem 0;">
+            <a href="/en/" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;">Home</a>
+            <a href="/en/#services" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;">Readings</a>
+            <a href="/en/blog/" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;">Blog</a>
+            <a href="/en/#faq" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;">FAQ</a>
+            <a href="/en/legal.html" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;">Legal Notice</a>
+            <a href="/en/#tiktok" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;">TikTok</a>
+        </nav>
+        <p>© 2026 Aura Intuitive — All rights reserved</p>
+        <p style="margin-top:0.4rem;">Made with 🤍 and intuition</p>
+    </footer>
+
+    <script src="/script.js?v=3"></script>
+    <!-- Pagination disabled: all articles visible for SEO (19 articles) -->
+</body>
+</html>
