@@ -275,7 +275,6 @@
             Every soul carries its own answers — together, we uncover them.
         </p>
         <div class="hero-cards">
-            <!-- TODO: replace with EN Payment Link in Task 17 -->
             <a href="https://buy.stripe.com/3cI00i0Z2cyC4aL7wo4gg08" target="_blank" rel="noopener" class="hero-card">
                 <div class="hero-card-badge hero-card-badge--muted">From €1</div>
                 <div class="hero-card-price">1<span class="hero-card-currency">€</span></div>
@@ -283,7 +282,6 @@
                 <div class="hero-card-hook">A question weighing on you?<br>Get your answer.</div>
                 <span class="hero-card-btn">Try now →</span>
             </a>
-            <!-- TODO: replace with EN Payment Link in Task 17 -->
             <a href="https://buy.stripe.com/5kQ00ibDGfKOaz93g84gg07" target="_blank" rel="noopener" class="hero-card hero-card--featured">
                 <div class="hero-card-badge">✦ Popular</div>
                 <div class="hero-card-price">10<span class="hero-card-currency">€</span></div>
@@ -409,7 +407,6 @@
                     <span class="amount">10</span><span class="currency">€</span>
                 </div>
                 <p class="card-price-note">per reading</p>
-                <!-- TODO: replace with EN Payment Link in Task 17 -->
                 <a href="https://buy.stripe.com/5kQ00ibDGfKOaz93g84gg07" target="_blank" rel="noopener" class="btn btn-gold">
                     Pay &amp; Book ✦
                 </a>
@@ -433,7 +430,6 @@
                     <span class="amount">1</span><span class="currency">€</span>
                 </div>
                 <p class="card-price-note">per question</p>
-                <!-- TODO: replace with EN Payment Link in Task 17 -->
                 <a href="https://buy.stripe.com/3cI00i0Z2cyC4aL7wo4gg08" target="_blank" rel="noopener" class="btn btn-wine">
                     Pay &amp; Ask my question ✦
                 </a>
@@ -557,6 +553,14 @@
 
     <script src="/script.js?v=7"></script>
     <script>
+      // Bilingual bridge: mark visitor as EN before redirecting to Stripe
+      // so the post-payment form opens in English (see /form.html)
+      document.addEventListener('click', function(e){
+        var a = e.target.closest && e.target.closest('a[href*="buy.stripe.com"]');
+        if (a) {
+          try { localStorage.setItem('aura-lang', 'en'); } catch(_){}
+        }
+      });
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(() => {});
       }

@@ -29,6 +29,18 @@
     <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
+<script>
+  // Bilingual bridge: if visitor came from /en/ landing, redirect to EN form
+  (function(){
+    try {
+      if (localStorage.getItem('aura-lang') === 'en') {
+        localStorage.removeItem('aura-lang');
+        var qs = location.search ? location.search + '&lang=en' : '?lang=en';
+        location.replace('/en/form.html' + qs);
+      }
+    } catch(_){}
+  })();
+</script>
 <div class="lang-switcher">
   <a href="/form.html" class="active">FR</a>
   <span class="sep">|</span>
