@@ -17,6 +17,8 @@
     <meta name="author" content="Aura Intuitive">
     <meta name="robots" content="index, follow">
     <link rel="alternate" hreflang="fr" href="https://www.auraintuitive.fr/">
+    <link rel="alternate" hreflang="en" href="https://www.auraintuitive.fr/en/">
+    <link rel="alternate" hreflang="x-default" href="https://www.auraintuitive.fr/">
     <meta name="google-site-verification" content="JwETfgZU44rxpJch8ytoNo1PWjrudNfIdWM9ydbdwAY" />
     <meta name="theme-color" content="#7b2d3f">
     <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico">
@@ -229,9 +231,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=6">
+    <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
+<div class="lang-switcher">
+  <a href="/" class="active">FR</a>
+  <span class="sep">|</span>
+  <a href="/en/">EN</a>
+</div>
 
     <!-- Background -->
     <div class="bg-aurora">
@@ -543,7 +550,7 @@
         <p style="margin-top:0.4rem;">Fait avec 🤍 et intuition</p>
     </footer>
 
-    <script src="script.js?v=6"></script>
+    <script src="script.js?v=7"></script>
     <script>
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(() => {});

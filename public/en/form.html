@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <!-- Google tag (gtag.js) -->
@@ -12,40 +12,30 @@
       gtag('config', 'AW-11456788386');
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Votre consultation — Aura Intuitive</title>
-    <meta name="description" content="Envoyez votre question à Laura pour votre consultation de voyance en ligne. Réponse personnalisée par email sous 24h.">
+    <title>Your Consultation — Aura Intuitive</title>
+    <meta name="description" content="Send your question to Laura for your online psychic reading. Personalised response by email within 24 hours.">
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#7b2d3f">
+    <link rel="alternate" hreflang="fr" href="https://www.auraintuitive.fr/form.html">
+    <link rel="alternate" hreflang="en" href="https://www.auraintuitive.fr/en/form.html">
     <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
     <link rel="manifest" href="/favicon_io/site.webmanifest">
-    <link rel="alternate" hreflang="fr" href="https://www.auraintuitive.fr/form.html">
-    <link rel="alternate" hreflang="en" href="https://www.auraintuitive.fr/en/form.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=7">
+    <link rel="stylesheet" href="/style.css?v=7">
 </head>
 <body>
-<script>
-  // Bilingual bridge: if visitor came from /en/ landing, redirect to EN form
-  (function(){
-    try {
-      if (localStorage.getItem('aura-lang') === 'en') {
-        localStorage.removeItem('aura-lang');
-        var qs = location.search ? location.search + '&lang=en' : '?lang=en';
-        location.replace('/en/form.html' + qs);
-      }
-    } catch(_){}
-  })();
-</script>
-<div class="lang-switcher">
-  <a href="/form.html" class="active">FR</a>
-  <span class="sep">|</span>
-  <a href="/en/form.html">EN</a>
-</div>
+
+    <!-- Language switcher -->
+    <div class="lang-switcher">
+      <a href="/form.html">FR</a>
+      <span class="sep">|</span>
+      <a href="/en/form.html" class="active">EN</a>
+    </div>
 
     <!-- Background -->
     <div class="bg-aurora">
@@ -58,18 +48,18 @@
 
     <!-- Navigation -->
     <nav class="navbar scrolled">
-        <a href="/" class="nav-brand">✦ Aura Intuitive</a>
+        <a href="/en/" class="nav-brand">✦ Aura Intuitive</a>
     </nav>
 
     <!-- Form Section -->
     <section class="section form-page" id="formSection">
         <div class="section-header">
             <div class="success-icon">✅</div>
-            <h2 class="section-title">Merci pour votre paiement !</h2>
+            <h2 class="section-title">Thank you for your payment!</h2>
             <div class="section-sep"><div class="line"></div><span class="diamond">◆</span><div class="line"></div></div>
             <p class="section-desc">
-                Votre paiement a bien été reçu. Remplissez le formulaire ci-dessous
-                pour m'envoyer votre question. Je vous répondrai par email sous 24h. 🌙
+                Your payment has been received. Please fill in the form below
+                to send me your question. I will reply by email within 24 hours. 🌙
             </p>
         </div>
 
@@ -77,50 +67,50 @@
             <form class="contact-form" id="questionForm">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="name">Prénom *</label>
-                        <input type="text" id="name" name="name" placeholder="Votre prénom" required>
+                        <label for="name">First name *</label>
+                        <input type="text" id="name" name="name" placeholder="Your first name" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+                        <input type="email" id="email" name="email" placeholder="your@email.com" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="birthdate">Date de naissance *</label>
+                        <label for="birthdate">Date of birth *</label>
                         <input type="date" id="birthdate" name="birthdate" required>
                     </div>
                     <div class="form-group">
-                        <label for="person_concerned">Personne concernée <span>(optionnel)</span></label>
-                        <input type="text" id="person_concerned" name="person_concerned" placeholder="Prénom de la personne">
+                        <label for="person_concerned">Person concerned <span>(optional)</span></label>
+                        <input type="text" id="person_concerned" name="person_concerned" placeholder="Their first name">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="message">Votre question / situation *</label>
-                    <textarea id="message" name="message" rows="8" placeholder="Décrivez votre situation en détail : contexte, prénoms des personnes impliquées, vos ressentis, vos doutes… Plus votre message est complet, plus ma guidance sera précise et éclairante." required></textarea>
+                    <label for="message">Your question / situation *</label>
+                    <textarea id="message" name="message" rows="8" placeholder="Please describe your situation in detail: context, first names of the people involved, your feelings, your doubts… The more complete your message, the more precise and enlightening my guidance will be." required></textarea>
                 </div>
 
-                <input type="hidden" name="lang" value="fr">
+                <input type="hidden" name="lang" value="en">
 
                 <!-- Disclaimer -->
                 <div class="disclaimer">
                     <p class="disclaimer-text">
-                        ⚠️ <strong>Rappel :</strong> En envoyant ce formulaire, je certifie être <strong>majeur(e)</strong> (18 ans ou plus).
-                        Je comprends que la voyance ne se substitue en aucun cas à un avis médical, psychologique ou juridique.
-                        Les questions relatives à la <strong>santé, la grossesse, la médecine ou tout diagnostic</strong> ne seront pas traitées.
+                        ⚠️ <strong>Reminder:</strong> By submitting this form, I confirm that I am <strong>of legal age</strong> (18 or older).
+                        I understand that psychic reading does not replace medical, psychological, or legal advice.
+                        Questions relating to <strong>health, pregnancy, medicine, or any diagnosis</strong> will not be addressed.
                     </p>
                     <label class="disclaimer-check">
                         <input type="checkbox" id="disclaimerCheck" required>
                         <span class="checkmark"></span>
-                        <span>J'ai lu et j'accepte les conditions ci-dessus. Je confirme être majeur(e).</span>
+                        <span>I have read and accept the above conditions. I confirm I am of legal age.</span>
                     </label>
                 </div>
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-gold" id="submitBtn">
-                        Envoyer ma question ✦
+                        Send my question ✦
                     </button>
                 </div>
 
@@ -133,24 +123,24 @@
     <section class="section form-page" id="successSection" style="display:none;">
         <div class="section-header">
             <div class="success-icon" style="font-size:4rem;">🌟</div>
-            <h2 class="section-title">Votre question a bien été envoyée !</h2>
+            <h2 class="section-title">Your question has been sent!</h2>
             <div class="section-sep"><div class="line"></div><span class="diamond">◆</span><div class="line"></div></div>
             <p class="section-desc">
-                Je l'ai bien reçue et je vous répondrai par email sous 24h.
-                Gardez un œil sur votre boîte mail (et vos spams, au cas où). 🌙
+                I have received it and will reply by email within 24 hours.
+                Keep an eye on your inbox (and your spam folder, just in case). 🌙
             </p>
             <div style="margin-top:2rem;">
-                <a href="/" class="btn btn-glass">Retour à l'accueil</a>
+                <a href="/en/" class="btn btn-glass">Back to home</a>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-brand">✦ Aura Intuitive ✦</div>
-        <p>© 2026 Aura Intuitive — Tous droits réservés</p>
+        <p>© 2026 Aura Intuitive — All rights reserved</p>
     </footer>
 
-    <script src="script.js?v=7"></script>
+    <script src="/script.js?v=7"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('questionForm');
@@ -158,14 +148,14 @@
             const sessionId = new URLSearchParams(window.location.search).get('session_id');
 
             if (!sessionId) {
-                window.location.href = '/#services';
+                window.location.href = '/en/#services';
                 return;
             }
 
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const btn = document.getElementById('submitBtn');
-                btn.textContent = 'Envoi en cours... ✦';
+                btn.textContent = 'Sending... ✦';
                 btn.style.opacity = '0.7';
                 btn.disabled = true;
                 formMessage.className = 'form-message';
@@ -182,24 +172,22 @@
                             birthdate: document.getElementById('birthdate').value || null,
                             person_concerned: document.getElementById('person_concerned').value.trim() || null,
                             message: document.getElementById('message').value.trim(),
-                            lang: 'fr'
+                            lang: 'en'
                         })
                     });
 
                     const data = await res.json();
 
                     if (res.ok && data.success) {
-                        document.getElementById('formSection').style.display = 'none';
-                        document.getElementById('successSection').style.display = 'block';
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        window.location.href = '/en/thank-you.html';
                     } else {
-                        throw new Error(data.error || 'Une erreur est survenue.');
+                        throw new Error(data.error || 'An error occurred. Please try again.');
                     }
                 } catch (err) {
                     formMessage.className = 'form-message error';
                     formMessage.textContent = err.message;
                     formMessage.style.display = 'block';
-                    btn.textContent = 'Envoyer ma question ✦';
+                    btn.textContent = 'Send my question ✦';
                     btn.style.opacity = '1';
                     btn.disabled = false;
                 }
