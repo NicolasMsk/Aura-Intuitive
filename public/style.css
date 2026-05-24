@@ -2253,6 +2253,58 @@ a {
     }
 }
 
+/* ── Language switcher ──────────────────────────────── */
+.lang-switcher {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 200;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background: rgba(20, 12, 26, 0.78);
+  border: 1px solid rgba(212, 167, 106, 0.22);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  line-height: 1;
+}
+.lang-switcher a {
+  color: rgba(232, 213, 196, 0.55);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 999px;
+  transition: color 0.25s, background 0.25s;
+}
+.lang-switcher a:hover {
+  color: var(--gold-light);
+}
+.lang-switcher a.active {
+  color: var(--gold);
+  font-weight: 600;
+  background: rgba(212, 167, 106, 0.08);
+}
+.lang-switcher .sep {
+  color: rgba(255, 255, 255, 0.18);
+  font-size: 0.7rem;
+}
+@media (max-width: 600px) {
+  .lang-switcher {
+    top: 10px;
+    right: 10px;
+    font-size: 0.72rem;
+    padding: 4px 8px;
+  }
+  .lang-switcher a {
+    padding: 3px 6px;
+  }
+}
+
 /* ── Cookie consent banner ──────────────────────────── */
 .cookie-banner{position:fixed;bottom:1.2rem;right:1.2rem;left:auto;max-width:320px;background:rgba(20,12,26,.92);border:1px solid rgba(212,167,106,.12);padding:1rem 1.2rem;border-radius:10px;z-index:9999;backdrop-filter:blur(12px);font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .cookie-banner a{color:var(--gold);text-decoration:none;opacity:.7;transition:opacity .3s}
@@ -2261,4 +2313,4 @@ a {
 .cookie-banner .cookie-btn{background:transparent;color:var(--gold);border:1px solid rgba(212,167,106,.25);padding:.3rem 1rem;border-radius:20px;cursor:pointer;font-size:.72rem;font-weight:400;letter-spacing:.5px;transition:all .3s}
 .cookie-banner .cookie-btn:hover{background:rgba(212,167,106,.1);border-color:rgba(212,167,106,.4)}
 .cookie-banner.hidden{display:none}
-@media(max-width:480px){.cookie-banner{right:.6rem;left:.6rem;max-width:none;bottom:.6rem}}
+@media(max-width:480px){.cookie-banner{right:.6rem;left:.6rem;max-width:none;bottom:.6rem;font-size:.72rem;padding:.7rem .9rem}.cookie-banner .cookie-btn{font-size:.7rem;padding:.25rem .8rem}}

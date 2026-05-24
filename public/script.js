@@ -92,9 +92,13 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ── Cookie consent ────────────────────────────────── */
 (function() {
   if (localStorage.getItem('cookie-consent')) return;
+  var isEN = location.pathname.indexOf('/en/') === 0;
+  var msg = isEN
+    ? 'By continuing to browse, you agree to our use of cookies. <a href="/en/legal.html">Learn more</a>'
+    : 'En poursuivant votre navigation, vous acceptez l\'utilisation de cookies. <a href="/mentions-legales">Plus d\'infos</a>';
   var banner = document.createElement('div');
   banner.className = 'cookie-banner';
-  banner.innerHTML = '<div>En poursuivant votre navigation, vous acceptez l\'utilisation de cookies. <a href="/mentions-legales">Plus d\'infos</a></div><div class="cookie-actions"><button class="cookie-btn" id="cookieAccept">OK</button></div>';
+  banner.innerHTML = '<div>' + msg + '</div><div class="cookie-actions"><button class="cookie-btn" id="cookieAccept">OK</button></div>';
   document.body.appendChild(banner);
   document.getElementById('cookieAccept').addEventListener('click', function() {
     localStorage.setItem('cookie-consent', 'true');

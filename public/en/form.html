@@ -26,15 +26,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/style.css?v=3">
+    <link rel="stylesheet" href="/style.css?v=7">
 </head>
 <body>
 
     <!-- Language switcher -->
-    <div class="lang-switcher" style="position:absolute;top:16px;right:16px;z-index:100;font-size:13px;">
-      <a href="/form.html" style="color:rgba(255,255,255,0.6);text-decoration:none;margin-right:8px;">🇫🇷 FR</a>
-      <span style="color:rgba(255,255,255,0.3);">|</span>
-      <a href="/en/form.html" style="color:#d4a76a;text-decoration:none;font-weight:bold;margin-left:8px;">🇬🇧 EN</a>
+    <div class="lang-switcher">
+      <a href="/form.html">FR</a>
+      <span class="sep">|</span>
+      <a href="/en/form.html" class="active">EN</a>
     </div>
 
     <!-- Background -->
@@ -140,7 +140,7 @@
         <p>© 2026 Aura Intuitive — All rights reserved</p>
     </footer>
 
-    <script src="/script.js?v=3"></script>
+    <script src="/script.js?v=7"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('questionForm');
