@@ -47,6 +47,9 @@
         <div class="admin-header">
             <h2>📋 Consultations</h2>
             <div style="display:flex;align-items:center;gap:0.8rem;">
+                <button class="btn btn-glass" style="font-size:0.8rem;padding:0.5rem 1rem;" onclick="showCampaigns()">
+                    📧 Campagnes
+                </button>
                 <a href="/dashboard" class="btn btn-gold" style="font-size:0.8rem;padding:0.5rem 1rem;text-decoration:none;">
                     📊 Dashboard
                 </a>
@@ -122,6 +125,143 @@
             <div id="emailModalMeta" class="email-modal-meta"></div>
             <div class="modal-actions">
                 <button class="btn btn-gold" style="width:100%;" onclick="closeEmailModal()">Compris ✦</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ CAMPAGNES ═══ -->
+    <section class="section admin-page" id="campaignSection" style="display:none;">
+
+        <div class="admin-header">
+            <h2>📧 Campagnes Email</h2>
+            <div style="display:flex;align-items:center;gap:0.8rem;">
+                <button class="btn btn-glass" style="font-size:0.8rem;padding:0.5rem 1rem;" onclick="showConsultations()">
+                    ← Consultations
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 1: Recipients -->
+        <div class="consult-card" style="margin-bottom:1rem;">
+            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1.2rem;">
+                <span style="background:linear-gradient(135deg,#7b2d3f,#5c1a2e);color:#d4a76a;font-weight:700;font-size:0.85rem;padding:0.3rem 0.7rem;border-radius:20px;">1</span>
+                <strong style="color:#e8d5c4;font-size:1rem;">Destinataires</strong>
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:1.2rem;align-items:flex-end;margin-bottom:1rem;">
+                <div>
+                    <label style="display:block;color:rgba(232,213,196,0.6);font-size:0.78rem;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.8px;">Segment</label>
+                    <select id="campaignFilter" onchange="loadCampaignRecipients()" style="background:#2a1520;color:#e8d5c4;border:1px solid rgba(123,45,63,0.5);border-radius:8px;padding:0.5rem 0.8rem;font-size:0.9rem;cursor:pointer;">
+                        <option value="all">Toutes</option>
+                        <option value="superfans">Super-fans (3+ consults)</option>
+                        <option value="repeat">Récurrentes (2 consults)</option>
+                        <option value="oneshot">Premières fois (1 consult)</option>
+                        <option value="active">Actives (< 30 jours)</option>
+                        <option value="inactive">Inactives (60j+)</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display:block;color:rgba(232,213,196,0.6);font-size:0.78rem;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.8px;">Langue</label>
+                    <div style="display:flex;gap:0.8rem;align-items:center;">
+                        <label style="display:flex;align-items:center;gap:0.3rem;color:#e8d5c4;font-size:0.88rem;cursor:pointer;">
+                            <input type="radio" name="campaignLang" value="all" checked onchange="loadCampaignRecipients()"> Toutes
+                        </label>
+                        <label style="display:flex;align-items:center;gap:0.3rem;color:#e8d5c4;font-size:0.88rem;cursor:pointer;">
+                            <input type="radio" name="campaignLang" value="fr" onchange="loadCampaignRecipients()"> FR
+                        </label>
+                        <label style="display:flex;align-items:center;gap:0.3rem;color:#e8d5c4;font-size:0.88rem;cursor:pointer;">
+                            <input type="radio" name="campaignLang" value="en" onchange="loadCampaignRecipients()"> EN
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="campaignRecipientStatus" style="color:#d4a76a;font-size:0.95rem;margin-bottom:0.6rem;">
+                Chargement...
+            </div>
+
+            <button class="btn-tiny" onclick="toggleRecipientList()" id="recipientListToggle" style="display:none;">
+                Voir la liste détaillée ▼
+            </button>
+            <div id="recipientListContainer" style="display:none;margin-top:0.8rem;max-height:220px;overflow-y:auto;border:1px solid rgba(123,45,63,0.3);border-radius:8px;">
+                <table style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+                    <thead>
+                        <tr style="border-bottom:1px solid rgba(123,45,63,0.4);">
+                            <th style="color:rgba(212,167,106,0.8);padding:0.5rem 0.7rem;text-align:left;font-weight:600;">Email</th>
+                            <th style="color:rgba(212,167,106,0.8);padding:0.5rem 0.7rem;text-align:left;font-weight:600;">Prénom</th>
+                            <th style="color:rgba(212,167,106,0.8);padding:0.5rem 0.7rem;text-align:center;font-weight:600;">Consults</th>
+                            <th style="color:rgba(212,167,106,0.8);padding:0.5rem 0.7rem;text-align:left;font-weight:600;">Dernière</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recipientListBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Step 2: Composer -->
+        <div class="consult-card" style="margin-bottom:1rem;">
+            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1.2rem;">
+                <span style="background:linear-gradient(135deg,#7b2d3f,#5c1a2e);color:#d4a76a;font-weight:700;font-size:0.85rem;padding:0.3rem 0.7rem;border-radius:20px;">2</span>
+                <strong style="color:#e8d5c4;font-size:1rem;">Contenu</strong>
+            </div>
+
+            <div style="margin-bottom:1rem;">
+                <label style="display:block;color:rgba(232,213,196,0.6);font-size:0.78rem;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.8px;">Objet de l'email</label>
+                <input type="text" id="campaignSubject" placeholder="Ex: Un cadeau pour vous remercier ✨" style="width:100%;box-sizing:border-box;background:#2a1520;color:#e8d5c4;border:1px solid rgba(123,45,63,0.5);border-radius:8px;padding:0.6rem 0.8rem;font-size:0.95rem;font-family:inherit;">
+            </div>
+
+            <div style="margin-bottom:0.5rem;">
+                <label style="display:block;color:rgba(232,213,196,0.6);font-size:0.78rem;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.8px;">Corps du message</label>
+                <textarea id="campaignBody" rows="8" placeholder="Bonjour {prenom},&#10;&#10;Je voulais vous remercier personnellement pour votre confiance...&#10;&#10;À très vite,&#10;Laura" style="width:100%;box-sizing:border-box;background:#2a1520;color:#e8d5c4;border:1px solid rgba(123,45,63,0.5);border-radius:8px;padding:0.6rem 0.8rem;font-size:0.95rem;font-family:inherit;resize:vertical;line-height:1.6;"></textarea>
+                <p style="color:rgba(232,213,196,0.4);font-size:0.78rem;margin:0.3rem 0 0;">Utilisez <code style="background:rgba(123,45,63,0.3);padding:0.1rem 0.3rem;border-radius:3px;">{prenom}</code> pour personnaliser. Une ligne vide = nouveau paragraphe.</p>
+            </div>
+
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;">
+                <div style="flex:1;min-width:160px;">
+                    <label style="display:block;color:rgba(232,213,196,0.6);font-size:0.78rem;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.8px;">Texte du bouton (optionnel)</label>
+                    <input type="text" id="campaignCtaText" placeholder="Réserver à -50%" style="width:100%;box-sizing:border-box;background:#2a1520;color:#e8d5c4;border:1px solid rgba(123,45,63,0.5);border-radius:8px;padding:0.5rem 0.7rem;font-size:0.88rem;font-family:inherit;">
+                </div>
+                <div style="flex:2;min-width:220px;">
+                    <label style="display:block;color:rgba(232,213,196,0.6);font-size:0.78rem;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.8px;">Lien du bouton (optionnel)</label>
+                    <input type="url" id="campaignCtaUrl" placeholder="https://..." style="width:100%;box-sizing:border-box;background:#2a1520;color:#e8d5c4;border:1px solid rgba(123,45,63,0.5);border-radius:8px;padding:0.5rem 0.7rem;font-size:0.88rem;font-family:inherit;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Actions -->
+        <div class="consult-card" style="margin-bottom:1rem;">
+            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1.2rem;">
+                <span style="background:linear-gradient(135deg,#7b2d3f,#5c1a2e);color:#d4a76a;font-weight:700;font-size:0.85rem;padding:0.3rem 0.7rem;border-radius:20px;">3</span>
+                <strong style="color:#e8d5c4;font-size:1rem;">Envoi</strong>
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:0.8rem;margin-bottom:1rem;">
+                <button class="btn btn-glass" style="font-size:0.88rem;padding:0.5rem 1.1rem;" onclick="campaignPreview()">
+                    👁 Aperçu
+                </button>
+                <button class="btn btn-glass" style="font-size:0.88rem;padding:0.5rem 1.1rem;" onclick="campaignSendTest()">
+                    ✉ Envoyer test à moi
+                </button>
+                <button class="btn btn-gold" style="font-size:0.88rem;padding:0.5rem 1.1rem;" onclick="campaignSendAll()">
+                    🚀 Envoyer à <span id="campaignSendCount">0</span> personnes
+                </button>
+            </div>
+
+            <div id="campaignStatus" style="display:none;padding:0.7rem 1rem;border-radius:8px;font-size:0.9rem;background:rgba(123,45,63,0.15);border:1px solid rgba(212,167,106,0.2);color:#e8d5c4;"></div>
+        </div>
+
+    </section>
+
+    <!-- ═══ MODAL PREVIEW ═══ -->
+    <div class="modal-overlay" id="previewModal" style="align-items:flex-start;padding-top:2rem;">
+        <div class="modal-box" style="max-width:650px;width:95%;max-height:80vh;display:flex;flex-direction:column;">
+            <div class="modal-icon">👁</div>
+            <h3 class="modal-title">Aperçu de l'email</h3>
+            <div style="flex:1;overflow-y:auto;border:1px solid rgba(123,45,63,0.3);border-radius:8px;margin:0.5rem 0 1rem;">
+                <iframe id="previewIframe" style="width:100%;height:500px;border:none;background:#1a0a10;" title="Email preview"></iframe>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-gold" style="width:100%;" onclick="closePreviewModal()">Fermer ✦</button>
             </div>
         </div>
     </div>
@@ -598,6 +738,197 @@
                 }
             } catch {}
         })();
+
+        /* ══════════════════════════════════════════════
+           CAMPAGNES
+           ══════════════════════════════════════════════ */
+
+        let campaignRecipients = [];
+
+        function showCampaigns() {
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('campaignSection').style.display = 'block';
+            loadCampaignRecipients();
+        }
+
+        function showConsultations() {
+            document.getElementById('campaignSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'block';
+        }
+
+        async function loadCampaignRecipients() {
+            const filter = document.getElementById('campaignFilter').value;
+            const langRadio = document.querySelector('input[name="campaignLang"]:checked');
+            const lang = langRadio ? langRadio.value : 'all';
+
+            const statusEl = document.getElementById('campaignRecipientStatus');
+            statusEl.textContent = 'Chargement...';
+            statusEl.style.color = 'rgba(232,213,196,0.5)';
+
+            try {
+                const res = await fetch(`/api/admin/campaign/recipients?filter=${encodeURIComponent(filter)}&lang=${encodeURIComponent(lang)}`);
+                if (!res.ok) {
+                    statusEl.textContent = 'Erreur lors du chargement des destinataires.';
+                    statusEl.style.color = '#ff6b6b';
+                    return;
+                }
+                const data = await res.json();
+                campaignRecipients = data.recipients || [];
+
+                statusEl.textContent = `✓ ${data.count} destinataire${data.count !== 1 ? 's' : ''} sélectionné${data.count !== 1 ? 's' : ''}`;
+                statusEl.style.color = '#7ddf90';
+
+                document.getElementById('campaignSendCount').textContent = data.count;
+
+                const toggleBtn = document.getElementById('recipientListToggle');
+                toggleBtn.style.display = data.count > 0 ? 'inline-block' : 'none';
+
+                // Populate the detail table (but keep it hidden)
+                const tbody = document.getElementById('recipientListBody');
+                tbody.innerHTML = campaignRecipients.map(r => `
+                    <tr style="border-bottom:1px solid rgba(123,45,63,0.2);">
+                        <td style="color:#e8d5c4;padding:0.4rem 0.7rem;">${escapeHtml(r.email)}</td>
+                        <td style="color:#e8d5c4;padding:0.4rem 0.7rem;">${escapeHtml(r.name ? r.name.trim().split(' ')[0] : '—')}</td>
+                        <td style="color:#d4a76a;padding:0.4rem 0.7rem;text-align:center;">${r.consult_count}</td>
+                        <td style="color:rgba(232,213,196,0.6);padding:0.4rem 0.7rem;">${r.last_consult || '—'}</td>
+                    </tr>
+                `).join('');
+
+            } catch {
+                statusEl.textContent = 'Erreur de connexion.';
+                statusEl.style.color = '#ff6b6b';
+            }
+        }
+
+        function toggleRecipientList() {
+            const container = document.getElementById('recipientListContainer');
+            const btn = document.getElementById('recipientListToggle');
+            const isHidden = container.style.display === 'none';
+            container.style.display = isHidden ? 'block' : 'none';
+            btn.textContent = isHidden ? 'Masquer la liste ▲' : 'Voir la liste détaillée ▼';
+        }
+
+        function getCampaignPayload() {
+            return {
+                subject: document.getElementById('campaignSubject').value.trim(),
+                body: document.getElementById('campaignBody').value,
+                cta_text: document.getElementById('campaignCtaText').value.trim() || undefined,
+                cta_url: document.getElementById('campaignCtaUrl').value.trim() || undefined,
+            };
+        }
+
+        function showCampaignStatus(msg, isError) {
+            const el = document.getElementById('campaignStatus');
+            el.textContent = msg;
+            el.style.display = 'block';
+            el.style.borderColor = isError ? 'rgba(255,107,107,0.4)' : 'rgba(212,167,106,0.2)';
+            el.style.color = isError ? '#ff6b6b' : '#e8d5c4';
+        }
+
+        async function campaignPreview() {
+            const payload = getCampaignPayload();
+            if (!payload.body) {
+                showCampaignStatus('Veuillez rédiger le corps du message.', true);
+                return;
+            }
+            try {
+                const res = await fetch('/api/admin/campaign/preview', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) {
+                    showCampaignStatus('Erreur lors de la génération de l\'aperçu.', true);
+                    return;
+                }
+                const data = await res.json();
+                const iframe = document.getElementById('previewIframe');
+                iframe.srcdoc = data.html;
+                document.getElementById('previewModal').classList.add('active');
+            } catch {
+                showCampaignStatus('Erreur de connexion.', true);
+            }
+        }
+
+        function closePreviewModal() {
+            document.getElementById('previewModal').classList.remove('active');
+        }
+
+        document.getElementById('previewModal').addEventListener('click', e => {
+            if (e.target === e.currentTarget) closePreviewModal();
+        });
+
+        async function campaignSendTest() {
+            const payload = getCampaignPayload();
+            if (!payload.subject || !payload.body) {
+                showCampaignStatus('Veuillez remplir l\'objet et le corps du message.', true);
+                return;
+            }
+            const savedEmail = localStorage.getItem('campaignTestEmail') || '';
+            const testEmail = prompt('Adresse email pour le test :', savedEmail);
+            if (!testEmail) return;
+            localStorage.setItem('campaignTestEmail', testEmail);
+
+            showCampaignStatus('Envoi du test...', false);
+            try {
+                const res = await fetch('/api/admin/campaign/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ...payload,
+                        recipients: [{ email: testEmail, name: 'Test' }],
+                        test_only: true
+                    })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    showCampaignStatus('Erreur : ' + (data.error || 'inconnue'), true);
+                } else if (data.sent > 0) {
+                    showCampaignStatus(`✓ Email test envoyé à ${testEmail}`, false);
+                } else {
+                    showCampaignStatus(`⚠ Échec d'envoi : ${data.errors.join(', ')}`, true);
+                }
+            } catch {
+                showCampaignStatus('Erreur de connexion.', true);
+            }
+        }
+
+        async function campaignSendAll() {
+            const payload = getCampaignPayload();
+            if (!payload.subject || !payload.body) {
+                showCampaignStatus('Veuillez remplir l\'objet et le corps du message.', true);
+                return;
+            }
+            if (campaignRecipients.length === 0) {
+                showCampaignStatus('Aucun destinataire sélectionné.', true);
+                return;
+            }
+            const count = campaignRecipients.length;
+            const confirmed = confirm(`Envoyer à ${count} personne${count !== 1 ? 's' : ''} ? Action irréversible.`);
+            if (!confirmed) return;
+
+            showCampaignStatus(`Envoi en cours à ${count} destinataire${count !== 1 ? 's' : ''}...`, false);
+            try {
+                const res = await fetch('/api/admin/campaign/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ...payload,
+                        recipients: campaignRecipients.map(r => ({ email: r.email, name: r.name })),
+                        test_only: false
+                    })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    showCampaignStatus('Erreur : ' + (data.error || 'inconnue'), true);
+                } else {
+                    const msg = `✓ ${data.sent} envoyé${data.sent !== 1 ? 's' : ''}${data.failed > 0 ? ` / ⚠ ${data.failed} échec${data.failed !== 1 ? 's' : ''}` : ''}`;
+                    showCampaignStatus(msg, data.failed > 0);
+                }
+            } catch {
+                showCampaignStatus('Erreur de connexion.', true);
+            }
+        }
     </script>
 </body>
 </html>
