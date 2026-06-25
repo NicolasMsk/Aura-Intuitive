@@ -729,8 +729,248 @@ app.get('/admin', (_req: Request, res: Response): void => {
 });
 
 /* ═══════════════════════════════════════════════════════
+   CAMPAIGN ENDPOINTS
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Campaign recipients ────────────────────────────── */
+
+app.get('/api/admin/campaign/recipients', requireAdmin, async (req: Request, res: Response): Promise<void> => {
+  const filter = (req.query.filter as string) || 'all';
+  const lang = (req.query.lang as string) || 'all';
+
+  // Fetch all consultations with relevant statuses
+  let query = supabase
+    .from('consultations')
+    .select('email, name, lang, created_at')
+    .in('status', ['submitted', 'answered']);
+
+  const { data, error } = await query;
+
+  if (error) {
+    res.status(500).json({ error: 'Erreur base de données.' });
+    return;
+  }
+
+  const rows = data ?? [];
+
+  // Deduplicate by lowercased email — keep most recent name and track counts/dates
+  const emailMap = new Map<string, { email: string; name: string; lang: string | null; consult_count: number; last_consult: string }>();
+
+  // Sort by created_at descending so most recent comes first
+  const sorted = [...rows].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+  for (const row of sorted) {
+    if (!row.email) continue;
+    const key = row.email.toLowerCase().trim();
+    if (!emailMap.has(key)) {
+      emailMap.set(key, {
+        email: key,
+        name: (row.name || '').trim(),
+        lang: row.lang || null,
+        consult_count: 1,
+        last_consult: row.created_at ? row.created_at.substring(0, 10) : '',
+      });
+    } else {
+      const existing = emailMap.get(key)!;
+      existing.consult_count += 1;
+      // Update name to most recent (already sorted desc, so first hit is most recent)
+      // keep existing.name as it was set from the first (most recent) row
+    }
+  }
+
+  let recipients = Array.from(emailMap.values());
+
+  // Apply lang filter
+  if (lang === 'fr') {
+    recipients = recipients.filter(r => !r.lang || r.lang === 'fr');
+  } else if (lang === 'en') {
+    recipients = recipients.filter(r => r.lang === 'en');
+  }
+
+  // Apply segment filter
+  const now = new Date();
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
+  const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
+
+  if (filter === 'superfans') {
+    recipients = recipients.filter(r => r.consult_count >= 3);
+  } else if (filter === 'repeat') {
+    recipients = recipients.filter(r => r.consult_count === 2);
+  } else if (filter === 'oneshot') {
+    recipients = recipients.filter(r => r.consult_count === 1);
+  } else if (filter === 'active') {
+    recipients = recipients.filter(r => r.last_consult >= thirtyDaysAgo);
+  } else if (filter === 'inactive') {
+    recipients = recipients.filter(r => r.last_consult < sixtyDaysAgo);
+  }
+  // 'all' — no extra filter
+
+  res.json({ count: recipients.length, recipients });
+});
+
+/* ── Campaign preview ────────────────────────────────── */
+
+app.post('/api/admin/campaign/preview', requireAdmin, async (req: Request, res: Response): Promise<void> => {
+  const { subject, body, cta_text, cta_url } = req.body as {
+    subject?: string;
+    body?: string;
+    cta_text?: string;
+    cta_url?: string;
+  };
+
+  if (!body) {
+    res.status(400).json({ error: 'body requis.' });
+    return;
+  }
+
+  // Replace {prenom} with sample name for preview
+  const previewBody = body.replace(/\{prenom\}/gi, 'Marie');
+
+  const html = buildCampaignEmail({ bodyText: previewBody, ctaText: cta_text, ctaUrl: cta_url });
+  res.json({ html });
+});
+
+/* ── Campaign send ───────────────────────────────────── */
+
+app.post('/api/admin/campaign/send', requireAdmin, async (req: Request, res: Response): Promise<void> => {
+  const { subject, body, cta_text, cta_url, recipients, test_only } = req.body as {
+    subject: string;
+    body: string;
+    cta_text?: string;
+    cta_url?: string;
+    recipients: Array<{ email: string; name?: string }>;
+    test_only?: boolean;
+  };
+
+  if (!subject || !body) {
+    res.status(400).json({ error: 'subject et body sont requis.' });
+    return;
+  }
+
+  if (!recipients || recipients.length === 0) {
+    res.status(400).json({ error: 'Au moins un destinataire requis.' });
+    return;
+  }
+
+  const targetRecipients = test_only ? [recipients[0]] : recipients;
+
+  // Extract first name helper
+  const getPrenom = (name?: string): string => {
+    if (!name) return '';
+    return name.trim().split(/\s+/)[0] || '';
+  };
+
+  // Build batch of email payloads, chunked at 100
+  const CHUNK = 100;
+  let sent = 0;
+  let failed = 0;
+  const errors: string[] = [];
+
+  for (let i = 0; i < targetRecipients.length; i += CHUNK) {
+    const chunk = targetRecipients.slice(i, i + CHUNK);
+    const batch = chunk.map(r => {
+      const prenom = getPrenom(r.name);
+      const personalizedBody = body.replace(/\{prenom\}/gi, prenom);
+      return {
+        from: EMAIL_FROM,
+        to: r.email.toLowerCase().trim(),
+        subject,
+        html: buildCampaignEmail({ bodyText: personalizedBody, ctaText: cta_text, ctaUrl: cta_url }),
+      };
+    });
+
+    try {
+      const result = await resend.batch.send(batch);
+      // resend.batch.send returns { data: Array<{id}|null> | null, error }
+      if (result.error) {
+        console.error('⚠️  Campaign batch error:', result.error);
+        failed += chunk.length;
+        errors.push(`Batch ${Math.floor(i / CHUNK) + 1}: ${(result.error as any).message || JSON.stringify(result.error)}`);
+      } else {
+        // CreateBatchSuccessResponse may be an object with a `data` array property
+        const rawData = result.data as unknown;
+        const resultsArr: Array<{ id: string } | null> = Array.isArray(rawData)
+          ? rawData
+          : (rawData && typeof rawData === 'object' && 'data' in rawData && Array.isArray((rawData as any).data))
+            ? (rawData as any).data
+            : [];
+        for (let j = 0; j < chunk.length; j++) {
+          if (resultsArr[j]) {
+            sent += 1;
+          } else {
+            failed += 1;
+            errors.push(`${chunk[j].email}: no response`);
+          }
+        }
+      }
+    } catch (err: any) {
+      console.error('⚠️  Campaign batch exception:', err.message);
+      failed += chunk.length;
+      errors.push(`Batch ${Math.floor(i / CHUNK) + 1}: ${err.message}`);
+    }
+  }
+
+  console.log(`📨 Campaign sent: ${sent} successful, ${failed} failed`);
+  res.json({ sent, failed, errors });
+});
+
+/* ═══════════════════════════════════════════════════════
    EMAIL TEMPLATES
    ═══════════════════════════════════════════════════════ */
+
+/* ── Campaign email template ─────────────────────────── */
+
+function buildCampaignEmail(opts: {
+  bodyText: string;
+  ctaText?: string;
+  ctaUrl?: string;
+}): string {
+  // Convert text to HTML paragraphs (split on \n\n for paragraphs, \n inside for line breaks)
+  const paragraphsHtml = opts.bodyText
+    .split(/\n\n+/)
+    .map(p => `<p style="margin:0 0 16px;line-height:1.7;font-size:15px;color:#e8d5c4;">${
+      p.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')
+    }</p>`)
+    .join('');
+
+  const ctaHtml = (opts.ctaText && opts.ctaUrl)
+    ? `<div style="text-align:center;margin:32px 0;">
+         <a href="${opts.ctaUrl}" style="display:inline-block;background:linear-gradient(135deg,#d4a76a,#b8894f);color:#1a0a10;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:15px;letter-spacing:1px;">
+           ${opts.ctaText}
+         </a>
+       </div>`
+    : '';
+
+  return `
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#1a0a10;font-family:'Segoe UI',Arial,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;background:linear-gradient(135deg,#2a1520,#1a0a10);border:1px solid rgba(123,45,63,0.4);border-radius:16px;overflow:hidden;">
+
+    <div style="background:linear-gradient(135deg,#7b2d3f,#5c1a2e);padding:32px 24px;text-align:center;">
+      <h1 style="color:#d4a76a;margin:0;font-size:24px;letter-spacing:2px;">✦ Aura Intuitive ✦</h1>
+      <p style="color:rgba(255,255,255,0.7);margin:8px 0 0;font-size:14px;">Un mot personnel de Laura</p>
+    </div>
+
+    <div style="padding:32px 24px;">
+      ${paragraphsHtml}
+      ${ctaHtml}
+    </div>
+
+    <div style="border-top:1px solid rgba(123,45,63,0.3);padding:20px 24px;text-align:center;">
+      <p style="color:rgba(232,213,196,0.4);font-size:11px;margin:0 0 6px;">
+        Aura Intuitive — <a href="https://www.auraintuitive.fr" style="color:rgba(212,167,106,0.6);">auraintuitive.fr</a>
+      </p>
+      <p style="color:rgba(232,213,196,0.4);font-size:11px;margin:0;">
+        Vous recevez cet email car vous avez fait appel à mes services.
+        Pour ne plus recevoir d'emails, répondez avec "DÉSINSCRIPTION".
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+}
 
 /* ── Admin alert email — Nouvelle question ──────────── */
 
