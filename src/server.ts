@@ -825,9 +825,10 @@ app.post('/api/admin/campaign/preview', requireAdmin, async (req: Request, res: 
 
   // Replace {prenom} with sample name for preview
   const previewBody = body.replace(/\{prenom\}/gi, 'Marie');
+  const previewSubject = (req.body.subject || '').toString().replace(/\{prenom\}/gi, 'Marie');
 
   const html = buildCampaignEmail({ bodyText: previewBody, ctaText: cta_text, ctaUrl: cta_url });
-  res.json({ html });
+  res.json({ html, subject: previewSubject });
 });
 
 /* ── Campaign send ───────────────────────────────────── */
@@ -871,10 +872,11 @@ app.post('/api/admin/campaign/send', requireAdmin, async (req: Request, res: Res
     const batch = chunk.map(r => {
       const prenom = getPrenom(r.name);
       const personalizedBody = body.replace(/\{prenom\}/gi, prenom);
+      const personalizedSubject = subject.replace(/\{prenom\}/gi, prenom);
       return {
         from: EMAIL_FROM,
         to: r.email.toLowerCase().trim(),
-        subject,
+        subject: personalizedSubject,
         html: buildCampaignEmail({ bodyText: personalizedBody, ctaText: cta_text, ctaUrl: cta_url }),
       };
     });
