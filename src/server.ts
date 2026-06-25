@@ -161,7 +161,8 @@ async function webhookHandler(req: Request, res: Response): Promise<void> {
     const metadataService = (session.metadata?.service ?? '').trim();
     if (metadataService === 'Consultation Ressenti' || metadataService === 'Réponse Oui / Non') {
       service = metadataService;
-    } else if (amountTotal >= 1000) {
+    } else if (amountTotal >= 1000 || amountTotal === 500) {
+      // €10+ standard Ressenti, OR €5 promo fidélité (-50%)
       service = 'Consultation Ressenti';
     } else {
       service = 'Réponse Oui / Non';
@@ -291,7 +292,7 @@ app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
       const metadataService = (session.metadata?.service ?? '').trim();
       const service = (metadataService === 'Consultation Ressenti' || metadataService === 'Réponse Oui / Non')
         ? metadataService
-        : (amountTotal >= 1000 ? 'Consultation Ressenti' : 'Réponse Oui / Non');
+        : ((amountTotal >= 1000 || amountTotal === 500) ? 'Consultation Ressenti' : 'Réponse Oui / Non');
 
       const { error: insertError } = await supabase.from('consultations').insert({
         stripe_session_id: session_id,
