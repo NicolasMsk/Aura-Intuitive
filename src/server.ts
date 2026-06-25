@@ -156,7 +156,12 @@ async function webhookHandler(req: Request, res: Response): Promise<void> {
     const amountTotal = session.amount_total ?? 0; // in cents
     let service: string;
 
-    if (amountTotal >= 1000) {
+    // 1. Prefer explicit Stripe Payment Link metadata `service`
+    //    (used for promos at non-standard prices, e.g. €5 Ressenti)
+    const metadataService = (session.metadata?.service ?? '').trim();
+    if (metadataService === 'Consultation Ressenti' || metadataService === 'Réponse Oui / Non') {
+      service = metadataService;
+    } else if (amountTotal >= 1000) {
       service = 'Consultation Ressenti';
     } else {
       service = 'Réponse Oui / Non';
@@ -283,7 +288,10 @@ app.post('/api/submit', async (req: Request, res: Response): Promise<void> => {
       }
       // Create the record if webhook was delayed
       const amountTotal = session.amount_total ?? 0;
-      const service = amountTotal >= 1000 ? 'Consultation Ressenti' : 'Réponse Oui / Non';
+      const metadataService = (session.metadata?.service ?? '').trim();
+      const service = (metadataService === 'Consultation Ressenti' || metadataService === 'Réponse Oui / Non')
+        ? metadataService
+        : (amountTotal >= 1000 ? 'Consultation Ressenti' : 'Réponse Oui / Non');
 
       const { error: insertError } = await supabase.from('consultations').insert({
         stripe_session_id: session_id,
