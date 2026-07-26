@@ -1,69 +1,76 @@
 # Aura Intuitive
 
-> Aura Intuitive est un service de voyance en ligne par email créé par Laura, voyante et médium intuitive. Consultations personnalisées dès 1€, réponse sous 24h. Basé en Île-de-France, France.
+> Aura Intuitive est un service de voyance en ligne par email créé par Laura, voyante et médium intuitive. Consultations personnalisées dès 1€, sans abonnement, réponse sous 24h. Paiement unique sécurisé via Stripe. Basé en Île-de-France, France. Disponible en français et en anglais.
 
-## Consultations disponibles
+## Consultations
 
-- [Réponse Oui / Non (1€)](https://www.auraintuitive.fr/blog/reponse-oui-non-voyance-fonctionnement): Question précise → réponse intuitive directe par email sous 24h.
-- [Consultation Ressenti (10€)](https://www.auraintuitive.fr/blog/consultation-voyance-pas-chere): Situation complexe → guidance détaillée et personnalisée par email sous 24h.
+- [Réponse Oui / Non — 1€](https://www.auraintuitive.fr/#services): Une question fermée, une réponse intuitive directe par email sous 24h.
+- [Consultation Ressenti — 10€](https://www.auraintuitive.fr/#services): Guidance complète et personnalisée (amour, travail, situation complexe) par email sous 24h.
 
 ## Pages principales
 
-- [Accueil](https://www.auraintuitive.fr/): Page principale avec présentation des services, FAQ et formulaire de consultation.
-- [À propos](https://www.auraintuitive.fr/a-propos): Découvrez Laura, son parcours de médium, sa méthode et sa vision d'une voyance accessible.
-- [Blog](https://www.auraintuitive.fr/blog): 27 articles sur la voyance, la guidance spirituelle et les relations.
-- [Mentions légales](https://www.auraintuitive.fr/mentions-legales): Informations légales et politique de confidentialité.
+- [Accueil](https://www.auraintuitive.fr/): Présentation des services, avis clients, FAQ.
+- [À propos](https://www.auraintuitive.fr/a-propos): Laura, son parcours de médium intuitive, sa méthode et sa vision d'une voyance honnête et accessible.
+- [Blog](https://www.auraintuitive.fr/blog): 31 articles sur la voyance, la guidance spirituelle, les heures miroirs et les relations.
+- [Mentions légales](https://www.auraintuitive.fr/mentions-legales): Informations légales, RGPD et politique de confidentialité.
 
-## Articles du blog
+## Articles — Heures miroirs & signes spirituels
 
-- [Comment bien formuler sa question à une voyante](https://www.auraintuitive.fr/blog/comment-formuler-question-voyante)
-- [Première consultation de voyance en ligne : à quoi s'attendre](https://www.auraintuitive.fr/blog/premiere-consultation-voyance-en-ligne)
-- [Mon ex va-t-il revenir ? Ce que la voyance peut révéler](https://www.auraintuitive.fr/blog/mon-ex-va-t-il-revenir-voyance)
-- [Voyance amoureuse : comprendre les sentiments de l'autre](https://www.auraintuitive.fr/blog/voyance-amoureuse-comprendre-sentiments)
-- [Réponse Oui/Non en voyance : comment ça fonctionne](https://www.auraintuitive.fr/blog/reponse-oui-non-voyance-fonctionnement)
-- [Signes qu'il pense à vous : intuition ou réalité ?](https://www.auraintuitive.fr/blog/signes-il-pense-a-vous)
-- [Flamme jumelle vs âme sœur : quelle différence ?](https://www.auraintuitive.fr/blog/flamme-jumelle-ame-soeur-difference)
-- [Voyance travail : carrière et reconversion professionnelle](https://www.auraintuitive.fr/blog/voyance-travail-carriere-reconversion)
-- [Consultation de voyance pas chère : est-ce fiable ?](https://www.auraintuitive.fr/blog/consultation-voyance-pas-chere)
-- [Mon ex a refait sa vie : que dit la voyance ?](https://www.auraintuitive.fr/blog/mon-ex-a-refait-sa-vie-voyance)
-- [Voyance gratuite vs payante : quelle différence ?](https://www.auraintuitive.fr/blog/voyance-gratuite-vs-payante-difference)
-- [Voyance à 1€ : une consultation sérieuse à petit prix](https://www.auraintuitive.fr/blog/voyance-1-euro-serieuse)
-- [Voyance sans CB et sans abonnement](https://www.auraintuitive.fr/blog/voyance-sans-cb-sans-abonnement)
-- [Voyance gratuite en ligne : ce qu'il faut savoir](https://www.auraintuitive.fr/blog/voyance-gratuite-en-ligne-ce-quil-faut-savoir)
-- [Rêver de son ex : signification spirituelle et message caché](https://www.auraintuitive.fr/blog/rever-de-son-ex-signification)
-- [Comment développer son intuition : 7 exercices au quotidien](https://www.auraintuitive.fr/blog/developper-son-intuition-exercices)
-- [Voyance par email : pourquoi ce format change tout](https://www.auraintuitive.fr/blog/voyance-par-email-avantages)
-- [Heure miroir 11h11 : signification spirituelle et message](https://www.auraintuitive.fr/blog/heure-miroir-11h11-signification)
 - [Heures miroirs : guide complet de toutes les significations](https://www.auraintuitive.fr/blog/heures-miroirs-guide-complet)
-- [Voyante sérieuse : 10 signes pour reconnaître une vraie médium](https://www.auraintuitive.fr/blog/voyante-serieuse-10-signes)
-- [Médium ou voyante : quelle différence ?](https://www.auraintuitive.fr/blog/medium-ou-voyante-difference)
-- [Combien de temps pour qu'un ex revienne ?](https://www.auraintuitive.fr/blog/combien-de-temps-pour-ex-revienne)
-- [Rêver de son ex tous les soirs : que signifie ce signe ?](https://www.auraintuitive.fr/blog/rever-de-son-ex-tous-les-soirs)
+- [Heure miroir 11h11 : signification spirituelle et message](https://www.auraintuitive.fr/blog/heure-miroir-11h11-signification)
+- [22h22 signification : le message de cette heure miroir](https://www.auraintuitive.fr/blog/heure-miroir-22h22-signification)
+- [00h00 signification : l'heure miroir de minuit](https://www.auraintuitive.fr/blog/heure-miroir-00h00-signification)
+- [12h12 signification : le message de cette heure miroir](https://www.auraintuitive.fr/blog/heure-miroir-12h12-signification)
+- [21h21 signification : que révèle cette heure miroir ?](https://www.auraintuitive.fr/blog/heure-miroir-21h21-signification)
 - [12 signes que votre ange gardien essaie de vous parler](https://www.auraintuitive.fr/blog/signes-ange-gardien-vous-parle)
-- [Voyance après une rupture : 5 questions à se poser avant](https://www.auraintuitive.fr/blog/voyance-apres-rupture-questions)
+- [Comment développer son intuition : 7 exercices simples](https://www.auraintuitive.fr/blog/developper-son-intuition-exercices)
 
-## Thématiques couvertes
+## Articles — Amour, ex & relations
 
-- Voyance amoureuse (sentiments, retour d'ex, flamme jumelle, âme sœur)
-- Voyance travail et carrière (reconversion, ambiance professionnelle)
-- Guidance spirituelle et développement de l'intuition
-- Voyance accessible et pas chère (consultations dès 1€, sans abonnement)
+- [Mon ex va-t-il revenir ? Ce que révèle la voyance](https://www.auraintuitive.fr/blog/mon-ex-va-t-il-revenir-voyance)
+- [Combien de temps pour qu'un ex revienne ? Les signes](https://www.auraintuitive.fr/blog/combien-de-temps-pour-ex-revienne)
+- [Mon ex a refait sa vie : est-ce vraiment fini ?](https://www.auraintuitive.fr/blog/mon-ex-a-refait-sa-vie-voyance)
+- [Rêver de son ex : signification spirituelle et message](https://www.auraintuitive.fr/blog/rever-de-son-ex-signification)
+- [Rêver de son ex toutes les nuits : que signifie ce signe ?](https://www.auraintuitive.fr/blog/rever-de-son-ex-tous-les-soirs)
+- [7 signes qu'il pense à vous en secret, selon une voyante](https://www.auraintuitive.fr/blog/signes-il-pense-a-vous)
+- [Flamme jumelle ou âme sœur : 5 différences clés](https://www.auraintuitive.fr/blog/flamme-jumelle-ame-soeur-difference)
+- [Voyance amoureuse : comprendre les sentiments de l'autre](https://www.auraintuitive.fr/blog/voyance-amoureuse-comprendre-sentiments)
+- [Retrouver l'amour quand on est célibataire : voyance](https://www.auraintuitive.fr/blog/retrouver-amour-celibataire-voyance)
+- [Voyance après rupture : 5 questions avant de consulter](https://www.auraintuitive.fr/blog/voyance-apres-rupture-questions)
+
+## Articles — Voyance pratique & tarifs
+
+- [Voyance à 1€ : sérieuse ou arnaque ?](https://www.auraintuitive.fr/blog/voyance-1-euro-serieuse)
+- [Voyance pas chère : une guidance accessible dès 1€](https://www.auraintuitive.fr/blog/consultation-voyance-pas-chere)
+- [Voyance gratuite ou payante : la vraie différence](https://www.auraintuitive.fr/blog/voyance-gratuite-vs-payante-difference)
+- [Voyance gratuite en ligne : ce qu'il faut savoir avant](https://www.auraintuitive.fr/blog/voyance-gratuite-en-ligne-ce-quil-faut-savoir)
+- [Voyance sans CB ni abonnement : c'est possible](https://www.auraintuitive.fr/blog/voyance-sans-cb-sans-abonnement)
+- [Voyance par email : pourquoi ce format change tout](https://www.auraintuitive.fr/blog/voyance-par-email-avantages)
+- [Voyance oui non : comment ça fonctionne et quand l'utiliser](https://www.auraintuitive.fr/blog/reponse-oui-non-voyance-fonctionnement)
+- [Voyante sérieuse : 10 signes pour reconnaître une vraie médium](https://www.auraintuitive.fr/blog/voyante-serieuse-10-signes)
+- [Médium ou voyante : quelle différence entre les deux ?](https://www.auraintuitive.fr/blog/medium-ou-voyante-difference)
+- [Question à poser à une voyante : comment bien formuler](https://www.auraintuitive.fr/blog/comment-formuler-question-voyante)
+- [Première consultation voyance en ligne : à quoi s'attendre](https://www.auraintuitive.fr/blog/premiere-consultation-voyance-en-ligne)
+- [Voyance travail : reconversion, ambiance et carrière](https://www.auraintuitive.fr/blog/voyance-travail-carriere-reconversion)
+- [Voyance argent et finances : ce que révèle l'intuition](https://www.auraintuitive.fr/blog/voyance-argent-finances)
+
+## English version
+
+Aura Intuitive is also available in English. Same pricing (payment in EUR via Stripe): Intuitive Reading €10, Yes/No Answer €1, both answered by email within 24h.
+
+- [English homepage](https://www.auraintuitive.fr/en/): Services, reviews and FAQ in English.
+- [About Laura](https://www.auraintuitive.fr/en/about): The intuitive psychic behind Aura Intuitive.
+- [English blog](https://www.auraintuitive.fr/en/blog/): 31 articles on psychic readings, mirror hours, love and spiritual guidance.
+- [Mirror hours complete guide](https://www.auraintuitive.fr/en/blog/mirror-hours-complete-guide)
+- [11:11 mirror hour meaning](https://www.auraintuitive.fr/en/blog/mirror-hour-11-11-meaning)
+- [Will my ex come back?](https://www.auraintuitive.fr/en/blog/will-my-ex-come-back-psychic)
+- [Real psychic: 10 signs of a truly gifted medium](https://www.auraintuitive.fr/en/blog/serious-psychic-10-signs)
 
 ## Contact
 
 - Site : https://www.auraintuitive.fr
 - TikTok : https://www.tiktok.com/@aura_intuitive
-- Email : noreply@auraintuitive.com
 
-## English version
+## Optional
 
-Aura Intuitive is also available in English at:
-
-- Landing: https://www.auraintuitive.fr/en/
-- About: https://www.auraintuitive.fr/en/about
-- Legal notice: https://www.auraintuitive.fr/en/legal
-- Blog: https://www.auraintuitive.fr/en/blog/
-
-Services offered (same pricing as FR, payment in EUR via Stripe):
-- Intuitive Reading — €10 — detailed personalized spiritual guidance, answered within 24h
-- Yes / No Answer — €1 — short intuitive answer to a single yes/no question, answered within 24h
+- [Sitemap](https://www.auraintuitive.fr/sitemap.xml): Plan complet du site (FR + EN).
