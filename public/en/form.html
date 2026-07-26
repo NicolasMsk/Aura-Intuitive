@@ -16,8 +16,8 @@
     <meta name="description" content="Send your question to Laura for your online psychic reading. Personalised response by email within 24 hours.">
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#7b2d3f">
-    <link rel="alternate" hreflang="fr" href="https://www.auraintuitive.fr/form.html">
-    <link rel="alternate" hreflang="en" href="https://www.auraintuitive.fr/en/form.html">
+    <link rel="alternate" hreflang="fr" href="https://www.auraintuitive.fr/form">
+    <link rel="alternate" hreflang="en" href="https://www.auraintuitive.fr/en/form">
     <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
@@ -32,9 +32,9 @@
 
     <!-- Language switcher -->
     <div class="lang-switcher">
-      <a href="/form.html">FR</a>
+      <a href="/form">FR</a>
       <span class="sep">|</span>
-      <a href="/en/form.html" class="active">EN</a>
+      <a href="/en/form" class="active">EN</a>
     </div>
 
     <!-- Background -->
@@ -179,7 +179,7 @@
                     const data = await res.json();
 
                     if (res.ok && data.success) {
-                        window.location.href = '/en/thank-you.html';
+                        window.location.href = '/en/thank-you';
                     } else {
                         throw new Error(data.error || 'An error occurred. Please try again.');
                     }

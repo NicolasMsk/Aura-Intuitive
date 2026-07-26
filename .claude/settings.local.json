@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Read(//c/Users/nicol/OneDrive/Documents/Aura/ Intuitive/public/blog/**)"
+      "Read(//c/Users/nicol/OneDrive/Documents/Aura/ Intuitive/public/blog/**)",
+      "Bash(find C:\\\\Users\\\\nmusicki\\\\Documents\\\\COS\\\\projects\\\\personal\\\\V_Website\\\\public\\\\blog:*)"
     ]
   }
 }
