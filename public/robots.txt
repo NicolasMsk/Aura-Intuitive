@@ -12,7 +12,13 @@ LLMs-Txt: https://www.auraintuitive.fr/llms.txt
 User-agent: GPTBot
 Allow: /
 
+User-agent: OAI-SearchBot
+Allow: /
+
 User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Applebot-Extended
 Allow: /
 
 User-agent: ClaudeBot
