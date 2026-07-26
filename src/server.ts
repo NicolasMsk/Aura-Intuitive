@@ -119,6 +119,47 @@ app.use('/style.css', express.static(path.join(__dirname, '..', 'public', 'style
   maxAge: '7d',
 }));
 
+// SEO: 301 redirect any *.html URL to its extensionless equivalent.
+// Google was receiving duplicate URLs (/blog/x AND /blog/x.html) with
+// conflicting canonical/hreflang signals — one canonical URL format only.
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.method === 'GET' && req.path.endsWith('.html')) {
+    let clean = req.path.slice(0, -5); // strip ".html"
+    if (clean.endsWith('/index')) clean = clean.slice(0, -5); // /blog/index -> /blog/
+    if (clean === '') clean = '/';
+    const query = req.url.slice(req.path.length);
+    res.redirect(301, clean + query);
+    return;
+  }
+  next();
+});
+
+// SEO: resolve extensionless URLs (/en/about, /blog/xxx) to their .html file.
+// /form and /en/form are excluded — they MUST go through their Express routes
+// which verify the Stripe session before serving the form.
+const EXTENSIONLESS_EXCLUDE = new Set(['/form', '/en/form']);
+const DIR_REDIRECTS: Record<string, string> = { '/en': '/en/', '/en/blog': '/en/blog/' };
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.method === 'GET' && DIR_REDIRECTS[req.path]) {
+    res.redirect(301, DIR_REDIRECTS[req.path]);
+    return;
+  }
+  if (
+    req.method === 'GET' &&
+    req.path !== '/' &&
+    !req.path.includes('.') &&
+    !req.path.startsWith('/api/') &&
+    !EXTENSIONLESS_EXCLUDE.has(req.path)
+  ) {
+    const rel = req.path.replace(/\/+$/, '').slice(1) + '.html';
+    res.sendFile(rel, { root: path.join(__dirname, '..', 'public') }, (err) => {
+      if (err) next();
+    });
+    return;
+  }
+  next();
+});
+
 // Other static files (HTML: no cache)
 app.use(express.static(path.join(__dirname, '..', 'public'), { redirect: false }));
 
