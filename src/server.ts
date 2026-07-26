@@ -59,6 +59,17 @@ if (isProduction) {
   app.set('trust proxy', 1);
 }
 
+// SEO: canonical host — redirect apex domain to www (301).
+// Requires auraintuitive.fr to be added as custom domain in Railway
+// so TLS terminates correctly before this middleware sees the request.
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (isProduction && req.hostname === 'auraintuitive.fr') {
+    res.redirect(301, `https://www.auraintuitive.fr${req.originalUrl}`);
+    return;
+  }
+  next();
+});
+
 // Gzip compression
 app.use(compression());
 
@@ -138,7 +149,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // /form and /en/form are excluded — they MUST go through their Express routes
 // which verify the Stripe session before serving the form.
 const EXTENSIONLESS_EXCLUDE = new Set(['/form', '/en/form']);
-const DIR_REDIRECTS: Record<string, string> = { '/en': '/en/', '/en/blog': '/en/blog/' };
+const DIR_REDIRECTS: Record<string, string> = { '/en': '/en/', '/en/blog/': '/en/blog', '/blog/': '/blog' };
 app.use((req: Request, res: Response, next: NextFunction) => {
   if (req.method === 'GET' && DIR_REDIRECTS[req.path]) {
     res.redirect(301, DIR_REDIRECTS[req.path]);
@@ -553,6 +564,10 @@ app.get('/mentions-legales', (_req: Request, res: Response): void => {
 
 app.get('/blog', (_req: Request, res: Response): void => {
   res.sendFile(path.join(__dirname, '..', 'public', 'blog', 'index.html'));
+});
+
+app.get('/en/blog', (_req: Request, res: Response): void => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'en', 'blog', 'index.html'));
 });
 
 app.get('/blog/:slug', (req: Request, res: Response): void => {
